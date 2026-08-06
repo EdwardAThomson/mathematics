@@ -27,9 +27,13 @@ kappa(R) concept, admissibility A1-A5), `METHODOLOGY.md` Section 2.5 and C4
 satisfaction clauses + unique-denotation readout counts toward kappa; axiom
 schemas count as finite templates), `KAPPA-TABLE.md`'s Rayo row (current
 verdict: infeasible to pin exactly, lower-bounded by "at least several
-hundred BLC bits"), and the existing `FINDINGS.md`. Read all of these before
-doing anything else; do not re-derive what they already establish. This run
-extends that Rayo row — it does not redo Phases 0-4 of `PLIMSOLL-PROMPT.md`.
+hundred BLC bits"), and `PRIOR-FINDINGS.md` (a copy of the prior run's
+FINDINGS.md, renamed on purpose: this run's own FINDINGS.md is a fresh,
+harness-owned document for *this* run's findings only — it does not carry
+the prior run's content over, so `PRIOR-FINDINGS.md` is where that context
+lives). Read all of these before doing anything else; do not re-derive what
+they already establish. This run extends that Rayo row — it does not redo
+Phases 0-4 of `PLIMSOLL-PROMPT.md`.
 
 `FINDINGS.md` is rendered by the harness from recorded findings; no item may
 write it, assemble it, or declare it in `scope`/`assembles`. Every "record
