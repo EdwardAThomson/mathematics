@@ -145,7 +145,12 @@ eventually dominated by the same "faster than any computable function"
 behavior) — it only shrinks the additive constant, i.e. how much of the
 budget is wasted on interpreter/boilerplate overhead before you start
 buying real growth. That is why the crossover happens so early (real gains
-appear already at 15-49 bytes of BLC) and why the specific numeric value of
+appear already within tens of bytes of BLC: a closed lambda term compresses
+to 15 bytes, a term exceeding Graham's number to 49 *bits* — about 6 bytes,
+and the video is explicit that this is "bits not bytes" — and a term
+reaching the Buchholz ordinal function to 49 *bytes*; the last two share the
+numeral 49 in different units, confirmed against source in
+`phase0/d-byte-crosscheck.md`) and why the specific numeric value of
 $BN(R, n)$ at small, practically-computable $n$ is far more sensitive to
 $R$'s per-symbol overhead than to $R$'s theoretical power.
 
