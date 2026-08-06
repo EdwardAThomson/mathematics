@@ -29,6 +29,11 @@ claim is true). Do not write a verify that checks a conclusion's
 correctness; that is not available for open questions and pretending
 otherwise produces a tick on nothing.
 
+`FINDINGS.md` is rendered by the harness from recorded findings; no item may
+write it, assemble it, or declare it in `scope`/`assembles`. Every "record
+as a finding" instruction below means: use the harness's own finding
+mechanism for that item, not a hand-written edit to that file.
+
 ## Phase 0 (inquiry): audit and ground the existing partial lists
 
 Before adding anything new, pin down what the existing partial resources
@@ -69,7 +74,7 @@ independently, so do not merge them:
 (g) Googology Wiki's page(s) on the oodle / array notation hierarchy: same
     treatment.
 
-Evidence contract for every Phase 0 item's `FINDINGS.md` entry: `source`
+Evidence contract for every Phase 0 item's recorded finding: `source`
 (exact URL(s) fetched), `fetched` (date — these are live/community pages
 that can have changed since this prompt was written), `claim` (a direct
 quote or tightly-anchored paraphrase, not a restatement from memory of the
@@ -81,7 +86,7 @@ explicitly as `not-found` with what was tried — an omitted entry reads as
 usable."
 
 If any Phase 0 finding contradicts what `BN-function.md` currently states,
-say so plainly in `FINDINGS.md` and flag the specific section/line to
+say so plainly in that finding and flag the specific section/line to
 correct; do not silently proceed on a claim Phase 0 itself just falsified.
 
 ## Phase 1 (inquiry + build): define kappa(R) operationally
@@ -120,9 +125,10 @@ Calculus of Constructions, first-order set theory). Each row needs an actual
 estimate with its derivation shown, not a placeholder. If a real estimate is
 infeasible for a given row (e.g. formalizing a full ZFC satisfaction
 evaluator is a large undertaking on its own), say so explicitly in the table
-rather than guessing a number. Output: the table, committed to
-`FINDINGS.md` or a dedicated `KAPPA-TABLE.md`, each cell traceable to either
-a Phase 0 finding or a Phase 1 methodology rule.
+rather than guessing a number. Output: the table, committed to a dedicated
+`KAPPA-TABLE.md` (`FINDINGS.md` cannot be an item's output — see above),
+each cell traceable to either a Phase 0 finding or a Phase 1 methodology
+rule, and each cell's derivation also recorded as its own finding.
 
 ## Phase 3 (build): small-n empirical check
 
@@ -148,10 +154,12 @@ conclusion to record with its reasoning and caveats.
 
 ## Documentation
 
-Match the conventions used elsewhere in this repo: `FINDINGS.md` per this prompt's Phase 0-2 and 4 items
-(evidence contract above), `METHODOLOGY.md` per Phase 1, and updates to
-`BN-function.md` itself where Phase 0 or Phase 1 corrects or refines what it
-currently states only conceptually.
+Match the conventions used elsewhere in this repo: a recorded finding per this prompt's Phase 0, 2 and 4
+items (evidence contract above; `FINDINGS.md` itself is rendered by the
+harness, never written directly), `KAPPA-TABLE.md` per Phase 2,
+`METHODOLOGY.md` per Phase 1, and updates to `BN-function.md` itself where
+Phase 0 or Phase 1 corrects or refines what it currently states only
+conceptually.
 
 ## Explicitly out of scope
 
