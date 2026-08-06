@@ -1,0 +1,2335 @@
+1
+00:00:00,160 --> 00:00:02,389
+
+since my last video about the biggest
+
+2
+00:00:02,389 --> 00:00:02,399
+since my last video about the biggest
+ 
+
+3
+00:00:02,399 --> 00:00:04,710
+since my last video about the biggest
+number that can fit in a text message
+
+4
+00:00:04,710 --> 00:00:04,720
+number that can fit in a text message
+ 
+
+5
+00:00:04,720 --> 00:00:07,470
+number that can fit in a text message
+some even larger numbers have been
+
+6
+00:00:07,470 --> 00:00:07,480
+some even larger numbers have been
+ 
+
+7
+00:00:07,480 --> 00:00:09,709
+some even larger numbers have been
+found but let's not get ahead of
+
+8
+00:00:09,709 --> 00:00:09,719
+found but let's not get ahead of
+ 
+
+9
+00:00:09,719 --> 00:00:12,190
+found but let's not get ahead of
+ourselves because you guys had a lot of
+
+10
+00:00:12,190 --> 00:00:12,200
+ourselves because you guys had a lot of
+ 
+
+11
+00:00:12,200 --> 00:00:14,230
+ourselves because you guys had a lot of
+questions that I need to answer first
+
+12
+00:00:14,230 --> 00:00:14,240
+questions that I need to answer first
+ 
+
+13
+00:00:14,240 --> 00:00:16,510
+questions that I need to answer first
+for this to make sense and if you
+
+14
+00:00:16,510 --> 00:00:16,520
+for this to make sense and if you
+ 
+
+15
+00:00:16,520 --> 00:00:18,550
+for this to make sense and if you
+haven't seen that last video then make
+
+16
+00:00:18,550 --> 00:00:18,560
+haven't seen that last video then make
+ 
+
+17
+00:00:18,560 --> 00:00:20,109
+haven't seen that last video then make
+sure to watch that
+
+18
+00:00:20,109 --> 00:00:20,119
+sure to watch that
+ 
+
+19
+00:00:20,119 --> 00:00:23,390
+sure to watch that
+first I saw a ton of comments about Busy
+
+20
+00:00:23,390 --> 00:00:23,400
+first I saw a ton of comments about Busy
+ 
+
+21
+00:00:23,400 --> 00:00:26,109
+first I saw a ton of comments about Busy
+Beavers and other similar functions like
+
+22
+00:00:26,109 --> 00:00:26,119
+Beavers and other similar functions like
+ 
+
+23
+00:00:26,119 --> 00:00:29,990
+Beavers and other similar functions like
+reo's number or even utter Oblivion A
+
+24
+00:00:29,990 --> 00:00:30,000
+reo's number or even utter Oblivion A
+ 
+
+25
+00:00:30,000 --> 00:00:32,510
+reo's number or even utter Oblivion A
+Busy Beaver function defines a number
+
+26
+00:00:32,510 --> 00:00:32,520
+Busy Beaver function defines a number
+ 
+
+27
+00:00:32,520 --> 00:00:35,030
+Busy Beaver function defines a number
+based on the largest value you can get
+
+28
+00:00:35,030 --> 00:00:35,040
+based on the largest value you can get
+ 
+
+29
+00:00:35,040 --> 00:00:38,030
+based on the largest value you can get
+by using a limited number of symbols or
+
+30
+00:00:38,030 --> 00:00:38,040
+by using a limited number of symbols or
+ 
+
+31
+00:00:38,040 --> 00:00:40,709
+by using a limited number of symbols or
+states which was exactly what I was
+
+32
+00:00:40,709 --> 00:00:40,719
+states which was exactly what I was
+ 
+
+33
+00:00:40,719 --> 00:00:44,069
+states which was exactly what I was
+trying to do in that first video in fact
+
+34
+00:00:44,069 --> 00:00:44,079
+trying to do in that first video in fact
+ 
+
+35
+00:00:44,079 --> 00:00:46,350
+trying to do in that first video in fact
+there's already a Lambda Busy Beaver
+
+36
+00:00:46,350 --> 00:00:46,360
+there's already a Lambda Busy Beaver
+ 
+
+37
+00:00:46,360 --> 00:00:49,750
+there's already a Lambda Busy Beaver
+function for binary Lambda calculus so
+
+38
+00:00:49,750 --> 00:00:49,760
+function for binary Lambda calculus so
+ 
+
+39
+00:00:49,760 --> 00:00:52,470
+function for binary Lambda calculus so
+that's the answer right is this the
+
+40
+00:00:52,470 --> 00:00:52,480
+that's the answer right is this the
+ 
+
+41
+00:00:52,480 --> 00:00:54,869
+that's the answer right is this the
+largest number that can fit in a text
+
+42
+00:00:54,869 --> 00:00:54,879
+largest number that can fit in a text
+ 
+
+43
+00:00:54,879 --> 00:00:59,029
+largest number that can fit in a text
+message yes but not so fast for
+
+44
+00:00:59,029 --> 00:00:59,039
+message yes but not so fast for
+ 
+
+45
+00:00:59,039 --> 00:01:01,430
+message yes but not so fast for
+something to count as the largest number
+
+46
+00:01:01,430 --> 00:01:01,440
+something to count as the largest number
+ 
+
+47
+00:01:01,440 --> 00:01:03,910
+something to count as the largest number
+at least by my rules there needs to be
+
+48
+00:01:03,910 --> 00:01:03,920
+at least by my rules there needs to be
+ 
+
+49
+00:01:03,920 --> 00:01:06,630
+at least by my rules there needs to be
+some kind of instruction or program to
+
+50
+00:01:06,630 --> 00:01:06,640
+some kind of instruction or program to
+ 
+
+51
+00:01:06,640 --> 00:01:09,590
+some kind of instruction or program to
+generate that number but these other
+
+52
+00:01:09,590 --> 00:01:09,600
+generate that number but these other
+ 
+
+53
+00:01:09,600 --> 00:01:12,230
+generate that number but these other
+functions are uncomputable they just
+
+54
+00:01:12,230 --> 00:01:12,240
+functions are uncomputable they just
+ 
+
+55
+00:01:12,240 --> 00:01:15,350
+functions are uncomputable they just
+declare the number exists obviously but
+
+56
+00:01:15,350 --> 00:01:15,360
+declare the number exists obviously but
+ 
+
+57
+00:01:15,360 --> 00:01:17,429
+declare the number exists obviously but
+you have no way of knowing how big it
+
+58
+00:01:17,429 --> 00:01:17,439
+you have no way of knowing how big it
+ 
+
+59
+00:01:17,439 --> 00:01:20,550
+you have no way of knowing how big it
+really is or how you would produce that
+
+60
+00:01:20,550 --> 00:01:20,560
+really is or how you would produce that
+ 
+
+61
+00:01:20,560 --> 00:01:23,429
+really is or how you would produce that
+number so it's hard to really call this
+
+62
+00:01:23,429 --> 00:01:23,439
+number so it's hard to really call this
+ 
+
+63
+00:01:23,439 --> 00:01:26,270
+number so it's hard to really call this
+a number it's more like a placeholder
+
+64
+00:01:26,270 --> 00:01:26,280
+a number it's more like a placeholder
+ 
+
+65
+00:01:26,280 --> 00:01:28,749
+a number it's more like a placeholder
+where the number would go when it's
+
+66
+00:01:28,749 --> 00:01:28,759
+where the number would go when it's
+ 
+
+67
+00:01:28,759 --> 00:01:31,350
+where the number would go when it's
+discovered and and proving that a number
+
+68
+00:01:31,350 --> 00:01:31,360
+discovered and and proving that a number
+ 
+
+69
+00:01:31,360 --> 00:01:34,910
+discovered and and proving that a number
+is a busy beaver is very difficult did
+
+70
+00:01:34,910 --> 00:01:34,920
+is a busy beaver is very difficult did
+ 
+
+71
+00:01:34,920 --> 00:01:36,789
+is a busy beaver is very difficult did
+you know that the five-state turing
+
+72
+00:01:36,789 --> 00:01:36,799
+you know that the five-state turing
+ 
+
+73
+00:01:36,799 --> 00:01:39,550
+you know that the five-state turing
+machine Busy Beaver was only proven this
+
+74
+00:01:39,550 --> 00:01:39,560
+machine Busy Beaver was only proven this
+ 
+
+75
+00:01:39,560 --> 00:01:41,149
+machine Busy Beaver was only proven this
+year in
+
+76
+00:01:41,149 --> 00:01:41,159
+year in
+ 
+
+77
+00:01:41,159 --> 00:01:44,550
+year in
+2024 and it's unlikely that a six-state
+
+78
+00:01:44,550 --> 00:01:44,560
+2024 and it's unlikely that a six-state
+ 
+
+79
+00:01:44,560 --> 00:01:47,749
+2024 and it's unlikely that a six-state
+busy beaver will ever be proven In Our
+
+80
+00:01:47,749 --> 00:01:47,759
+busy beaver will ever be proven In Our
+ 
+
+81
+00:01:47,759 --> 00:01:50,830
+busy beaver will ever be proven In Our
+Lifetime another popular comment I got
+
+82
+00:01:50,830 --> 00:01:50,840
+Lifetime another popular comment I got
+ 
+
+83
+00:01:50,840 --> 00:01:52,630
+Lifetime another popular comment I got
+was why don't you just take the largest
+
+84
+00:01:52,630 --> 00:01:52,640
+was why don't you just take the largest
+ 
+
+85
+00:01:52,640 --> 00:01:55,590
+was why don't you just take the largest
+number and add one or Square it or do
+
+86
+00:01:55,590 --> 00:01:55,600
+number and add one or Square it or do
+ 
+
+87
+00:01:55,600 --> 00:01:57,029
+number and add one or Square it or do
+something crazy with
+
+88
+00:01:57,029 --> 00:01:57,039
+something crazy with
+ 
+
+89
+00:01:57,039 --> 00:01:59,910
+something crazy with
+it technically it will make the number
+
+90
+00:01:59,910 --> 00:01:59,920
+it technically it will make the number
+ 
+
+91
+00:01:59,920 --> 00:02:02,950
+it technically it will make the number
+larger but it isn't a larger number
+
+92
+00:02:02,950 --> 00:02:02,960
+larger but it isn't a larger number
+ 
+
+93
+00:02:02,960 --> 00:02:05,870
+larger but it isn't a larger number
+class so for example if we were only
+
+94
+00:02:05,870 --> 00:02:05,880
+class so for example if we were only
+ 
+
+95
+00:02:05,880 --> 00:02:08,550
+class so for example if we were only
+able to use up Arrow notations it
+
+96
+00:02:08,550 --> 00:02:08,560
+able to use up Arrow notations it
+ 
+
+97
+00:02:08,560 --> 00:02:10,710
+able to use up Arrow notations it
+doesn't matter how you arrange them or
+
+98
+00:02:10,710 --> 00:02:10,720
+doesn't matter how you arrange them or
+ 
+
+99
+00:02:10,720 --> 00:02:12,790
+doesn't matter how you arrange them or
+how many times you repeat them you'll
+
+100
+00:02:12,790 --> 00:02:12,800
+how many times you repeat them you'll
+ 
+
+101
+00:02:12,800 --> 00:02:14,830
+how many times you repeat them you'll
+never reach a number from a higher
+
+102
+00:02:14,830 --> 00:02:14,840
+never reach a number from a higher
+ 
+
+103
+00:02:14,840 --> 00:02:17,509
+never reach a number from a higher
+number class using up arrows because you
+
+104
+00:02:17,509 --> 00:02:17,519
+number class using up arrows because you
+ 
+
+105
+00:02:17,519 --> 00:02:19,509
+number class using up arrows because you
+would still need more space than the
+
+106
+00:02:19,509 --> 00:02:19,519
+would still need more space than the
+ 
+
+107
+00:02:19,519 --> 00:02:22,589
+would still need more space than the
+observable universe to write it down all
+
+108
+00:02:22,589 --> 00:02:22,599
+observable universe to write it down all
+ 
+
+109
+00:02:22,599 --> 00:02:24,830
+observable universe to write it down all
+this other garbage here doesn't really
+
+110
+00:02:24,830 --> 00:02:24,840
+this other garbage here doesn't really
+ 
+
+111
+00:02:24,840 --> 00:02:26,550
+this other garbage here doesn't really
+matter because it doesn't move the
+
+112
+00:02:26,550 --> 00:02:26,560
+matter because it doesn't move the
+ 
+
+113
+00:02:26,560 --> 00:02:29,309
+matter because it doesn't move the
+needle at all on whatever kind of super
+
+114
+00:02:29,309 --> 00:02:29,319
+needle at all on whatever kind of super
+ 
+
+115
+00:02:29,319 --> 00:02:31,710
+needle at all on whatever kind of super
+log SC we're using to compare big
+
+116
+00:02:31,710 --> 00:02:31,720
+log SC we're using to compare big
+ 
+
+117
+00:02:31,720 --> 00:02:35,470
+log SC we're using to compare big
+numbers so when I say the biggest number
+
+118
+00:02:35,470 --> 00:02:35,480
+numbers so when I say the biggest number
+ 
+
+119
+00:02:35,480 --> 00:02:38,750
+numbers so when I say the biggest number
+I mean the biggest class of number this
+
+120
+00:02:38,750 --> 00:02:38,760
+I mean the biggest class of number this
+ 
+
+121
+00:02:38,760 --> 00:02:40,470
+I mean the biggest class of number this
+is not a scale we're accustomed to
+
+122
+00:02:40,470 --> 00:02:40,480
+is not a scale we're accustomed to
+ 
+
+123
+00:02:40,480 --> 00:02:42,509
+is not a scale we're accustomed to
+thinking in so I can see how that can
+
+124
+00:02:42,509 --> 00:02:42,519
+thinking in so I can see how that can
+ 
+
+125
+00:02:42,519 --> 00:02:45,229
+thinking in so I can see how that can
+come across as confusing if you want to
+
+126
+00:02:45,229 --> 00:02:45,239
+come across as confusing if you want to
+ 
+
+127
+00:02:45,239 --> 00:02:47,149
+come across as confusing if you want to
+build up some more of that mathematical
+
+128
+00:02:47,149 --> 00:02:47,159
+build up some more of that mathematical
+ 
+
+129
+00:02:47,159 --> 00:02:50,030
+build up some more of that mathematical
+thinking then check out today's sponsor
+
+130
+00:02:50,030 --> 00:02:50,040
+thinking then check out today's sponsor
+ 
+
+131
+00:02:50,040 --> 00:02:52,390
+thinking then check out today's sponsor
+brilliant my son actually loves
+
+132
+00:02:52,390 --> 00:02:52,400
+brilliant my son actually loves
+ 
+
+133
+00:02:52,400 --> 00:02:54,270
+brilliant my son actually loves
+brilliant he's taking the course right
+
+134
+00:02:54,270 --> 00:02:54,280
+brilliant he's taking the course right
+ 
+
+135
+00:02:54,280 --> 00:02:56,470
+brilliant he's taking the course right
+now on Infinities which is just one of
+
+136
+00:02:56,470 --> 00:02:56,480
+now on Infinities which is just one of
+ 
+
+137
+00:02:56,480 --> 00:02:58,869
+now on Infinities which is just one of
+the many courses brilliant offers
+
+138
+00:02:58,869 --> 00:02:58,879
+the many courses brilliant offers
+ 
+
+139
+00:02:58,879 --> 00:03:00,790
+the many courses brilliant offers
+brilliant compreh comprehensive range of
+
+140
+00:03:00,790 --> 00:03:00,800
+brilliant compreh comprehensive range of
+ 
+
+141
+00:03:00,800 --> 00:03:02,790
+brilliant compreh comprehensive range of
+math courses really are built for
+
+142
+00:03:02,790 --> 00:03:02,800
+math courses really are built for
+ 
+
+143
+00:03:02,800 --> 00:03:05,390
+math courses really are built for
+Learners of any level from brushing up
+
+144
+00:03:05,390 --> 00:03:05,400
+Learners of any level from brushing up
+ 
+
+145
+00:03:05,400 --> 00:03:08,630
+Learners of any level from brushing up
+on fundamentals to advanced concepts
+
+146
+00:03:08,630 --> 00:03:08,640
+on fundamentals to advanced concepts
+ 
+
+147
+00:03:08,640 --> 00:03:10,830
+on fundamentals to advanced concepts
+each lesson is filled with Hands-On
+
+148
+00:03:10,830 --> 00:03:10,840
+each lesson is filled with Hands-On
+ 
+
+149
+00:03:10,840 --> 00:03:12,910
+each lesson is filled with Hands-On
+problem solving that lets you play with
+
+150
+00:03:12,910 --> 00:03:12,920
+problem solving that lets you play with
+ 
+
+151
+00:03:12,920 --> 00:03:15,589
+problem solving that lets you play with
+the concepts a method proven to make
+
+152
+00:03:15,589 --> 00:03:15,599
+the concepts a method proven to make
+ 
+
+153
+00:03:15,599 --> 00:03:17,789
+the concepts a method proven to make
+learning six times more effective than
+
+154
+00:03:17,789 --> 00:03:17,799
+learning six times more effective than
+ 
+
+155
+00:03:17,799 --> 00:03:20,030
+learning six times more effective than
+just watching videos in lessons you can
+
+156
+00:03:20,030 --> 00:03:20,040
+just watching videos in lessons you can
+ 
+
+157
+00:03:20,040 --> 00:03:22,750
+just watching videos in lessons you can
+work on in just minutes every day it's
+
+158
+00:03:22,750 --> 00:03:22,760
+work on in just minutes every day it's
+ 
+
+159
+00:03:22,760 --> 00:03:25,149
+work on in just minutes every day it's
+easy to learn anywhere on your phone
+
+160
+00:03:25,149 --> 00:03:25,159
+easy to learn anywhere on your phone
+ 
+
+161
+00:03:25,159 --> 00:03:27,789
+easy to learn anywhere on your phone
+laptop whenever you have time and it's
+
+162
+00:03:27,789 --> 00:03:27,799
+laptop whenever you have time and it's
+ 
+
+163
+00:03:27,799 --> 00:03:30,270
+laptop whenever you have time and it's
+completely free to try for 30 days so if
+
+164
+00:03:30,270 --> 00:03:30,280
+completely free to try for 30 days so if
+ 
+
+165
+00:03:30,280 --> 00:03:32,270
+completely free to try for 30 days so if
+you're on the fence it's super easy to
+
+166
+00:03:32,270 --> 00:03:32,280
+you're on the fence it's super easy to
+ 
+
+167
+00:03:32,280 --> 00:03:34,429
+you're on the fence it's super easy to
+just give it a try just remember to use
+
+168
+00:03:34,429 --> 00:03:34,439
+just give it a try just remember to use
+ 
+
+169
+00:03:34,439 --> 00:03:37,630
+just give it a try just remember to use
+the URL brilliant.org codep parade so
+
+170
+00:03:37,630 --> 00:03:37,640
+the URL brilliant.org codep parade so
+ 
+
+171
+00:03:37,640 --> 00:03:39,630
+the URL brilliant.org codep parade so
+you'll get the 20% discount if you
+
+172
+00:03:39,630 --> 00:03:39,640
+you'll get the 20% discount if you
+ 
+
+173
+00:03:39,640 --> 00:03:41,309
+you'll get the 20% discount if you
+decide to sign up for the premium
+
+174
+00:03:41,309 --> 00:03:41,319
+decide to sign up for the premium
+ 
+
+175
+00:03:41,319 --> 00:03:43,350
+decide to sign up for the premium
+subscription thanks
+
+176
+00:03:43,350 --> 00:03:43,360
+subscription thanks
+ 
+
+177
+00:03:43,360 --> 00:03:45,949
+subscription thanks
+brilliant all right now let's start
+
+178
+00:03:45,949 --> 00:03:45,959
+brilliant all right now let's start
+ 
+
+179
+00:03:45,959 --> 00:03:48,470
+brilliant all right now let's start
+where we left off last time because
+
+180
+00:03:48,470 --> 00:03:48,480
+where we left off last time because
+ 
+
+181
+00:03:48,480 --> 00:03:50,229
+where we left off last time because
+there's a reason the buck hole's ordinal
+
+182
+00:03:50,229 --> 00:03:50,239
+there's a reason the buck hole's ordinal
+ 
+
+183
+00:03:50,239 --> 00:03:53,390
+there's a reason the buck hole's ordinal
+function compresses so well there's a
+
+184
+00:03:53,390 --> 00:03:53,400
+function compresses so well there's a
+ 
+
+185
+00:03:53,400 --> 00:03:55,750
+function compresses so well there's a
+really simple and elegant algorithm
+
+186
+00:03:55,750 --> 00:03:55,760
+really simple and elegant algorithm
+ 
+
+187
+00:03:55,760 --> 00:03:58,789
+really simple and elegant algorithm
+using nuclear array notation which kind
+
+188
+00:03:58,789 --> 00:03:58,799
+using nuclear array notation which kind
+ 
+
+189
+00:03:58,799 --> 00:04:01,750
+using nuclear array notation which kind
+of plays out like a Hydra game so
+
+190
+00:04:01,750 --> 00:04:01,760
+of plays out like a Hydra game so
+ 
+
+191
+00:04:01,760 --> 00:04:03,670
+of plays out like a Hydra game so
+imagine your Hercules and you need to
+
+192
+00:04:03,670 --> 00:04:03,680
+imagine your Hercules and you need to
+ 
+
+193
+00:04:03,680 --> 00:04:06,670
+imagine your Hercules and you need to
+defeat a Hydra how many chops does it
+
+194
+00:04:06,670 --> 00:04:06,680
+defeat a Hydra how many chops does it
+ 
+
+195
+00:04:06,680 --> 00:04:09,789
+defeat a Hydra how many chops does it
+take this kind of Hydra is restricted to
+
+196
+00:04:09,789 --> 00:04:09,799
+take this kind of Hydra is restricted to
+ 
+
+197
+00:04:09,799 --> 00:04:12,869
+take this kind of Hydra is restricted to
+Binary trees meaning each node is either
+
+198
+00:04:12,869 --> 00:04:12,879
+Binary trees meaning each node is either
+ 
+
+199
+00:04:12,879 --> 00:04:16,270
+Binary trees meaning each node is either
+a head or a two-way split and there's
+
+200
+00:04:16,270 --> 00:04:16,280
+a head or a two-way split and there's
+ 
+
+201
+00:04:16,280 --> 00:04:19,949
+a head or a two-way split and there's
+two rules for how to cut heads first if
+
+202
+00:04:19,949 --> 00:04:19,959
+two rules for how to cut heads first if
+ 
+
+203
+00:04:19,959 --> 00:04:22,629
+two rules for how to cut heads first if
+the left branch is a single head you can
+
+204
+00:04:22,629 --> 00:04:22,639
+the left branch is a single head you can
+ 
+
+205
+00:04:22,639 --> 00:04:25,030
+the left branch is a single head you can
+always chop it causing the right side to
+
+206
+00:04:25,030 --> 00:04:25,040
+always chop it causing the right side to
+ 
+
+207
+00:04:25,040 --> 00:04:27,950
+always chop it causing the right side to
+become the new root so we can Define the
+
+208
+00:04:27,950 --> 00:04:27,960
+become the new root so we can Define the
+ 
+
+209
+00:04:27,960 --> 00:04:29,870
+become the new root so we can Define the
+natural numbers like this where where
+
+210
+00:04:29,870 --> 00:04:29,880
+natural numbers like this where where
+ 
+
+211
+00:04:29,880 --> 00:04:33,440
+natural numbers like this where where
+Stacks n heads tall Take N
+
+212
+00:04:33,440 --> 00:04:33,450
+Stacks n heads tall Take N
+ 
+
+213
+00:04:33,450 --> 00:04:35,230
+Stacks n heads tall Take N
+[Music]
+
+214
+00:04:35,230 --> 00:04:35,240
+[Music]
+ 
+
+215
+00:04:35,240 --> 00:04:38,390
+[Music]
+Cuts but what about when the left branch
+
+216
+00:04:38,390 --> 00:04:38,400
+Cuts but what about when the left branch
+ 
+
+217
+00:04:38,400 --> 00:04:42,029
+Cuts but what about when the left branch
+is a tree in this case the second rule
+
+218
+00:04:42,029 --> 00:04:42,039
+is a tree in this case the second rule
+ 
+
+219
+00:04:42,039 --> 00:04:43,990
+is a tree in this case the second rule
+says we need to just recursively play
+
+220
+00:04:43,990 --> 00:04:44,000
+says we need to just recursively play
+ 
+
+221
+00:04:44,000 --> 00:04:46,430
+says we need to just recursively play
+the Hydra game on the left node and when
+
+222
+00:04:46,430 --> 00:04:46,440
+the Hydra game on the left node and when
+ 
+
+223
+00:04:46,440 --> 00:04:49,350
+the Hydra game on the left node and when
+we get the result we search to find any
+
+224
+00:04:49,350 --> 00:04:49,360
+we get the result we search to find any
+ 
+
+225
+00:04:49,360 --> 00:04:51,790
+we get the result we search to find any
+instances of the right branch and
+
+226
+00:04:51,790 --> 00:04:51,800
+instances of the right branch and
+ 
+
+227
+00:04:51,800 --> 00:04:54,029
+instances of the right branch and
+replace them all with a copy of the
+
+228
+00:04:54,029 --> 00:04:54,039
+replace them all with a copy of the
+ 
+
+229
+00:04:54,039 --> 00:04:55,110
+replace them all with a copy of the
+entire
+
+230
+00:04:55,110 --> 00:04:55,120
+entire
+ 
+
+231
+00:04:55,120 --> 00:04:57,870
+entire
+tree now it might sound like this would
+
+232
+00:04:57,870 --> 00:04:57,880
+tree now it might sound like this would
+ 
+
+233
+00:04:57,880 --> 00:04:59,710
+tree now it might sound like this would
+create hydras that could grow forever
+
+234
+00:04:59,710 --> 00:04:59,720
+create hydras that could grow forever
+ 
+
+235
+00:04:59,720 --> 00:05:03,029
+create hydras that could grow forever
+ever but surprisingly any Hydra like
+
+236
+00:05:03,029 --> 00:05:03,039
+ever but surprisingly any Hydra like
+ 
+
+237
+00:05:03,039 --> 00:05:05,550
+ever but surprisingly any Hydra like
+this can always be defeated in a finite
+
+238
+00:05:05,550 --> 00:05:05,560
+this can always be defeated in a finite
+ 
+
+239
+00:05:05,560 --> 00:05:08,870
+this can always be defeated in a finite
+number of
+
+240
+00:05:08,870 --> 00:05:08,880
+
+ 
+
+241
+00:05:08,880 --> 00:05:11,950
+
+steps and making a Hydra of this form
+
+242
+00:05:11,950 --> 00:05:11,960
+steps and making a Hydra of this form
+ 
+
+243
+00:05:11,960 --> 00:05:14,670
+steps and making a Hydra of this form
+that's n heads tall grows at the rate of
+
+244
+00:05:14,670 --> 00:05:14,680
+that's n heads tall grows at the rate of
+ 
+
+245
+00:05:14,680 --> 00:05:16,870
+that's n heads tall grows at the rate of
+the buck hole's ordinal function which
+
+246
+00:05:16,870 --> 00:05:16,880
+the buck hole's ordinal function which
+ 
+
+247
+00:05:16,880 --> 00:05:19,990
+the buck hole's ordinal function which
+is a lot faster than the tree function
+
+248
+00:05:19,990 --> 00:05:20,000
+is a lot faster than the tree function
+ 
+
+249
+00:05:20,000 --> 00:05:22,029
+is a lot faster than the tree function
+there's a stack Overflow post by Pat
+
+250
+00:05:22,029 --> 00:05:22,039
+there's a stack Overflow post by Pat
+ 
+
+251
+00:05:22,039 --> 00:05:23,990
+there's a stack Overflow post by Pat
+kale that goes over the proofs and a lot
+
+252
+00:05:23,990 --> 00:05:24,000
+kale that goes over the proofs and a lot
+ 
+
+253
+00:05:24,000 --> 00:05:26,309
+kale that goes over the proofs and a lot
+more detail so I'll link that below
+
+254
+00:05:26,309 --> 00:05:26,319
+more detail so I'll link that below
+ 
+
+255
+00:05:26,319 --> 00:05:28,309
+more detail so I'll link that below
+because it's a really fun
+
+256
+00:05:28,309 --> 00:05:28,319
+because it's a really fun
+ 
+
+257
+00:05:28,319 --> 00:05:31,350
+because it's a really fun
+read okay now it's time to reveal what
+
+258
+00:05:31,350 --> 00:05:31,360
+read okay now it's time to reveal what
+ 
+
+259
+00:05:31,360 --> 00:05:34,469
+read okay now it's time to reveal what
+the newest largest number is this next
+
+260
+00:05:34,469 --> 00:05:34,479
+the newest largest number is this next
+ 
+
+261
+00:05:34,479 --> 00:05:38,309
+the newest largest number is this next
+number comes from bashu Matrix system or
+
+262
+00:05:38,309 --> 00:05:38,319
+number comes from bashu Matrix system or
+ 
+
+263
+00:05:38,319 --> 00:05:41,990
+number comes from bashu Matrix system or
+BMS this is a really powerful notation
+
+264
+00:05:41,990 --> 00:05:42,000
+BMS this is a really powerful notation
+ 
+
+265
+00:05:42,000 --> 00:05:44,029
+BMS this is a really powerful notation
+but it's also more difficult to explain
+
+266
+00:05:44,029 --> 00:05:44,039
+but it's also more difficult to explain
+ 
+
+267
+00:05:44,039 --> 00:05:46,350
+but it's also more difficult to explain
+and program because it has more rules
+
+268
+00:05:46,350 --> 00:05:46,360
+and program because it has more rules
+ 
+
+269
+00:05:46,360 --> 00:05:48,629
+and program because it has more rules
+for the reductions and that's why it
+
+270
+00:05:48,629 --> 00:05:48,639
+for the reductions and that's why it
+ 
+
+271
+00:05:48,639 --> 00:05:50,390
+for the reductions and that's why it
+took a while to translate to Binary
+
+272
+00:05:50,390 --> 00:05:50,400
+took a while to translate to Binary
+ 
+
+273
+00:05:50,400 --> 00:05:53,189
+took a while to translate to Binary
+Lambda calculus but by using a really
+
+274
+00:05:53,189 --> 00:05:53,199
+Lambda calculus but by using a really
+ 
+
+275
+00:05:53,199 --> 00:05:55,309
+Lambda calculus but by using a really
+clever data representation it was
+
+276
+00:05:55,309 --> 00:05:55,319
+clever data representation it was
+ 
+
+277
+00:05:55,319 --> 00:05:57,309
+clever data representation it was
+eventually finished by none other than
+
+278
+00:05:57,309 --> 00:05:57,319
+eventually finished by none other than
+ 
+
+279
+00:05:57,319 --> 00:05:59,830
+eventually finished by none other than
+the same Pat kale who managed to fit it
+
+280
+00:05:59,830 --> 00:05:59,840
+the same Pat kale who managed to fit it
+ 
+
+281
+00:05:59,840 --> 00:06:03,430
+the same Pat kale who managed to fit it
+in under 52 bytes of BLC which is even
+
+282
+00:06:03,430 --> 00:06:03,440
+in under 52 bytes of BLC which is even
+ 
+
+283
+00:06:03,440 --> 00:06:05,029
+in under 52 bytes of BLC which is even
+smaller than the buck holes ordinal
+
+284
+00:06:05,029 --> 00:06:05,039
+smaller than the buck holes ordinal
+ 
+
+285
+00:06:05,039 --> 00:06:06,670
+smaller than the buck holes ordinal
+function we came up with
+
+286
+00:06:06,670 --> 00:06:06,680
+function we came up with
+ 
+
+287
+00:06:06,680 --> 00:06:11,029
+function we came up with
+before so how fast does BMS grow well
+
+288
+00:06:11,029 --> 00:06:11,039
+before so how fast does BMS grow well
+ 
+
+289
+00:06:11,039 --> 00:06:13,029
+before so how fast does BMS grow well
+with a single row called A Primitive
+
+290
+00:06:13,029 --> 00:06:13,039
+with a single row called A Primitive
+ 
+
+291
+00:06:13,039 --> 00:06:15,070
+with a single row called A Primitive
+sequence system the function has a
+
+292
+00:06:15,070 --> 00:06:15,080
+sequence system the function has a
+ 
+
+293
+00:06:15,080 --> 00:06:18,510
+sequence system the function has a
+growth rate of Epsilon knot BMS with two
+
+294
+00:06:18,510 --> 00:06:18,520
+growth rate of Epsilon knot BMS with two
+ 
+
+295
+00:06:18,520 --> 00:06:21,230
+growth rate of Epsilon knot BMS with two
+rows is called a pair sequence system
+
+296
+00:06:21,230 --> 00:06:21,240
+rows is called a pair sequence system
+ 
+
+297
+00:06:21,240 --> 00:06:22,830
+rows is called a pair sequence system
+and the growth rate ordinal is
+
+298
+00:06:22,830 --> 00:06:22,840
+and the growth rate ordinal is
+ 
+
+299
+00:06:22,840 --> 00:06:24,510
+and the growth rate ordinal is
+equivalent to the buck holes ordinal
+
+300
+00:06:24,510 --> 00:06:24,520
+equivalent to the buck holes ordinal
+ 
+
+301
+00:06:24,520 --> 00:06:27,230
+equivalent to the buck holes ordinal
+where we left off last time what about
+
+302
+00:06:27,230 --> 00:06:27,240
+where we left off last time what about
+ 
+
+303
+00:06:27,240 --> 00:06:31,029
+where we left off last time what about
+three rows or four or or n
+
+304
+00:06:31,029 --> 00:06:31,039
+three rows or four or or n
+ 
+
+305
+00:06:31,039 --> 00:06:34,029
+three rows or four or or n
+rows well now we run into the issue of
+
+306
+00:06:34,029 --> 00:06:34,039
+rows well now we run into the issue of
+ 
+
+307
+00:06:34,039 --> 00:06:36,230
+rows well now we run into the issue of
+running out of standard ordinals for the
+
+308
+00:06:36,230 --> 00:06:36,240
+running out of standard ordinals for the
+ 
+
+309
+00:06:36,240 --> 00:06:38,830
+running out of standard ordinals for the
+notation so I'm going to switch to a
+
+310
+00:06:38,830 --> 00:06:38,840
+notation so I'm going to switch to a
+ 
+
+311
+00:06:38,840 --> 00:06:40,710
+notation so I'm going to switch to a
+different system to represent larger
+
+312
+00:06:40,710 --> 00:06:40,720
+different system to represent larger
+ 
+
+313
+00:06:40,720 --> 00:06:43,510
+different system to represent larger
+ordinals called proof theoretic ordinals
+
+314
+00:06:43,510 --> 00:06:43,520
+ordinals called proof theoretic ordinals
+ 
+
+315
+00:06:43,520 --> 00:06:44,430
+ordinals called proof theoretic ordinals
+or
+
+316
+00:06:44,430 --> 00:06:44,440
+or
+ 
+
+317
+00:06:44,440 --> 00:06:46,909
+or
+pto's I'm going to warn you now this is
+
+318
+00:06:46,909 --> 00:06:46,919
+pto's I'm going to warn you now this is
+ 
+
+319
+00:06:46,919 --> 00:06:48,589
+pto's I'm going to warn you now this is
+the part of the video where things start
+
+320
+00:06:48,589 --> 00:06:48,599
+the part of the video where things start
+ 
+
+321
+00:06:48,599 --> 00:06:51,589
+the part of the video where things start
+getting tricky to explain I had to do so
+
+322
+00:06:51,589 --> 00:06:51,599
+getting tricky to explain I had to do so
+ 
+
+323
+00:06:51,599 --> 00:06:53,830
+getting tricky to explain I had to do so
+much research to learn this stuff and I
+
+324
+00:06:53,830 --> 00:06:53,840
+much research to learn this stuff and I
+ 
+
+325
+00:06:53,840 --> 00:06:56,230
+much research to learn this stuff and I
+still barely understand a lot of it but
+
+326
+00:06:56,230 --> 00:06:56,240
+still barely understand a lot of it but
+ 
+
+327
+00:06:56,240 --> 00:06:59,629
+still barely understand a lot of it but
+bear with me it's worth it so let me
+
+328
+00:06:59,629 --> 00:06:59,639
+bear with me it's worth it so let me
+ 
+
+329
+00:06:59,639 --> 00:07:01,830
+bear with me it's worth it so let me
+explain what proof theoretic ordinals
+
+330
+00:07:01,830 --> 00:07:01,840
+explain what proof theoretic ordinals
+ 
+
+331
+00:07:01,840 --> 00:07:05,070
+explain what proof theoretic ordinals
+are whenever we prove theorems we use a
+
+332
+00:07:05,070 --> 00:07:05,080
+are whenever we prove theorems we use a
+ 
+
+333
+00:07:05,080 --> 00:07:07,950
+are whenever we prove theorems we use a
+system of axioms and rules for deduction
+
+334
+00:07:07,950 --> 00:07:07,960
+system of axioms and rules for deduction
+ 
+
+335
+00:07:07,960 --> 00:07:10,029
+system of axioms and rules for deduction
+and depending on which axioms we start
+
+336
+00:07:10,029 --> 00:07:10,039
+and depending on which axioms we start
+ 
+
+337
+00:07:10,039 --> 00:07:13,270
+and depending on which axioms we start
+with we can get different proof systems
+
+338
+00:07:13,270 --> 00:07:13,280
+with we can get different proof systems
+ 
+
+339
+00:07:13,280 --> 00:07:15,550
+with we can get different proof systems
+these proof systems each have different
+
+340
+00:07:15,550 --> 00:07:15,560
+these proof systems each have different
+ 
+
+341
+00:07:15,560 --> 00:07:18,589
+these proof systems each have different
+strengths which correspond directly to
+
+342
+00:07:18,589 --> 00:07:18,599
+strengths which correspond directly to
+ 
+
+343
+00:07:18,599 --> 00:07:20,790
+strengths which correspond directly to
+ordinals you can think of the proof
+
+344
+00:07:20,790 --> 00:07:20,800
+ordinals you can think of the proof
+ 
+
+345
+00:07:20,800 --> 00:07:23,110
+ordinals you can think of the proof
+theoretic ordinal as the limit for the
+
+346
+00:07:23,110 --> 00:07:23,120
+theoretic ordinal as the limit for the
+ 
+
+347
+00:07:23,120 --> 00:07:25,510
+theoretic ordinal as the limit for the
+largest level of recursion you can use
+
+348
+00:07:25,510 --> 00:07:25,520
+largest level of recursion you can use
+ 
+
+349
+00:07:25,520 --> 00:07:28,830
+largest level of recursion you can use
+to prove statements in that system so
+
+350
+00:07:28,830 --> 00:07:28,840
+to prove statements in that system so
+ 
+
+351
+00:07:28,840 --> 00:07:31,830
+to prove statements in that system so
+for example Pano arithmetic or first
+
+352
+00:07:31,830 --> 00:07:31,840
+for example Pano arithmetic or first
+ 
+
+353
+00:07:31,840 --> 00:07:34,430
+for example Pano arithmetic or first
+order arithmetic has the proof theoretic
+
+354
+00:07:34,430 --> 00:07:34,440
+order arithmetic has the proof theoretic
+ 
+
+355
+00:07:34,440 --> 00:07:38,110
+order arithmetic has the proof theoretic
+ordinal Epsilon KN the Buckle's ordinal
+
+356
+00:07:38,110 --> 00:07:38,120
+ordinal Epsilon KN the Buckle's ordinal
+ 
+
+357
+00:07:38,120 --> 00:07:39,550
+ordinal Epsilon KN the Buckle's ordinal
+happens to be the proof theoretic
+
+358
+00:07:39,550 --> 00:07:39,560
+happens to be the proof theoretic
+ 
+
+359
+00:07:39,560 --> 00:07:42,189
+happens to be the proof theoretic
+ordinal for this system which is a
+
+360
+00:07:42,189 --> 00:07:42,199
+ordinal for this system which is a
+ 
+
+361
+00:07:42,199 --> 00:07:44,550
+ordinal for this system which is a
+strong subset of second order
+
+362
+00:07:44,550 --> 00:07:44,560
+strong subset of second order
+ 
+
+363
+00:07:44,560 --> 00:07:47,670
+strong subset of second order
+arithmetic diagonalizing BMS is proven
+
+364
+00:07:47,670 --> 00:07:47,680
+arithmetic diagonalizing BMS is proven
+ 
+
+365
+00:07:47,680 --> 00:07:50,550
+arithmetic diagonalizing BMS is proven
+to be larger than that but less than or
+
+366
+00:07:50,550 --> 00:07:50,560
+to be larger than that but less than or
+ 
+
+367
+00:07:50,560 --> 00:07:53,790
+to be larger than that but less than or
+equal to full second order arithmetic so
+
+368
+00:07:53,790 --> 00:07:53,800
+equal to full second order arithmetic so
+ 
+
+369
+00:07:53,800 --> 00:07:55,869
+equal to full second order arithmetic so
+it's definitely a larger class of
+
+370
+00:07:55,869 --> 00:07:55,879
+it's definitely a larger class of
+ 
+
+371
+00:07:55,879 --> 00:07:59,029
+it's definitely a larger class of
+number but we're not done yet there's
+
+372
+00:07:59,029 --> 00:07:59,039
+number but we're not done yet there's
+ 
+
+373
+00:07:59,039 --> 00:08:01,430
+number but we're not done yet there's
+still an even larger number that was
+
+374
+00:08:01,430 --> 00:08:01,440
+still an even larger number that was
+ 
+
+375
+00:08:01,440 --> 00:08:04,070
+still an even larger number that was
+ported to Lambda calculus recently and
+
+376
+00:08:04,070 --> 00:08:04,080
+ported to Lambda calculus recently and
+ 
+
+377
+00:08:04,080 --> 00:08:06,990
+ported to Lambda calculus recently and
+that's loader's number you see second
+
+378
+00:08:06,990 --> 00:08:07,000
+that's loader's number you see second
+ 
+
+379
+00:08:07,000 --> 00:08:09,710
+that's loader's number you see second
+order arithmetic has the same PTO as
+
+380
+00:08:09,710 --> 00:08:09,720
+order arithmetic has the same PTO as
+ 
+
+381
+00:08:09,720 --> 00:08:13,149
+order arithmetic has the same PTO as
+system F which is the typed Lambda
+
+382
+00:08:13,149 --> 00:08:13,159
+system F which is the typed Lambda
+ 
+
+383
+00:08:13,159 --> 00:08:15,670
+system F which is the typed Lambda
+calculus and beyond that we have system
+
+384
+00:08:15,670 --> 00:08:15,680
+calculus and beyond that we have system
+ 
+
+385
+00:08:15,680 --> 00:08:18,670
+calculus and beyond that we have system
+F Omega where the types can have types
+
+386
+00:08:18,670 --> 00:08:18,680
+F Omega where the types can have types
+ 
+
+387
+00:08:18,680 --> 00:08:21,350
+F Omega where the types can have types
+recursively and after that is the more
+
+388
+00:08:21,350 --> 00:08:21,360
+recursively and after that is the more
+ 
+
+389
+00:08:21,360 --> 00:08:24,589
+recursively and after that is the more
+expressive calculus of constructions it
+
+390
+00:08:24,589 --> 00:08:24,599
+expressive calculus of constructions it
+ 
+
+391
+00:08:24,599 --> 00:08:27,070
+expressive calculus of constructions it
+has the really nice property of being
+
+392
+00:08:27,070 --> 00:08:27,080
+has the really nice property of being
+ 
+
+393
+00:08:27,080 --> 00:08:29,749
+has the really nice property of being
+strongly normalizing that means if you
+
+394
+00:08:29,749 --> 00:08:29,759
+strongly normalizing that means if you
+ 
+
+395
+00:08:29,759 --> 00:08:31,189
+strongly normalizing that means if you
+think of the proof system like a
+
+396
+00:08:31,189 --> 00:08:31,199
+think of the proof system like a
+ 
+
+397
+00:08:31,199 --> 00:08:33,949
+think of the proof system like a
+programming language all programs are
+
+398
+00:08:33,949 --> 00:08:33,959
+programming language all programs are
+ 
+
+399
+00:08:33,959 --> 00:08:36,469
+programming language all programs are
+guaranteed to terminate so we're
+
+400
+00:08:36,469 --> 00:08:36,479
+guaranteed to terminate so we're
+ 
+
+401
+00:08:36,479 --> 00:08:38,469
+guaranteed to terminate so we're
+actually able to iterate over all
+
+402
+00:08:38,469 --> 00:08:38,479
+actually able to iterate over all
+ 
+
+403
+00:08:38,479 --> 00:08:40,709
+actually able to iterate over all
+possible programs of a given length and
+
+404
+00:08:40,709 --> 00:08:40,719
+possible programs of a given length and
+ 
+
+405
+00:08:40,719 --> 00:08:43,029
+possible programs of a given length and
+add up their run times to get a truly
+
+406
+00:08:43,029 --> 00:08:43,039
+add up their run times to get a truly
+ 
+
+407
+00:08:43,039 --> 00:08:45,630
+add up their run times to get a truly
+massive number this isn't normally
+
+408
+00:08:45,630 --> 00:08:45,640
+massive number this isn't normally
+ 
+
+409
+00:08:45,640 --> 00:08:47,670
+massive number this isn't normally
+possible in regular Lambda calculus
+
+410
+00:08:47,670 --> 00:08:47,680
+possible in regular Lambda calculus
+ 
+
+411
+00:08:47,680 --> 00:08:49,550
+possible in regular Lambda calculus
+because of the halting problem which
+
+412
+00:08:49,550 --> 00:08:49,560
+because of the halting problem which
+ 
+
+413
+00:08:49,560 --> 00:08:52,750
+because of the halting problem which
+means programs can run forever and never
+
+414
+00:08:52,750 --> 00:08:52,760
+means programs can run forever and never
+ 
+
+415
+00:08:52,760 --> 00:08:55,750
+means programs can run forever and never
+terminate so how much space does loaders
+
+416
+00:08:55,750 --> 00:08:55,760
+terminate so how much space does loaders
+ 
+
+417
+00:08:55,760 --> 00:09:00,190
+terminate so how much space does loaders
+number take in BLC well John Trump no
+
+418
+00:09:00,190 --> 00:09:00,200
+number take in BLC well John Trump no
+ 
+
+419
+00:09:00,200 --> 00:09:03,110
+number take in BLC well John Trump no
+not that one was able to optimize it and
+
+420
+00:09:03,110 --> 00:09:03,120
+not that one was able to optimize it and
+ 
+
+421
+00:09:03,120 --> 00:09:05,190
+not that one was able to optimize it and
+create a number that exceeds loaders
+
+422
+00:09:05,190 --> 00:09:05,200
+create a number that exceeds loaders
+ 
+
+423
+00:09:05,200 --> 00:09:07,190
+create a number that exceeds loaders
+number in
+
+424
+00:09:07,190 --> 00:09:07,200
+number in
+ 
+
+425
+00:09:07,200 --> 00:09:11,069
+number in
+233 bytes which unfortunately doesn't
+
+426
+00:09:11,069 --> 00:09:11,079
+233 bytes which unfortunately doesn't
+ 
+
+427
+00:09:11,079 --> 00:09:12,790
+233 bytes which unfortunately doesn't
+fit into a text
+
+428
+00:09:12,790 --> 00:09:12,800
+fit into a text
+ 
+
+429
+00:09:12,800 --> 00:09:15,590
+fit into a text
+message but it does fit nicely into a
+
+430
+00:09:15,590 --> 00:09:15,600
+message but it does fit nicely into a
+ 
+
+431
+00:09:15,600 --> 00:09:18,310
+message but it does fit nicely into a
+tweet if you're using Unicode so that's
+
+432
+00:09:18,310 --> 00:09:18,320
+tweet if you're using Unicode so that's
+ 
+
+433
+00:09:18,320 --> 00:09:21,550
+tweet if you're using Unicode so that's
+still really cool and believe it or not
+
+434
+00:09:21,550 --> 00:09:21,560
+still really cool and believe it or not
+ 
+
+435
+00:09:21,560 --> 00:09:23,509
+still really cool and believe it or not
+that's the largest computable number
+
+436
+00:09:23,509 --> 00:09:23,519
+that's the largest computable number
+ 
+
+437
+00:09:23,519 --> 00:09:27,630
+that's the largest computable number
+class proven so far for real this time
+
+438
+00:09:27,630 --> 00:09:27,640
+class proven so far for real this time
+ 
+
+439
+00:09:27,640 --> 00:09:29,430
+class proven so far for real this time
+there are bigger proof theoretic
+
+440
+00:09:29,430 --> 00:09:29,440
+there are bigger proof theoretic
+ 
+
+441
+00:09:29,440 --> 00:09:33,269
+there are bigger proof theoretic
+ordinals for systems like zfc and some
+
+442
+00:09:33,269 --> 00:09:33,279
+ordinals for systems like zfc and some
+ 
+
+443
+00:09:33,279 --> 00:09:35,350
+ordinals for systems like zfc and some
+fast growing functions like greedy click
+
+444
+00:09:35,350 --> 00:09:35,360
+fast growing functions like greedy click
+ 
+
+445
+00:09:35,360 --> 00:09:37,150
+fast growing functions like greedy click
+sequences are claimed to reach that
+
+446
+00:09:37,150 --> 00:09:37,160
+sequences are claimed to reach that
+ 
+
+447
+00:09:37,160 --> 00:09:39,389
+sequences are claimed to reach that
+growth but none of these have been
+
+448
+00:09:39,389 --> 00:09:39,399
+growth but none of these have been
+ 
+
+449
+00:09:39,399 --> 00:09:42,670
+growth but none of these have been
+rigorously proven yet so it looks like
+
+450
+00:09:42,670 --> 00:09:42,680
+rigorously proven yet so it looks like
+ 
+
+451
+00:09:42,680 --> 00:09:45,110
+rigorously proven yet so it looks like
+we're at the end of our journey for now
+
+452
+00:09:45,110 --> 00:09:45,120
+we're at the end of our journey for now
+ 
+
+453
+00:09:45,120 --> 00:09:46,710
+we're at the end of our journey for now
+that's the largest number class that's
+
+454
+00:09:46,710 --> 00:09:46,720
+that's the largest number class that's
+ 
+
+455
+00:09:46,720 --> 00:09:49,230
+that's the largest number class that's
+proven so far regardless of size
+
+456
+00:09:49,230 --> 00:09:49,240
+proven so far regardless of size
+ 
+
+457
+00:09:49,240 --> 00:09:51,470
+proven so far regardless of size
+limitations at least until there's some
+
+458
+00:09:51,470 --> 00:09:51,480
+limitations at least until there's some
+ 
+
+459
+00:09:51,480 --> 00:09:54,310
+limitations at least until there's some
+new breakthrough I hope this is a much
+
+460
+00:09:54,310 --> 00:09:54,320
+new breakthrough I hope this is a much
+ 
+
+461
+00:09:54,320 --> 00:09:57,269
+new breakthrough I hope this is a much
+more satisfying answer huge thanks to
+
+462
+00:09:57,269 --> 00:09:57,279
+more satisfying answer huge thanks to
+ 
+
+463
+00:09:57,279 --> 00:09:59,430
+more satisfying answer huge thanks to
+the googology community for helping me
+
+464
+00:09:59,430 --> 00:09:59,440
+the googology community for helping me
+ 
+
+465
+00:09:59,440 --> 00:10:01,990
+the googology community for helping me
+research this topic and thanks for
+
+466
+00:10:01,990 --> 00:10:02,000
+research this topic and thanks for
+ 
+
+467
+00:10:02,000 --> 00:10:05,000
+research this topic and thanks for
+watching
+
