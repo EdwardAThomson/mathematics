@@ -87,14 +87,16 @@ machinery), so this sidesteps Tarski's undefinability barrier entirely.
   argument on paper — and catches a real bug: naming costs `O(n)` symbols,
   not a fixed constant, so the fix is to pre-inflate the target function to
   `f(n²)` before naming it (squaring avoids re-introducing a costly numeral
-  — the "safe route" `LAPTOP-HANDOFF.md` documents precisely). Mechanically:
-  the witness-existence core (`provablyTotal_names`) is sorry-free, and
-  `BoolosBig_PA` now exists as a real, monotone `ℕ → ℕ` function
-  (`RayoBoolos/BoolosBig.lean`) with the `O(n)` numeral bound proved. One
-  bridging lemma (`fSize` under substitution, a `Foundation` `Rewriting`-API
-  technicality) is still open as of this writing — the math is fully
-  worked out either way; **paper-verified in full, mechanized down to one
-  remaining lemma.**
+  — the "safe route" `LAPTOP-HANDOFF.md` documents precisely). **Fully
+  mechanized, sorry-free**: `BoolosBig_PA` exists as a real, monotone
+  `ℕ → ℕ` function (`RayoBoolos/BoolosBig.lean`), and
+  `BoolosBig_PA_dominates` proves the literal target —
+  `∃ N, ∀ m > N, BoolosBig_PA m ≥ f m` for every PA-provably-total,
+  monotone `f` — via the `n²` pre-inflation (`graphSq`, proved to add only
+  `O(1)` overhead, no numeral) composed with the `O(n)` numeral bound and
+  `Nat.sqrt`. `#print axioms` on every theorem in the chain shows only
+  `[propext, Classical.choice, Quot.sound]`, the project's standard bar for
+  Foundation-based work.
 
 ### The Rayo fork — truth, MK-strength (`RAYO-RIGOR-PLAN.md`)
 
@@ -134,15 +136,18 @@ smooth dial you can turn partway.
 
 ## Open threads, as of this writing
 
-1. **One Lean lemma** stands between Boolos B3's paper-verified argument and
-   a fully mechanized one (`fSize` under substitution — a `Foundation` API
-   technicality, third round of attempts; the math itself is settled).
+1. **The Boolos fork is done** — B0, B1, and B3 (`BoolosBig_PA_dominates`)
+   are all mechanized, sorry-free, matching the project's standard axiom
+   bar. Took three rounds to close the last bridging lemma (`fSize` under
+   substitution); the eventual fix was a `Foundation` API mismatch between
+   two notations for the same connectives, not a real mathematical
+   obstacle.
 2. **The successor-chain naming check** (`LAPTOP-HANDOFF.md` Task 2) — is
    minimal FOST naming actually `O(k)`, not `~3^k`? Self-contained, no
    Mathlib, ready to run.
-3. **Whether the Mathlib/`Foundation` dependency is worth keeping** — Task 1
-   needs it, Task 2 doesn't; the paper-verified B3 already stands on its own
-   either way (`LAPTOP-HANDOFF.md` Task 3, an operator call).
+3. **The Mathlib/`Foundation` dependency paid off** — it delivered the full
+   B3 proof, so `LAPTOP-HANDOFF.md` Task 3's question is settled in favor
+   of keeping it. Task 2 (below) doesn't need it regardless.
 4. **Rayo's growth-rate result is paper-only** — no Lean session has had
    toolchain access at the same time as attempting it yet.
 
