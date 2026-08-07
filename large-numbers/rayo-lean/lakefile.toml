@@ -7,4 +7,4 @@ defaultTargets = ["Rayo"]
 
 [[lean_lib]]
 name = "Rayo"
-globs = ["Rayo", "Rayo.Syntax", "Rayo.Satisfaction", "Rayo.K0"]
+globs = ["Rayo.Syntax", "Rayo.Satisfaction", "Rayo.K0", "Rayo.K1", "Rayo.K2", "Rayo.K3", "Rayo.K4", "Rayo.K5", "Rayo.K6", "Rayo.Encoding"]
