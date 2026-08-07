@@ -195,8 +195,27 @@ stated atom cost. Generalizing the same `n + 1` rule to a unary reference
 site) gives `1 + 1 = 2`. This is the cost charged **at every call site**;
 the referenced definition's own body is priced once, separately (see
 `Program.cost` below) — that separation is exactly the point of the
-mechanism this file builds. -/
+mechanism this file builds.
+
+**`∃` is recognized and priced as the convention's primitive, not as its
+mechanization.** `Formula'` (like `Formula`) has no dedicated existential
+constructor: `∃v(φ)` is represented, throughout this whole project
+(`K1.lean`'s header comment: "`∃` is a convention primitive... represented
+by the standard `¬∀¬` expansion... a representation choice for the
+mechanization only and does not change the convention symbol count"), by
+`.neg (.all v (.neg φ))`. `convention-notes.md` §2/§4 counts `∃` at the same
+cost as `∀` — `|φ|+4` — because it is a primitive of the counting
+convention, *not* by literally costing the three extra AST nodes
+(`neg`,`all`,`neg`) its `¬∀¬` mechanization happens to use. `costF'`
+therefore special-cases exactly this shape before falling through to the
+generic `neg` rule, so that a mechanized `∃v(φ)` is priced `|φ|+4` (matching
+every hand-derived `n_k` in `K0.lean`-`K6.lean`, all of which use this same
+convention-level rule for their own `∃`s), not `|φ|+10` (`neg`+`all`+`neg`
+composed naively). This is not a new convention choice — it is what
+`convention-notes.md` already specifies; a naive AST walk that skipped this
+case would silently *break* the stated convention rather than implement it. -/
 def costF' : Formula' → Nat
+  | .neg (.all _ (.neg f)) => costF' f + 4
   | .mem _ _  => 3
   | .eq _ _   => 3
   | .neg f    => costF' f + 3
