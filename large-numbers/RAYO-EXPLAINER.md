@@ -110,14 +110,21 @@ axiom list checked to depend only on standard, well-understood axioms, never
 `sorryAx` (an unproved gap). Correction, caught while building the
 successor-chain cross-check below: `K0.lean` and `K1.lean`'s proofs really are
 `[propext, Quot.sound]`-only, but `K2.lean`-`K6.lean` already use
-`Classical.em` (to extract a witness from the `¬∀¬`-encoded `∃`, e.g.
-`K2.lean`'s `exists_member_iff`), so their actual `#print axioms` is
+`Classical.em`, so their actual `#print axioms` is
 `[propext, Classical.choice, Quot.sound]` — `Classical.choice` included. This
 was previously mis-stated here as "never `Classical.choice`" for all seven;
 that was wrong for k ≥ 2 and is corrected now rather than left standing.
-`K6Chain.lean` (below) uses the same, already-established pattern for the same
-reason, so it carries the same axiom list as `K2.lean`-`K6.lean`, not the
-stricter `K0.lean`/`K1.lean` one.
+Confirmed by `#print axioms`, not just inspection: the imported k=0/k=1
+sub-lemmas `zF_iff`/`oneF_iff` stay `[propext, Quot.sound]`-only;
+`Classical.choice` first enters at `K2.lean:183` (`satE0_iff`,
+`rcases Classical.em (∃ a, a ∈ (e 0).elems ∧ IsZero a) with hex | hex`, to
+extract a witness from the `¬∀¬`-encoded `∃`), repeats at `K2.lean:209,241,243`,
+and the same two patterns (`Classical.em (∃ …)` for witness extraction,
+`Classical.em (IsK m)` for member classification) recur throughout
+`K3.lean`-`K6.lean` (full line list in `K6Chain.lean`'s "axiom discipline
+note"). `K6Chain.lean` (below) uses the same, already-established pattern for
+the same reason, so it carries the same axiom list as `K2.lean`-`K6.lean`, not
+the stricter `K0.lean`/`K1.lean` one.
 
 | k | n_k (symbols) | ratio to k-1 | Lean file |
 |---|---|---|---|
@@ -247,14 +254,21 @@ replacement.
 
 Both counts (11,128 and 388) are hand-derivations, cross-checked in
 `K6Chain.lean` against an automated Lean-AST symbol counter that agrees on 388
-and also exactly reproduces `K0.lean`/`K1.lean`'s `n_0 = 10`, `n_1 = 30` — but
-does *not* reproduce `K2.lean`-`K6.lean`'s documented 128/403/1228/3703/11128
-(it gives 122/385/1174/3541/10642 instead, a gap that itself compounds ~3× per
-level). That is a separate, pre-existing discrepancy in the K2-K6 headers'
-hand-counts, caught as a side effect of building this cross-check, not
-something this note resolves — flagged honestly and left open; either way the
-qualitative finding (successor chains are dramatically cheaper) holds under
-both the documented and the recounted K6 figure (28.7× or 27.4× respectively).
+and also exactly reproduces `K0.lean`/`K1.lean`'s `n_0 = 10`, `n_1 = 30`. A
+first pass of that counter did *not* reproduce `K2.lean`-`K6.lean`'s documented
+128/403/1228/3703/11128 (122/385/1174/3541/10642 instead) — traced to ground
+(full account in `K6Chain.lean`'s "Cross-check" note) and resolved, not left
+open: the gap is a known ambiguity in the `¬∀¬`-for-`∃` encoding (the same bit
+pattern is used both for a deliberate `∃` and, incidentally, whenever an
+already-`∀`-shaped named sub-formula like `zF` gets separately negated in an
+exclusion clause — indistinguishable by syntax alone, so a naive automated
+counter guesses wrong on the latter). A full manual re-derivation of `K2.lean`'s
+actual compiled `phi2` term, reading each occurrence from context rather than
+by shape, reproduces the documented 128 exactly at every intermediate value.
+**Judgment: the documented K2.lean-K6.lean counts are correct**; this file's
+own 388 is unaffected either way, since `phi6chain` contains no instance of
+that ambiguous pattern (its only `¬∀¬` occurrences are six deliberately-tagged
+`∃` wrappers, confirmed by direct inspection of its defining equations).
 
 `n_6 = O(k)` was genuinely open before this (`RAYO-GROWTH-RATE.md` §2 called it
 "flagged here, not resolved"); it is resolved now, for k = 6, in the

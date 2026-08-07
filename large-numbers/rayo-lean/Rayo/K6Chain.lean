@@ -75,26 +75,44 @@ upper bound on the minimal cost of *this specific* successor-chain construction,
 not a claim that 388 is the global minimum n_6 (`METHODOLOGY.md` C1) — but it
 is a real, exhibited, mechanically-verified construction far cheaper than the
 `K0.lean`-`K6.lean` table's `~3^k` strategy, confirming the K0-K6 numbers were
-
-**Cross-check.** The 388 count above (hand-derivation, same method as every
-`K0.lean`-`K6.lean` header) was cross-checked against an independent automated
-symbol-counter written directly over the `Formula` AST (implementing the same
-atom=3/¬=+3/∧=+3/quantifier=+4 rules, with the `¬∀¬`-as-`∃` pattern recognised
-and charged as the primitive `+4`, not its raw 3-level expansion). The
-automated counter agrees exactly: **388**. It also exactly reproduces `K0.lean`
-and `K1.lean`'s documented `n_0 = 10`, `n_1 = 30`. It does *not* reproduce
-`K2.lean`-`K6.lean`'s documented `n_2..n_6` (it gives 122, 385, 1174, 3541,
-10642 against the documented 128, 403, 1228, 3703, 11128 — a gap that itself
-compounds by ~3× per level, starting at exactly +6 at k=2, suggestively the
-same "`∃` overcounted by 6" signature `REUSE-COMPRESSION-REPORT.md` already
-found and fixed once before, elsewhere). That is a pre-existing discrepancy in
-`K2.lean`-`K6.lean`'s own hand-counted headers, not something this file
-introduces or can resolve from here — flagged honestly, out of this task's
-scope, and left for whoever next touches those files. It does not affect this
-file's own 388 (independently hand- and machine-counted, and unlike K2-K6 the
-successor-chain formula has no separate hand-derivation to disagree with).
 never minimal (as `RAYO-EXPLAINER.md` already said) and that the gap is large,
 not marginal.
+
+**Cross-check, and a resolved discrepancy in K2.lean-K6.lean's own headers.**
+The 388 count above was cross-checked against an independent automated
+symbol-counter over the `Formula` AST. It agrees on 388, and exactly reproduces
+`K0.lean`/`K1.lean`'s documented `n_0 = 10`, `n_1 = 30`. It initially did *not*
+reproduce `K2.lean`-`K6.lean`'s documented 128/403/1228/3703/11128 (it gave
+122/385/1174/3541/10642 instead). Traced to ground: the gap is **not** an error
+in the documented K2-K6 numbers. It is an unavoidable ambiguity in a *naive*
+automated counter's naive treatment of the `¬∀¬`-for-`∃` encoding.
+`¬(.all n (.neg φ))` is used for two different things in this codebase: (1)
+the deliberate encoding of a primitive `∃` (cost `|φ|+4`, per `K1.lean`'s own
+header note), and (2) the *incidental* same bit-pattern that results whenever
+an already-`∀`-shaped named sub-formula (e.g. `zF`, "is empty") is separately
+negated, as `K2.lean`-`K6.lean`'s exclusion clauses do (`¬φ₀(c)`, `¬φ₁(c)`,
+…) — which is a plain negation (cost `|zF|+3`), not an `∃`, despite sharing
+the identical AST shape. A syntax-only counter cannot tell these apart without
+external knowledge of which occurrences the author intended as `∃`; a first
+automated pass collapsed *both* readings to the `∃` discount, silently
+undercounting every `¬φᵢ(c)` exclusion-clause occurrence by exactly 6 symbols
+(the "`∃` overcounted by 6" signature `REUSE-COMPRESSION-REPORT.md` already
+found and fixed once before, elsewhere) — and this undercount then compounds
+by ~3× per level exactly because `K3.lean`-`K6.lean` each embed fresh copies of
+every earlier `¬φᵢ(c)` clause. A full manual re-derivation of `K2.lean`'s
+literal, compiled `phi2` term (not just re-trusting the header's own arithmetic
+— walking the actual `.neg`/`.all`/`.conj`/`.mem` AST node by node, correctly
+reading each `¬∀¬` occurrence as `∃` or as plain negation from *context*)
+reproduces the header's stated 128 exactly, at every intermediate value
+(`¬φ₀=13`, `¬φ₁=33`, `U=62`, …). **Judgment: the documented K2.lean-K6.lean
+counts (128/403/1228/3703/11128) are correct**; the discrepancy was in the
+naive automated counter, not in those files. This does not touch this file's
+own 388: `phi6chain` contains exactly one place where `¬∀¬` occurs — the six
+deliberate `ex` (`∃`) wrappers, built via a single dedicated helper for exactly
+that purpose — and, confirmed by direct inspection of `isEmptyAt`/`isSuccAt`'s
+defining equations above, no other `.neg` anywhere in this file wraps an
+`.all`-topped sub-formula, so the ambiguity that affected `K2.lean`-`K6.lean`'s
+exclusion clauses structurally cannot arise here.
 
 ## Extensionality (same subtlety as `K1.lean`-`K6.lean`)
 
@@ -112,10 +130,27 @@ task's own requirement, not just an informal resemblance.
 
 ## Axiom discipline note
 
-`K2.lean`-`K6.lean` already use `Classical.em` (e.g. `K2.lean`'s
-`exists_member_iff`, to extract a witness from the `¬∀¬`-encoded `∃`), so their
-own `#print axioms` output is `[propext, Classical.choice, Quot.sound]`, not
-the `[propext, Quot.sound]`-only bar the project's docs state. This file uses
+`K2.lean`-`K6.lean` already use `Classical.em`, so their own `#print axioms`
+output is `[propext, Classical.choice, Quot.sound]`, not the
+`[propext, Quot.sound]`-only bar the project's docs previously (incorrectly)
+stated for all seven files — corrected in `RAYO-EXPLAINER.md`. Exact entry
+point, confirmed by `#print axioms`, not just inspection: `Rayo.zF_iff` and
+`Rayo.oneF_iff` (the imported k=0/k=1 sub-predicate lemmas K2.lean reuses) are
+still `[propext, Quot.sound]`-only; `Classical.choice` first enters at
+`K2.lean:183`, inside `satE0_iff`
+(`rcases Classical.em (∃ a, a ∈ (e 0).elems ∧ IsZero a) with hex | hex`, used
+to extract a witness from the `¬∀¬`-encoded `∃`), and again at `K2.lean:209`
+(`satE1_iff`) and `K2.lean:241,243` (`satU_iff`, classifying a member as
+`IsZero`/`IsOne`); it then propagates into `phi2_iff` (which `rw`s in all
+three) and `phi2_unique`. The identical two patterns — `Classical.em (∃ …)` to
+extract an existential witness, and `Classical.em (IsK m)` to classify a
+member — repeat at `K3.lean:115,196,198,285,287,289`;
+`K4.lean:181,183,185,303,305,307,309`;
+`K5.lean:182,184,186,288,290,292,294,431,433,435,437,439`; and
+`K6.lean:224,226,228,230,232,390,392,394,396,398,400`. (`Classical.em` itself
+depends on `Classical.choice` in Lean 4 core — confirmed here directly via
+`#print axioms Classical.em` — the standard Diaconescu-style derivation from
+choice + `propext` + quotients, not a project-specific quirk.) This file uses
 the same, already-established pattern (a single generic `sat_ex` lemma, proved
 via `Classical.em`) for the same reason — extracting a witness from `¬∀¬` is
 not derivable constructively without a decidability instance on the witness
