@@ -99,6 +99,19 @@ sound stronger theory `T` (`V ⊨ T`), every `T`-provably-total function too.
 > `~3ᵏ` growth is worth a dedicated look — flagged here, not resolved, and not
 > load-bearing for this note (any `O(k)`-or-below bound makes the domination go
 > through).
+>
+> **Update: now checked, at k = 6.** `rayo-lean/Rayo/K6Chain.lean` mechanizes
+> exactly the successor-chain formula sketched above for k = 6, proves it names
+> 6 (sorry-free, same `Formula`/`Sat` machinery and correctness-statement shape
+> as `K6.lean`'s own `phi6_names_six`), and counts it under the project's frozen
+> symbol convention: **388** symbols, against `K6.lean`'s enumerate-predecessors
+> `n_6 = 11,128` — about **28.7× shorter**, in the low-hundreds range this
+> note's `O(k)` prediction called for, not the low thousands. Detail and the
+> full derivation are in `RAYO-EXPLAINER.md`'s "Is enumerate-predecessors the
+> cheapest strategy?" section and `K6Chain.lean`'s header. This confirms `n_6`
+> (and, by the same construction scaled to any `k`, `n_k`) is `O(k)` or below;
+> whether it is the *true minimum* (versus, say, an `O(log k)` construction) is
+> still open.
 
 ---
 

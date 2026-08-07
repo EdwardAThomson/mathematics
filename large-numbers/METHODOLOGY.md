@@ -239,6 +239,18 @@ the estimate; it would never invalidate the ordering unless the gap between
 two rows is smaller than the slack in the bounds, which Phase 4 must check
 before reading any monotonicity into the table.
 
+The same principle applies one level down, within a single row: the n_k
+first-order-symbol counts in `rayo-lean/Rayo/K0.lean`-`K6.lean`
+(`RAYO-EXPLAINER.md`'s table) are upper bounds on the cost of naming k under
+one specific strategy (enumerate-predecessors), never claimed minimal, and the
+gap between "an exhibited upper bound" and "the cheapest known strategy" is not
+always small: `rayo-lean/Rayo/K6Chain.lean` exhibits a second, mechanically
+verified construction for k = 6 (a successor chain) at 388 symbols against
+enumerate-predecessors' 11,128 — about 28.7× cheaper, not a marginal
+improvement. Both numbers stand, correctly labelled: K6.lean's 11,128 is the
+enumerate-predecessors upper bound, K6Chain.lean's 388 is a tighter one; neither
+is asserted to be the true minimum n_6.
+
 ## 4. The arbitrary / definitional choices, flagged
 
 Everything in this list is a definitional choice, not a fact about the

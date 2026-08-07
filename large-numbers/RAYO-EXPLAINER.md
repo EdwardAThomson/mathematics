@@ -9,7 +9,9 @@ numbers 0 through 6 — and how many symbols it costs just to state the rules
 of the game in the first place. Full technical record: `FINDINGS.md`
 (k=0-3, from the original run) and `rayo-notes/` + `rayo-lean/` (k=4-6 and
 the aggregated table, from the follow-up run this note describes). Lean
-source for every proof: `rayo-lean/Rayo/K0.lean` through `K6.lean`.
+source for every proof: `rayo-lean/Rayo/K0.lean` through `K6.lean`, plus a
+cheaper alternative construction for k=6, `K6Chain.lean` (see "Is
+enumerate-predecessors the cheapest strategy?" below).
 
 ## The game
 
@@ -104,9 +106,18 @@ clause (U) is usually the single most expensive part.
 ## The full table
 
 All seven proved end-to-end in Lean 4, with **no shortcuts**: every proof's
-axiom list checked to depend only on `propext` and `Quot.sound` (ordinary
-logical bookkeeping) — never `sorryAx` (an unproved gap) or
-`Classical.choice` (a nonconstructive escape hatch).
+axiom list checked to depend only on standard, well-understood axioms, never
+`sorryAx` (an unproved gap). Correction, caught while building the
+successor-chain cross-check below: `K0.lean` and `K1.lean`'s proofs really are
+`[propext, Quot.sound]`-only, but `K2.lean`-`K6.lean` already use
+`Classical.em` (to extract a witness from the `¬∀¬`-encoded `∃`, e.g.
+`K2.lean`'s `exists_member_iff`), so their actual `#print axioms` is
+`[propext, Classical.choice, Quot.sound]` — `Classical.choice` included. This
+was previously mis-stated here as "never `Classical.choice`" for all seven;
+that was wrong for k ≥ 2 and is corrected now rather than left standing.
+`K6Chain.lean` (below) uses the same, already-established pattern for the same
+reason, so it carries the same axiom list as `K2.lean`-`K6.lean`, not the
+stricter `K0.lean`/`K1.lean` one.
 
 | k | n_k (symbols) | ratio to k-1 | Lean file |
 |---|---|---|---|
@@ -199,6 +210,56 @@ was caught and fixed along the way: existentials are encoded internally as
 `¬∀¬` with no dedicated symbol, and a first pass at the cost function
 overcounted every `∃` by 6 symbols before being corrected to match
 `convention-notes.md`'s stated convention.
+
+## Is enumerate-predecessors the cheapest strategy? No — a successor chain is ~29× cheaper
+
+The whole K0-K6 table above uses one specific strategy: name `k` by writing
+"x's members are exactly 0, 1, ..., k-1", re-deriving all of 0 through k-1
+from scratch inside every φ_k. `RAYO-GROWTH-RATE.md` §2 flagged, but did not
+check, an obvious alternative: a **successor chain** — assert `x` is the
+result of six applications of "successor" (`w ↦ w ∪ {w}`) starting from the
+empty set, reusing one fixed "is empty" / "is successor of" building block at
+each step instead of re-deriving everything. That predicts `O(k)` growth, not
+`enumerate-predecessors`'s `~3^k`.
+
+This is now checked, mechanically, for k = 6, in `rayo-lean/Rayo/K6Chain.lean`
+— same `Formula`/`Sat` machinery, same discipline (no `sorry`; `#print axioms`
+→ `[propext, Classical.choice, Quot.sound]`, matching `K2.lean`-`K6.lean`'s own
+*actual* axiom list, not the stricter `K0.lean`/`K1.lean` bar — see that file's
+"axiom discipline note"), same correctness statement shape as `K6.lean`'s own
+`phi6_names_six` (membership classification up to extensional equality, reusing
+`K6.lean`'s `IsZero`-`IsFive` and `ClassEq6` verbatim).
+
+| | n_6 | strategy |
+|---|---|---|
+| `K6.lean` (`phi6`) | 11,128 | enumerate-predecessors |
+| `K6Chain.lean` (`phi6chain`) | **388** | successor chain |
+
+**About 28.7× shorter**, and in the "low hundreds" range the `O(k)` prediction
+called for — not a marginal improvement. This confirms two things at once:
+the K0-K6 table's numbers were always correctly labelled *upper bounds*, never
+claimed minimal (as this document already said above), and the gap between
+"an upper bound" and "the cheapest known strategy" is large here, not a rounding
+error. **The K0-K6 numbers are unchanged and still valid** as the exhibited
+cost of the enumerate-predecessors strategy specifically — `K6Chain.lean` is a
+second, cheaper, independently-verified construction alongside them, not a
+replacement.
+
+Both counts (11,128 and 388) are hand-derivations, cross-checked in
+`K6Chain.lean` against an automated Lean-AST symbol counter that agrees on 388
+and also exactly reproduces `K0.lean`/`K1.lean`'s `n_0 = 10`, `n_1 = 30` — but
+does *not* reproduce `K2.lean`-`K6.lean`'s documented 128/403/1228/3703/11128
+(it gives 122/385/1174/3541/10642 instead, a gap that itself compounds ~3× per
+level). That is a separate, pre-existing discrepancy in the K2-K6 headers'
+hand-counts, caught as a side effect of building this cross-check, not
+something this note resolves — flagged honestly and left open; either way the
+qualitative finding (successor chains are dramatically cheaper) holds under
+both the documented and the recounted K6 figure (28.7× or 27.4× respectively).
+
+`n_6 = O(k)` was genuinely open before this (`RAYO-GROWTH-RATE.md` §2 called it
+"flagged here, not resolved"); it is resolved now, for k = 6, in the
+`O(k)`-confirming direction the growth-rate note's own back-of-envelope
+argument predicted.
 
 ## Does the growth rate speed up eventually?
 
