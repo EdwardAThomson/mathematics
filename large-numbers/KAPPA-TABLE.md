@@ -140,6 +140,17 @@ self-interpreter of Row 2, i.e. at least several hundred BLC bits. Growth is
 uncomputable and dominates every function whose totality the theory proves
 (`BN-function.md` Section 7).
 
+**R0 refinement (`RAYO-R0-WELLDEFINEDNESS.md`).** The "second-order satisfaction
+predicate" above is not just a bigger interpreter — R0 shows it is a truth
+predicate for the *whole universe V*, whose very existence is an **MK-strength**
+set-theoretic commitment (impredicative comprehension; `Con(ZFC)`-grade), which
+Tarski's theorem forbids at first order. So this row's real cost is
+under-described by any BLC-bit interpreter figure: it is not the length of an
+evaluator but the *strength of a metatheory*, a different axis. See "The
+diagonalization family: a second axis" below, where this row is paired against
+the Boolos/PA row that reaches `ε₀`-class growth from a merely first-order,
+PA-strength commitment.
+
 ## What the column does and does not support
 
 Ordering (robust up to the C1/C6 slack, small n seed included in the anchors):
@@ -163,3 +174,55 @@ proof-theoretic ordinal. Whether that gradient is a "compactness law" or just
 the sequence the googology community happened to formalize is the Phase 4
 question (`BN-function.md` Section 8); six points, three of them estimates and
 one infeasible, is a sketch, not a theorem.
+
+## The diagonalization family: a second axis (proof-theoretic commitment)
+
+Added after the B0/B1/B3 (Boolos fork) and R0 (Rayo fork) work — see
+`BOOLOS-B0-WELLDEFINEDNESS.md`, `BOOLOS-B3-PAPER-VERIFICATION.md`,
+`rayo-lean-boolos/BOOLOS-B1-B3-REPORT.md`, and `RAYO-R0-WELLDEFINEDNESS.md`.
+
+**Unit warning.** The rows below are **not** BLC-bit measurements and do not
+belong in the table above; merging them would be a category error, the same one
+`RAYO-EXPLAINER.md` already flags for its 90-line Lean κ artifact. Their natural
+unit is the **proof-theoretic strength of the metatheory a system's naming
+predicate requires** — a different axis from BLC interpreter length. They are
+recorded here because that axis turns out to be the one that moves within the
+self-reference/diagonalization family, and it speaks directly to the Phase 4
+question.
+
+Both systems define naming by *diagonalization/self-reference over a
+satisfaction-or-provability predicate*, not by ordinal notation or raw TM/BLC
+power. What separates them is **which predicate, and how strong a background it
+needs to exist**:
+
+| R (diagonalization family) | naming predicate | metatheory it requires | growth of BN(R,·) | status |
+|---|---|---|---|---|
+| PA + provable-naming (Boolos) | `Prov_PA(⌜∀x(φ↔x=k̄)⌝)` — **first-order expressible** (Σ₁), Tarski-safe | just **PA-strength** (consistency of PA + an arithmetized proof predicate) | eventually dominates every PA-provably-total function, i.e. FGH `≈ ε₀` (PTO of PA) | B0 well-def. proved (paper) + Lean core; B1 `TNames` Lean-verified; **B3 domination paper-verified** (`BOOLOS-B3-PAPER-VERIFICATION.md`), mechanization open |
+| FO set theory (Rayo) | truth-naming via `Sat` — **not** first-order expressible (Tarski) | **MK-strength**: an impredicative second-order background / a truth predicate for V (`Con(ZFC)`-grade) | uncomputable; dominates every function whose totality the theory proves | R0 verdict (paper): well-defined **only** relative to that commitment; trivializes without it |
+
+**What this adds to Phase 4.** The table above found a κ-buys-growth gradient
+only among the *ordinal-notation* rows (BMS < BMS < System F/CoC) and flagged it
+as possibly just selection bias. The diagonalization family gives an
+**independent** data point on the *same* underlying question, and it points the
+same way: to climb from `ε₀`-class growth (Boolos/PA) to Rayo-class growth
+(dominates everything a set theory can prove total) you must climb from a
+**first-order, PA-strength** commitment (an arithmetized provability predicate,
+which Tarski permits) to an **MK-strength** commitment (a truth predicate for the
+whole universe, which Tarski forbids at first order). That is a genuine,
+qualitative increase in specification strength tracking a genuine increase in
+growth — a κ-buys-growth step that is *not* one of the googology-ladder systems,
+so it is **not** the same selection-bias confound as the ordinal rows.
+
+Two cautions keep this honest, both already standing project rules. **(i)** It is
+still only two points, and the axis (proof-theoretic strength of the required
+metatheory) is not commensurable with the BLC-bit column — so this supports the
+*existence* of a commitment-buys-growth gradient in the diagonalization family,
+not a unified law across both axes. **(ii)** The Tarski boundary between the two
+rows (first-order provability is internal, truth-in-V is not) is a **sharp
+qualitative jump**, not a smooth dial — which cuts against, not for, any smooth
+"compactness law": it is a second instance (after the Turing-complete rows'
+step-to-uncomputable) of growth increasing by a *discrete jump in kind* rather
+than a graded price. The overall Phase 4 read is unchanged and slightly
+reinforced: **no single smooth law; growth moves in qualitative steps (internal
+provability → truth-for-V; computable → uncomputable), with a genuine but
+step-shaped commitment-vs-growth gradient inside each family.**
