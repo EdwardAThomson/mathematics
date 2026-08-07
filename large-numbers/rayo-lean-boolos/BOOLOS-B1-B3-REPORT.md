@@ -371,3 +371,99 @@ whether signing succeeded this time or the same failure recurred — if it
 recurred, this session followed the same rule (no `commit.gpgsign false`,
 no `--no-gpg-sign`) and left the work committed unsigned or staged per the
 same instruction, for the operator to sign/commit themselves.
+
+## B3 domination, third session (`boolos-b3-domination` branch): `BoolosBig_PA` built, domination not closed
+
+Scope for this session, per `large-numbers/BOOLOS-B3-PAPER-VERIFICATION.md`:
+turn the witness-existence result above (`provablyTotal_names`) into a real
+`BoolosBig_PA : ℕ → ℕ`, prove it monotone, and prove genuine eventual
+domination `∀ f PA-provably-total, ∃ N, ∀ m > N, BoolosBig_PA(m) ≥ f(m)` via
+the `F(n) := f(n²)` pre-inflation the paper-verification note works out (the
+naive additive form `BoolosBig_PA(n+c) ≥ f(n)` is *not* provable, because
+numerals cost `O(n)` symbols in `Foundation`, not `O(1)`).
+
+**Result: `BoolosBig_PA` is built, monotone, and sorry-free — the full
+domination theorem does not close.** New file `RayoBoolos/BoolosBig.lean`,
+sorry-free, `#print axioms` shows only `[propext, Classical.choice,
+Quot.sound]` (the same set every other file in this project already
+depends on — nothing extra pulled in). What it contains:
+
+- **`tSize`/`fSize`**: a genuine symbol-count size measure on
+  `ArithmeticSemiterm`/`ArithmeticSemisentence`, built specifically because
+  `Foundation`'s own `Semiformula.complexity` turned out to be unusable —
+  it's a pure logical-nesting-depth measure that ignores term arguments
+  entirely (`rel`/`nrel` always contribute `0`) and is *provably invariant
+  under all rewriting* (`complexity_rew`), which would make `BoolosBig_PA`
+  infinite at every size if used. This is exactly the kind of silent trap
+  the paper-verification note's own numeral-cost finding warned about, just
+  one level down in the API.
+- **`termsUpTo_finite` / `formsUpTo_finite`**: for every bound and de Bruijn
+  context, only finitely many `ℒₒᵣ` terms/formulas have `tSize`/`fSize` at
+  most that bound — proved directly against `ℒₒᵣ`'s concrete four function
+  symbols and two relation symbols (`Language.ORing.Func`/`.Rel`), by strong
+  induction on the bound, using `Set.Finite`/`Set.image2`/`Set.finite_iUnion`
+  from Mathlib. This is the well-definedness half of B0, reproved here in
+  this project's own terms (see the "definitional choice" note in the file's
+  docstring for why: cross-project import from the sibling, Mathlib-free
+  `rayo-lean/Rayo/BoolosB0Core.lean` was checked and found *feasible* —
+  `lake update` resolves a `path`-require cleanly, same toolchain — but every
+  file here uses Lean's `module` system, and a `module` file cannot `import`
+  a non-`module` file at all; reproving directly against Mathlib, already a
+  dependency via `Foundation`, was less work than building a `module` adapter).
+- **`BoolosBig_PA`, `BoolosBig_PA_mono`, `namedValues_le_BoolosBig_PA`**: the
+  actual function (`(namedValues_finite n).toFinset.sup id`), its
+  monotonicity, and the upper-bound property the domination argument
+  actually needs (`k` nameable within budget `n` ⟹ `k ≤ BoolosBig_PA n`).
+  Functionality of T-naming (a formula names at most one value,
+  `TNamesMeta_unique`) is proved via soundness against the standard model
+  (`Arithmetic.models_Peano`, already in `Foundation`) rather than a
+  syntactic consistency argument.
+- **`tSize_numeral_le`**: the `O(n)`-numeral-cost fact the paper-verification
+  note *found* but the codebase had never *mechanized* — proved directly
+  against `Foundation`'s actual recursive definition of `Semiterm.numeral`
+  (an explicit `n`-fold `1+1+…+1` chain via `Operator.numeral`/`Operator.comp`),
+  not assumed. `tSize (numeral k) ≤ 2k + 1`.
+
+**Exactly where it's stuck.** The one remaining bridging fact —
+`fSize (φ ⇜ w) ≤ fSize φ * B` when every term in `w` has `tSize ≤ B` — is
+what's needed to bound `fSize (graphAt n)` linearly in `n` (`graphAt n` from
+`Domination.lean` substitutes `numeral n`, of `tSize` linear in `n`, into
+`graph`'s free-variable slot) and hence to run the `F(n) = f(n²)` argument.
+The *term*-level version of this fact (`tSize_rew_le`, proved and kept in an
+earlier commit on this branch before being cut) closed cleanly by structural
+induction, using `Rew.func`'s `@[simp]` lemma. The *formula*-level version
+does not: `Rewriting.app`/`▹`, `Foundation`'s notation for "apply a `Rew` to
+a formula" (`Foundation/Syntax/Predicate/Rew.lean`), is not `rfl`-transparent
+on `verum`/`falsum`/`and`/`or` for the concrete `Semiformula ℒₒᵣ Empty`
+instance — `rfl` fails outright on `ω ▹ Semiformula.verum = Semiformula.verum`
+— and the generic `LO.HomClass.map_top`/`map_and`/`map_or` lemmas that
+should cover exactly this (they exist, are tagged `@[simp]`, in
+`Foundation/Logic/LogicSymbol.lean`) either don't resolve under that name
+from this file's import chain or don't fire via plain `simp` here.
+`Rewriting.app_all`/`app_exs` (the quantifier cases, which *are`
+`Rewriting`-class-specific rather than generic-`HomClass`) do exist and do
+fire — so the blocker is narrow and specific: the four propositional
+connective cases, not the quantifier cases, and not the underlying
+mathematics (which is a routine size bound, worked out in the module
+docstring). This is the same category of difficulty the original session's
+`subst_existsUnique_eq` hit (`Rew`/de-Bruijn API bookkeeping, not a gap in
+the mathematical argument) — a follow-up session picking this up should
+start by finding the right way to unfold `Rewriting.app` for `Semiformula`
+(or the right qualified name for the `HomClass` lemmas) rather than
+re-deriving the size-bound mathematics, which is already correct and
+committed in the file's docstring.
+
+**Per the task's resource-discipline instruction**: this was not forced with
+`sorry`, and the final theorem was not weakened to something short of
+genuine domination. `RayoBoolos/BoolosBig.lean` stops at the largest
+honestly-provable sub-piece — `BoolosBig_PA` defined, monotone, with the
+upper-bound property, plus the mechanized `O(n)` numeral-cost fact — and
+says precisely, in its own docstring, where the rest is stuck.
+
+**Commit-signing**: the same `ssh-agent` failure as prior sessions recurred
+here (`SSH_AUTH_SOCK` points at a defunct/zombie `ssh-agent` process,
+`ssh-add -l` reports "Error connecting to agent: Connection refused").
+`git commit` was attempted (unsigned nothing disabled) after each milestone
+and hung until timeout every time; per instruction, `commit.gpgsign` was
+**not** disabled. All work is staged on `boolos-b3-domination` but
+**uncommitted** — the operator will need to commit (and push) it.
