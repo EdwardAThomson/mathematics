@@ -246,6 +246,27 @@ for a full Rayo evaluator. That's a real open question, not a quick
 follow-up — worth knowing where the edge of what's cheaply checkable is,
 rather than guessing past it.
 
+**Reconciliation note (added later, from `RAYO-R0-WELLDEFINEDNESS.md`).** The
+phrase "the real construction reaches for diagonalization" above is right about
+the *meta level* but should not be read as the object formulas doing the
+self-reference. Rayo's naming formulas are ordinary *first-order* set-theory
+formulas, and they cannot invoke a satisfaction predicate internally — by
+Tarski's undefinability theorem, first-order set theory cannot express its own
+truth-in-V. The Berry-like "smallest number no short formula names" lives one
+level up, in the *metalinguistic* definition of Rayo's number, not inside any
+object formula; that stratification is exactly what keeps the construction
+paradox-free. And the reason Rayo's number dwarfs the enumerate-predecessors
+table is *first-order set theory's ontological reach* — a short formula can
+name a titanic number by *referring to* huge sets (iterated power sets,
+large-cardinal-indexed constructions) — not an object-level, Busy-Beaver-style
+diagonal trick. So "diagonalization beats enumeration" holds as a statement
+about the meta-level definition outrunning any fixed naming strategy; the
+object formulas themselves are just first-order set theory used to its full
+expressive power. (The R0 note also records the price of that meta level: the
+satisfaction predicate it needs is a second-order truth predicate for V, whose
+existence is a real set-theoretic commitment — see `RAYO-R0-WELLDEFINEDNESS.md`
+§4–§6.)
+
 ## The rules themselves: 90 lines, 556 tokens
 
 Separately from n_k (the cost of naming a *specific* number), there's
