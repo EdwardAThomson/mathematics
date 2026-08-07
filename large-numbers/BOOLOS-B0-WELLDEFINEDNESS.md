@@ -342,13 +342,22 @@ The B0 core, abstracted away from PA so it needs no proof theory, is:
 > maximum.
 
 In the self-contained `rayo-lean` style (Lean 4 core `List`, no Mathlib) this
-is a `List.filterMap name Φ |>.maximum?` fact — everything is a concrete
-`List`, and `maximum?` on a `List ℕ` is core. It is a handful of lines and
-carries the whole mathematical content of the well-definedness gate. **This
-statement is a specification for the laptop to implement and check; it has not
-been compiled in this session** (Lean unavailable here, above) and must not be
-recorded as verified until `lake build` + `#print axioms` confirm it, to the
-same `propext`-only bar as K0–K6 and `Encoding.lean`.
+is a `List.filterMap name Φ` fact about a hand-rolled `natListMax` (Lean 4
+core has no `List.maximum?` without Mathlib/Std, so a five-line fold-based
+version was written instead). It is a handful of lines and carries the whole
+mathematical content of the well-definedness gate.
+
+**Done, on the laptop, 2026-08-07 — `rayo-lean/Rayo/BoolosB0Core.lean`.**
+`Rayo.exists_max_of_finite_naming` states and proves exactly the boxed claim
+above (`Φ.filterMap name = [] ∨ ∃ m, (∃ φ ∈ Φ, name φ = some m) ∧ ∀ φ ∈ Φ, ∀
+v, name φ = some v → v ≤ m` — finite-or-has-a-genuine-maximum, not merely an
+upper bound). `lake build` is clean from `lake clean` (15/15 modules,
+including this one); no `sorry`, no `admit`; `#print axioms` on all three
+theorems in the file (`exists_max_of_finite_naming`,
+`le_of_mem_natListMax`, `mem_of_natListMax_eq_some`) shows only `propext`
+(plus `Quot.sound` on two of the three) — the same bar as K0-K6 and
+`Encoding.lean`, no `Classical.choice`, no `sorryAx`. The B0 gate is now
+machine-verified, not just paper-proved.
 
 ### The T-names predicate, for if/when B1 (option 1) proceeds
 
