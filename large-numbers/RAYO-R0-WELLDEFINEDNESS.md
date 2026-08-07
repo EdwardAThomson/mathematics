@@ -170,6 +170,27 @@ choice, and it is a substantive set-theoretic commitment.**
   set is empty, and `Rayo(n)` collapses to a trivial value. Not "a different,
   smaller Rayo's number" — the construction stops naming anything at all.
 
+**Verification note (checked 2026-08-07).** Because this section is
+load-bearing — for the verdict here and for `KAPPA-TABLE.md`'s new
+diagonalization-family row — the MK claim was checked against the literature
+rather than asserted from memory, including against the one paper whose title
+(*"the surprising weakness of Kelley–Morse set theory"*) could have undercut it.
+It does not. Confirmed: **every model of KM carries a truth-predicate class `Tr`
+coding first-order truth over V, obtained precisely from KM's impredicative
+class comprehension, and KM ⊢ Con(ZFC)** (Hamkins; Gitman; the arXiv paper
+below). The "weakness" that paper establishes is about **class-choice and
+elementary transfinite recursion** principles — the things KM does *not* prove —
+**not** about the basic first-order truth class, which is exactly the object
+§4 uses. Two precision riders, neither affecting the verdict: (i) the uniqueness
+invoked above is uniqueness of the first-order truth class under the *standard*
+(internal-ℕ) formula-indexing, proved by ordinary induction on formula
+complexity — not a transfinite class-recursion, so the ETR weakness is
+irrelevant to it; (ii) the well-known non-uniqueness of *satisfaction classes
+over nonstandard models* (Krajewski and successors) is a separate
+model-theoretic phenomenon about nonstandard formula codes, orthogonal to KM's
+internal proof that its first-order `Tr` for the real V is unique. So the §4
+claim stands as stated.
+
 So **(b) is conditional**: it holds precisely under the impredicative /
 full-semantics / realist reading, and fails (trivializes) otherwise. The choice
 in §2 is the difference between "Rayo's number is a specific enormous natural
@@ -360,10 +381,13 @@ against:
 - [Rayo's number — Googology Wiki (Fandom)](https://googology.fandom.com/wiki/Rayo's_number)
 - [Rayo's number — Googology Wiki (Miraheze)](https://googology.miraheze.org/wiki/Rayo's_number)
 - [Pranav Maddineedi, "One more large number: Rayo's Number" (Medium)](https://medium.com/@pmaddineedi/one-more-large-number-rayos-number-rayo-10-100-or-the-smallest-number-greater-than-maximal-7a96e93f320e)
-- [Joel David Hamkins et al., "Class choice and the surprising weakness of Kelley–Morse set theory" (arXiv)](https://arxiv.org/pdf/2601.23165) — context for the MK satisfaction-class / truth-predicate facts used in §4.
+- [Joel David Hamkins et al., "Class choice and the surprising weakness of Kelley–Morse set theory" (arXiv)](https://arxiv.org/pdf/2601.23165) — the paper checked against in §4's verification note; its "weakness" is class-choice/ETR, not the first-order truth class.
+- [Joel David Hamkins, "Kelley-Morse set theory implies Con(ZFC) and much more"](https://jdh.hamkins.org/km-implies-conzfc/) — the KM truth-class ⟹ `Con(ZFC)` fact §4 relies on.
+- [Victoria Gitman, "Kelley-Morse set theory and choice principles for classes"](https://victoriagitman.github.io/files/kelleymorse2.pdf) — KM's truth-predicate class `Tr` and the class-choice landscape.
 
 Standard metatheory used in §3–§4 (Tarski's undefinability theorem; MK proves a
 first-order truth/satisfaction class for V and hence `Con(ZFC)`; NBG is
 conservative over ZFC and so proves neither) is textbook — see any standard
 reference on class theories (e.g. Kunen, *Set Theory*; the MK/NBG literature) —
-and is stated here as standard, not re-proved.
+and was **checked against the sources above** (§4 verification note,
+2026-08-07), not merely asserted from memory.
