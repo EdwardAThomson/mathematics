@@ -45,6 +45,8 @@ public import Mathlib.Tactic.FinCases
 public import Mathlib.Algebra.BigOperators.Fin
 public import Mathlib.Tactic.DeriveFintype
 public import Mathlib.Tactic.Ring
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Data.Nat.Sqrt
 
 @[expose] public section
 
@@ -576,6 +578,124 @@ theorem fSize_graphAt_le {f : ℕ → ℕ} (P : ProvablyTotal f) (n : ℕ) :
       | succ k => exact k.elim0
   exact fSize_rew_le P.graph (Rew.subst ![#0, Semiterm.numeral n]) (2 * n + 1) (by omega) hb
 
+/-! ### `F(n) := f(n²)` pre-inflation, per `BOOLOS-B3-PAPER-VERIFICATION.md` §3
+
+The naive additive route (`BoolosBig_PA(n+c) ≥ f(n)`) is *not* provable,
+because `fSize_graphAt_le` above shows the naming formula's size is *linear*
+in `n` (`O(n)`, not `O(1)`) — a direct consequence of `Foundation`'s
+successor-chain numeral encoding. The fix, worked out on paper: apply the
+same direct-naming argument not to `f` but to `F(n) := f(n²)`, whose Σ1
+graph `θ_F(y,x) :≡ ∃z(z = x·x ∧ θ_f(y,z))` needs **no numeral at all** (`*`
+is already in the language), so `fSize θ_F = fSize θ_f + O(1)` — a *constant*
+overhead, not `O(n)`. Composing the resulting bound with `n² ≥ m` for
+`n ≈ √m` recovers genuine domination `BoolosBig_PA(m) ≥ f(m)`. -/
+
+/-- The Σ1 graph of `n ↦ f (n * n)`, built from `f`'s own graph `θ(y,x)` by
+`θ_F(y,x) := ∃z (z = x*x ∧ θ(y,z))`. -/
+noncomputable def graphSq (graph : ArithmeticSemisentence 2) : ArithmeticSemisentence 2 :=
+  “y x. ∃ z, z = x * x ∧ !graph y z”
+
+theorem graphSq_correct (graph : ArithmeticSemisentence 2) (y x : ℕ) :
+    (graphSq graph).Evalb (M := ℕ) ![y, x] ↔ ∃ z : ℕ, z = x * x ∧ graph.Evalb (M := ℕ) ![y, z] := by
+  simp [graphSq]
+
+theorem graphSq_sigma1 {graph : ArithmeticSemisentence 2} (h : Hierarchy 𝚺 1 graph) :
+    Hierarchy 𝚺 1 (graphSq graph) := by
+  unfold graphSq
+  apply Hierarchy.exs
+  apply Hierarchy.and
+  · exact Hierarchy.equal
+  · exact Hierarchy.rew _ h
+
+/-- `fSize (graphSq graph) ≤ fSize graph + 2000` — a *constant* overhead
+(generous, uncomputed exactly), not `O(n)`: no numeral appears anywhere in
+`graphSq`'s construction, only the fixed atom `#0 = #2 * #2` and a
+substitution by `#1`/`#0` (both `tSize 1`, so `fSize_rew_le` with `B = 1`
+gives no blowup at all). This is exactly the pre-inflation's point. -/
+theorem fSize_graphSq_le (graph : ArithmeticSemisentence 2) : fSize (graphSq graph) ≤ fSize graph + 2000 := by
+  have h2 : fSize (“#0 = (#2 * #2)” : ArithmeticSemisentence 3) ≤ 1000 := by decide
+  have hb : ∀ i : Fin 2, tSize ((Rew.subst (![#1, #0] : Fin 2 → Semiterm ℒₒᵣ Empty 3)) (Semiterm.bvar i)) ≤ 1 := by
+    intro i; cases i using Fin.cases with
+    | zero => simp [tSize]
+    | succ j => cases j using Fin.cases with
+      | zero => simp [tSize]
+      | succ k => exact k.elim0
+  have h1 : fSize (graph ⇜ (![#1, #0] : Fin 2 → Semiterm ℒₒᵣ Empty 3)) ≤ fSize graph * 1 :=
+    fSize_rew_le graph (Rew.subst ![#1, #0]) 1 (le_refl 1) hb
+  have final : 1 + (1 + fSize (“#0 = (#2 * #2)” : ArithmeticSemisentence 3) +
+      fSize (graph ⇜ (![#1, #0] : Fin 2 → Semiterm ℒₒᵣ Empty 3))) ≤ fSize graph + 2000 := by omega
+  unfold graphSq
+  simp only [fSize]
+  exact final
+
+/-- `graphSq` preserves PA-provable totality: if `θ` is PA-provably total,
+so is `θ_F`. Proved via `Foundation`'s semantic completeness bridge
+(`Arithmetic.complete`, the same technique used throughout `Domination.lean`
+and `Bootstrapping/FixedPoint.lean`'s `diagonal`), sidestepping raw
+proof-calculus manipulation entirely: work inside an arbitrary model `M` of
+`𝗣𝗔`, where `x * x` is just an ordinary total function of `M`, so existence
+of `z` is immediate and uniqueness of `y` follows directly from `graph`'s
+own totality instantiated at `x * x`. -/
+theorem graphSq_total {graph : ArithmeticSemisentence 2}
+    (htot : (𝗣𝗔 : ArithmeticTheory) ⊢ ∀¹ (∃¹! graph)) :
+    (𝗣𝗔 : ArithmeticTheory) ⊢ ∀¹ (∃¹! graphSq graph) := by
+  apply Arithmetic.complete.{0} (𝗣𝗔 : ArithmeticTheory) _ (fun (M : Type) _ hM ↦ ?_)
+  have hM' : M↓[ℒₒᵣ] ⊧ (∀¹ (∃¹! graph)) := models_of_provable hM htot
+  unfold graphSq
+  simp [models_iff] at hM' ⊢
+  intro x
+  obtain ⟨y, hy, huniq⟩ := hM' (x * x)
+  exact ⟨y, hy, fun y' hz => huniq y' hz⟩
+
+/-- **`ProvablyTotal` for the pre-inflated function** `n ↦ f (n * n)`,
+built from `ProvablyTotal f`: `graphSq`'s Σ1-ness, totality, and
+correctness (witness `z := n * n`, directly `P.correct (n * n)`). -/
+noncomputable def ProvablyTotal.sq {f : ℕ → ℕ} (P : ProvablyTotal f) :
+    ProvablyTotal (fun n => f (n * n)) where
+  graph := graphSq P.graph
+  sigma1 := graphSq_sigma1 P.sigma1
+  total := graphSq_total P.total
+  correct n := (graphSq_correct P.graph (f (n * n)) n).mpr ⟨n * n, rfl, P.correct (n * n)⟩
+
+/-- For every `n`, `f (n * n)` is nameable within budget `(fSize P.graph +
+2000) * (2 * n + 1)` — combining `provablyTotal_names` (applied to `P.sq`),
+`fSize_graphAt_le`, and `fSize_graphSq_le`. -/
+theorem sq_names_le {f : ℕ → ℕ} (P : ProvablyTotal f) (n : ℕ) :
+    f (n * n) ≤ BoolosBig_PA ((fSize P.graph + 2000) * (2 * n + 1)) := by
+  have hnames : TNamesMeta (P.sq.graphAt n) (f (n * n)) := provablyTotal_names _ P.sq n
+  have hsize1 : fSize (P.sq.graphAt n) ≤ fSize P.sq.graph * (2 * n + 1) := fSize_graphAt_le P.sq n
+  have hsize2 : fSize P.sq.graph ≤ fSize P.graph + 2000 := fSize_graphSq_le P.graph
+  have hsize : fSize (P.sq.graphAt n) ≤ (fSize P.graph + 2000) * (2 * n + 1) :=
+    le_trans hsize1 (Nat.mul_le_mul_right _ hsize2)
+  exact namedValues_le_BoolosBig_PA ⟨P.sq.graphAt n, hsize, hnames⟩
+
+/-- **The final domination theorem.** Every PA-provably-total `f` (with `f`
+also monotone — needed for the `n²` pre-inflation step to transfer the
+bound from `f (n * n)` back down to `f m`, per
+`BOOLOS-B3-PAPER-VERIFICATION.md` §3's own use of "monotonicity of ...
+`f`") is eventually dominated by `BoolosBig_PA`. -/
+theorem BoolosBig_PA_dominates {f : ℕ → ℕ} (P : ProvablyTotal f) (hf_mono : Monotone f) :
+    ∃ N, ∀ m > N, BoolosBig_PA m ≥ f m := by
+  set c := fSize P.graph + 2000 with hc_def
+  have hc : 1 ≤ c := by omega
+  set N0 := 4 * c + 4 with hN0_def
+  refine ⟨N0 * N0, fun m hm => ?_⟩
+  set n := Nat.sqrt m + 1 with hn_def
+  have hsqrt_ge : N0 ≤ Nat.sqrt m := Nat.le_sqrt.mpr (by omega)
+  have hn_sq_ge_m : m ≤ n * n := by
+    have hthis := Nat.succ_le_succ_sqrt m
+    simp only [hn_def] at hthis ⊢
+    omega
+  have hc_bound : c * (2 * n + 1) ≤ m := by
+    have hsq_le : Nat.sqrt m * Nat.sqrt m ≤ m := Nat.sqrt_le m
+    have hstep : c * (2 * n + 1) ≤ Nat.sqrt m * Nat.sqrt m := by
+      simp only [hn_def]
+      nlinarith [hsqrt_ge]
+    exact le_trans hstep hsq_le
+  calc f m ≤ f (n * n) := hf_mono hn_sq_ge_m
+    _ ≤ BoolosBig_PA (c * (2 * n + 1)) := sq_names_le P n
+    _ ≤ BoolosBig_PA m := BoolosBig_PA_mono hc_bound
+
 end RayoBoolos
 
 #print axioms RayoBoolos.BoolosBig_PA_mono
@@ -583,3 +703,6 @@ end RayoBoolos
 #print axioms RayoBoolos.tSize_numeral_le
 #print axioms RayoBoolos.fSize_rew_le
 #print axioms RayoBoolos.fSize_graphAt_le
+#print axioms RayoBoolos.graphSq_total
+#print axioms RayoBoolos.ProvablyTotal.sq
+#print axioms RayoBoolos.BoolosBig_PA_dominates
