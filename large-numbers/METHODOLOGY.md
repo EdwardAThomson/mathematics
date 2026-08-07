@@ -160,6 +160,73 @@ Two sub-cases share one counting rule (kappa = the checker, not any proof):
   parser + satisfaction skeleton," per the repo rule against reporting a
   guess as a settled value. It is not left as a bare placeholder.
 
+### 2.6 Don't double-count a formula just because you renamed its variables (cross-cutting)
+
+**Plain-English version.** In these formulas the variables are just named
+slots — you can call them `x, y, z` or `v₀, v₁, v₂`, and only how the slots
+relate matters, not which names you pick. Since there are infinitely many
+possible names, there are infinitely many ways to write the *same* short
+formula, just with different name-tags. That would make "list every formula
+you can write in ≤ n symbols" come back as "infinitely many," which breaks
+the counting the whole `BN(R, n)` idea depends on. The rule fixes it: **treat
+two formulas that differ only by renaming their variables as the same
+formula.** Then the list is finite again. This changes none of the numbers
+already in the project — renaming variables never changes what a formula means
+or how long it is — it only patches a bookkeeping hole so the count is
+airtight. It's a standard, boring convention (mathematicians call it counting
+"up to α-equivalence"); it is written down here only because this project's
+flat "a variable costs 1 whatever its name" convention makes the hole visible.
+
+**Precise version.** §2.1–2.5 fix what counts toward κ(R). This subsection
+fixes the complementary question on the **n-axis**: which expressions the
+enumeration `BN(R, n) = sup{⟦e⟧ : |e| ≤ n}` (`BN-function.md` §3) ranges over,
+for any R whose language `L` binds variables (∀, ∃, λ, Π). The answer: it
+ranges over **α-equivalence classes** (expressions taken up to renaming of
+bound variables), not raw strings. Equivalently, each expression is first put
+in a canonical form — de Bruijn indices for bound variables, free variables
+relabelled to a fixed initial segment by order of first appearance — and then
+counted.
+
+- **Why it is needed.** Under the project's flat variable cost
+  (`RAYO-EXPLAINER.md`: a variable occurrence costs 1 regardless of index)
+  with an infinite variable supply, the raw set `{e ∈ L : |e| ≤ n}` is
+  *infinite* — e.g. `v₀=v₀, v₁=v₁, v₂=v₂, …` all share one length. Then the
+  `sup` in `BN-function.md` §3 is taken over an infinite index set and need
+  not be attained, and A2's "enumerate all candidates of length ≤ n" is not a
+  terminating procedure. Quotienting by α makes `{e : |e| ≤ n}/≡_α` finite
+  (a formula of length ≤ n has ≤ n variable occurrences, hence ≤ n distinct
+  variables, hence a representative over a fixed finite pool of names), which
+  is exactly what A2 and §3 already presuppose. This is the load-bearing step
+  (H2) of the well-definedness proof in `BOOLOS-B0-WELLDEFINEDNESS.md` §3–§4,
+  where the obstruction was first pinned down.
+- **Why it changes no value.** Both quantities the framework reads off an
+  expression are α-invariant: **length** (renaming bound variables never
+  changes the occurrence count `|e|`, under the flat cost) and **denotation**
+  (`⟦e⟧ = ⟦e'⟧` when `e ≡_α e'`, the standard bound-variable-renaming lemma).
+  So `BN(R, n)` over α-classes equals `BN(R, n)` over raw strings wherever the
+  latter is defined; the rule only supplies the finiteness that turns the
+  `sup` into a `max`. No `nₖ` in `RAYO-EXPLAINER.md` and no κ in
+  `KAPPA-TABLE.md` moves.
+- **Per-family applicability.**
+  - *Already handled by the encoding:* **BLC / λ-calculus** (§2.2) and the
+    **type-theory ports** (§2.4) use **de Bruijn indices**, so α-equivalence
+    is intrinsic — no named bound variables can collide and the
+    infinite-family problem never arises. This is the model the rule
+    generalizes.
+  - *Requires the rule explicitly:* **first-order set theory (Rayo)** (§2.5)
+    and **PA (the Boolos fork)** are represented with named ℕ-indexed
+    variables (as in `rayo-lean/Rayo/Syntax.lean`), so their raw length-≤-n
+    sets are infinite and must be counted up to α (equivalently, re-expressed
+    in de Bruijn form).
+  - *Not affected:* **Turing machines** (§2.1) and **BMS** (§2.3) have no
+    variable binders, so `{e : |e| ≤ n}` is already finite.
+- **κ-side corollary.** For the named-variable families, the interpreter
+  charged in §2.5 (and its Boolos analogue) must include capture-avoiding
+  substitution in its satisfaction/proof clauses. This is already folded into
+  "the parser + Tarskian satisfaction clauses" and is cheap in de Bruijn form;
+  it is noted here only to keep the n-axis convention and the κ-axis
+  interpreter consistent. No κ figure changes.
+
 ## 3. kappa is an upper bound, never a proven minimum
 
 "The smallest BLC interpreter for R" invokes Kolmogorov complexity, which is
@@ -229,6 +296,24 @@ has a bounded effect, the bound is given.
   others, changing the shape of the kappa column. This choice, like C1, is
   part of what Phase 4's conclusion is conditional on.
 
+- **C8 (formulas counted up to variable renaming).** For any R whose language
+  binds variables, the `BN(R, n)` enumeration ranges over expressions taken
+  *up to α-equivalence* — renaming of bound variables — not over raw strings
+  (§2.6). Plain version: the same formula written with different variable
+  names is counted once, not many times. This is *forced* for
+  well-definedness under the project's flat variable cost (without it the
+  length-≤-n set is infinite and the `sup` is not attained —
+  `BOOLOS-B0-WELLDEFINEDNESS.md` §4), but it is still a stated convention, and
+  it has a flagged alternative. **Route B — charge for variable identity**
+  (e.g. a prefix code costing `~⌈log₂ i⌉` per variable `vᵢ`) makes the set
+  finite with no quotient, but changes the cost model; `RAYO-EXPLAINER.md`
+  rejected it as penalizing formulas with many simultaneously-live variables.
+  Bounded consequence: Route A (adopted) sets the identity charge to zero;
+  Route B would add, per formula, a charge growing like the live-variable
+  count (far slower than `nₖ`). Either route leaves the growth *ordering* in
+  `KAPPA-TABLE.md` unchanged; only the absolute FOST/PA naming costs on the
+  n-axis would move, and only under Route B.
+
 ## 5. Summary of the convention
 
 | Family | Meta-language | What counts toward kappa(R) | Excluded (charged to n) |
@@ -239,7 +324,13 @@ has a bounded effect, the bound is given.
 | proof-theory / type-theory (Loader, System F/CoC, Pi^1_1-CA_0) | BLC | type-checker or proof-checker: parser + typing/inference rules + normalization/verification loop | the specific term or proof |
 | first-order set theory (Rayo) | BLC | FOL-over-`in` parser + Tarskian satisfaction clauses + unique-denotation readout | the specific formula |
 
+All families are counted **up to α-equivalence of bound variables** (C8,
+§2.6) — the same formula under a different choice of variable names is counted
+once: intrinsic for the de-Bruijn-encoded families (BLC, type-theory ports),
+explicit for the named-variable logic families (Rayo, Boolos-PA), and vacuous
+for TMs and BMS.
+
 Every kappa(R) produced under this convention is a BLC-bit upper bound,
 defined up to the additive translation constant of C1, conditional on the
-definitional choices C1-C7 above. Phase 2 fills in the numbers; Phase 4 reads
+definitional choices C1-C8 above. Phase 2 fills in the numbers; Phase 4 reads
 the resulting kappa-versus-growth pairs subject to exactly these caveats.
