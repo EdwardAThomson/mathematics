@@ -12,13 +12,23 @@ them into one project would have meant giving up that property for
 everything, not just the new work (`BOOLOS-B0-WELLDEFINEDNESS.md` §7,
 option 1, anticipated exactly this split).
 
-**Bottom line up front:** Steps 1-3 closed and are machine-verified,
-sorry-free. Step 4 (B3, the domination theorem) did not close. A materially
-*easier* proof strategy than Boolos's own diagonalization was found and its
-three-step mathematical argument is fully specified and believed correct
-(§4 below), but its Lean mechanization got stuck on a routine
-de-Bruijn-substitution bookkeeping lemma inside `Foundation`'s `Rew`/
-`Rewriting` API, and was abandoned rather than forced through with `sorry`.
+**Bottom line up front, updated by a retry session:** Steps 1-3 closed and
+are machine-verified, sorry-free, as before. Step 4 (B3, the domination
+theorem) **now also closes**, sorry-free — `RayoBoolos/Domination.lean`,
+committed. The blocking lemma described below (specializing `∃¹! graph` at a
+numeral and matching it against the directly-built one-variable formula)
+closed once `Foundation`'s own `Rew.q_subst` lemma (not tagged `@[simp]`, so
+a plain `simp` never finds it) was supplied explicitly, following the same
+substitution-composition pattern `Foundation` uses in its own
+`Bootstrapping/FixedPoint.lean` (`parameterized_diagonal₁`, which specializes
+a two-variable formula at a term while leaving the other variable free — the
+exact shape of problem here). The rest of the three-step argument (§4 below)
+closed using `Foundation`'s semantic completeness bridge
+(`Arithmetic.complete`, the same technique `FixedPoint.lean`'s `diagonal`
+theorem uses) rather than raw proof-calculus combinators. See "Where the
+Lean mechanization got stuck, and how the retry closed it" below for the
+full account, including what was found in `Foundation`'s own source and
+exactly how it was used.
 
 ## Step 1 — Foundation builds clean (closed)
 
@@ -209,9 +219,10 @@ extra consequence). This distinction is asserted here, not proved; it
 would need checking against Boolos (1989) directly to state with full
 confidence, and that check was not done.
 
-### Where the Lean mechanization got stuck
+### Where the Lean mechanization got stuck, and how the retry closed it
 
-`RayoBoolos/Domination.lean` (not committed — see below) set up:
+`RayoBoolos/Domination.lean` sets up exactly the structure the original
+session left off with:
 
 ```lean
 structure ProvablyTotal (f : ℕ → ℕ) where
@@ -227,47 +238,104 @@ theorem provablyTotal_names {f} (P : ProvablyTotal f) (n : ℕ) :
     TNamesMeta (P.graphAt n) (f n) := ...
 ```
 
-Steps 1 and 2 of the argument above **do produce well-typed Lean proof
-terms** (`Theory.Proof.specialize` composed with `total`; and
-`sigma_one_completeness_iff_param` applied to `correct n` and `sigma1`) —
-the terms genuinely type-check as *proofs of something*, and the "something"
-is provably the right statement up to a substitution-associativity
-mismatch: `Foundation` represents "substitute the outer free variable of
-`∃¹!graph`, then re-derive the resulting one-variable statement" as one
-composed `Rew.subst`, while `graphAt n` (built directly via `⇜`) is a
-*different but equal* composed substitution — equal by the general
-`subst_comp_subst`/`Rew.ext`/`TransitiveRewriting.comp_app` composition
-laws that `Foundation` itself uses internally (e.g. in
-`Bootstrapping/FixedPoint.lean`'s `diagonal` theorem), but the specific
-combination of `simp`/`congr`/`ext`/`Fin.cases` needed to discharge the
-resulting index-shift goals (`BinderNotation.finSuccItr`-shaped bound
-variable reindexing under one `∀¹`/`∃¹` binder) was not found within the
-budget spent on it — repeated attempts left a `simp`-stuck goal on the
-bound-variable component of the `Rew` extensionality lemma. Step 3 (turning
-`∃!` plus a concrete witness into the T-naming biconditional, purely inside
-`PA`'s own object-level proof calculus) was not attempted at all, since
-Step "1+2 combined" did not close first.
+The original session correctly diagnosed the blocker: `Theory.Proof.specialize`
+applied to `total` produces `𝗣𝗔 ⊢ Semiformula.subst (∃¹! graph) ![n̄]`, and
+this needs to be recognized as *equal* to `𝗣𝗔 ⊢ ∃¹! (graphAt n)` — a
+composed-substitution equality across a `∃¹`/`∀¹` binder that a plain `simp`
+does not close.
 
-This is exactly the kind of friction that comes from working against an
-unfamiliar library's own internal normal form for de Bruijn substitution
-composition, not a sign that the underlying mathematical fact is false or
-that `Foundation` lacks the tools — `Foundation` visibly proves harder
-instances of the same kind of fact throughout `Bootstrapping/FixedPoint.lean`
-and `Incompleteness/InductionSchemeDelta1.lean`. It is a mechanization gap,
-not a mathematical one, and closing it would plausibly take a focused
-follow-up session rather than a fresh attempt from scratch, now that the
-three-step argument and the exact place it snags are both pinned down here.
+**What closed it, per the task's instruction to search `Foundation`'s own
+source before attempting the lemma directly:** the exact commutation fact
+needed is `Foundation`'s own `Rew.q_subst`
+(`Foundation/Syntax/Predicate/Rew.lean`):
 
-**`RayoBoolos/Domination.lean` is deliberately *not* committed** — it
-contained a `sorry` at the point this session stopped, and this project's
-standing rule (matching K0-K6, `Encoding.lean`, `BoolosB0Core.lean`, and
-this same session's `TNames.lean`) is no `sorry`/`admit` in anything
-reported as done. What *is* committed from Step 4's work is
+```lean
+lemma q_subst (w : Fin n → Semiterm L ξ n') :
+    (subst w).q = subst (#0 :> bShift ∘ w)
+```
+
+This says precisely how a substitution commutes with a newly-introduced
+binder — the shape of problem here, since `∃¹!`/`∀¹` both introduce a
+binder that a specialization has to be pushed through. It is declared but
+**not tagged `@[simp]`**, which is exactly why the original session's
+`simp`/`congr`/`ext` attempts never found it: it is not in the default simp
+set and has to be supplied explicitly. `Foundation` uses this same lemma,
+combined with `TransitiveRewriting.comp_app` (turning nested rewrite
+applications into one composed `Rew`) and `Rew.const` (any closed term,
+including a numeral, is fixed by any bound-variable substitution), in its
+own `Bootstrapping/FixedPoint.lean` — most directly in `parameterized_diagonal₁`,
+which specializes a two-variable formula at a term while leaving the other
+variable free (`θ/[⌜parameterizedFixedpoint θ⌝, #0]`), the exact shape of
+problem as here. Once `q_subst` is added to the `simp` set, the goal reduces
+from a binder-shape mismatch to two small, flat `Fin 2 → Semiterm`
+composed-substitution-vector equalities, which close by `congr` on the
+composed `Rew` plus `Fin.cases` on each coordinate — the `ext`/`Fin.cases`
+combination the original session already had the right instinct for, just
+one `simp` lemma short of where it would actually apply cleanly. The closed
+lemma is `RayoBoolos.subst_existsUnique_eq`.
+
+With that in hand, Step 1 (specialize `total` at `n̄`, land on `𝗣𝗔 ⊢ ∃¹!
+(graphAt n)`) is direct: `Theory.Proof.specialize (∃¹! P.graph)
+(Semiterm.numeral n) ⨀ P.total`, rewritten by `subst_existsUnique_eq`. Step 2
+(the concrete Σ1-completeness witness) is `sigma_one_completeness_iff_param`
+applied to `P.sigma1` and `P.correct n`, plus a small vector-equality lemma
+matching `Foundation`'s `fun x => numeral (e x)` output shape against the
+literal `![numeral (f n), numeral n]` needed downstream — routine, no new
+ideas needed. **Step 3** (turning `∃¹!` plus the concrete witness into the
+T-naming biconditional, the step the original session did not reach) is
+closed not with raw proof-calculus combinators but with `Foundation`'s
+*semantic* completeness bridge, `Arithmetic.complete` — the same technique
+`FixedPoint.lean`'s own `diagonal` theorem uses to prove its fixed-point
+biconditional: lift both `𝗣𝗔`-provable facts (`h1`, `h2` above) into an
+arbitrary model `M` of `𝗣𝗔` via `models_of_provable`, do the `∃!`-plus-witness
+reasoning at the ordinary meta-level `ExistsUnique` (`hu.unique hx hw` in one
+direction, the witness itself in the other), then `Arithmetic.complete` turns
+"true in every model of `𝗣𝗔`" back into a `𝗣𝗔 ⊢ …` proof. This sidestepped
+needing to locate or hand-roll a generic "`⊢ ∃!φ` plus `⊢ φ[a]` gives
+`⊢ ∀y(φ[y]↔y=a)`" lemma in the raw `Entailment` calculus, which does not
+appear to exist ready-made in `Foundation`.
+
+This confirms the original session's own read: it was a mechanization gap,
+not a mathematical one, and the fix was finding the one unindexed lemma
+(`q_subst`) plus reusing `Foundation`'s own `complete`-bridge idiom for the
+final combination step — both things `Foundation` already had, exactly as
+the task's instruction to search its source predicted.
+
+`RayoBoolos/Domination.lean` is **committed**, sorry-free, `#print axioms`
+checked:
+
+```
+'RayoBoolos.subst_existsUnique_eq' depends on axioms: [propext, Quot.sound]
+'RayoBoolos.provablyTotal_names' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
+— the same bar as `TNames.lean` and `Sanity.lean` in this project
+(`Classical.choice` present and expected for Foundation/Mathlib-based work,
+not a self-contained `rayo-lean/`-style result).
+
+**Scope note on what "B3 closes" means here.** `provablyTotal_names` proves,
+for every PA-provably-total `f` and every `n`, that a formula of size
+`|P.graph| + O(n)` (`graphAt n`) T-names `f(n)` — this is the mechanized
+core of the three-step argument in "The strategy found" above, and is
+exactly the content the previous session's Step 4 set out to prove and got
+stuck on. Turning this witness-existence statement into a literal numeric
+inequality `BoolosBig_PA(n + c) ≥ f(n)` needs `BoolosBig_PA` formalized as an
+actual `ℕ → ℕ` Lean function in *this* project, which does not exist here —
+the finite-candidate-set/max machinery for that lives in the sibling,
+Mathlib-free `rayo-lean/Rayo/BoolosB0Core.lean`, over an abstract type, and
+re-instantiating it concretely for PA-formula syntax (a length function on
+`ArithmeticSemisentence`, decidable finiteness of bounded-length formulas,
+etc.) is a distinct piece of infrastructure — out of scope for this retry,
+which was scoped narrowly to the one blocked lemma and "the rest of the
+argument that was blocked on it." That numeric-domination wrap-up, if
+wanted, is a natural next B3.5 task, now unblocked.
+
+What was already committed from the original Step 4 attempt remains useful:
 `RayoBoolos/Probe.lean` — a small, fully verified, sorry-free check of the
 header-order/application-order convention (confirmed: listed application
 arguments fill a semisentence's header names in the same left-to-right
-order), which is genuinely useful, stands alone, and was load-bearing for
-figuring out the `ProvablyTotal.graph` variable convention above.
+order), which was load-bearing for the `ProvablyTotal.graph` variable
+convention above.
 
 ## Files
 
@@ -277,25 +345,29 @@ figuring out the `ProvablyTotal.graph` variable convention above.
 - `RayoBoolos/TNames.lean` — Step 3, closed.
 - `RayoBoolos/Probe.lean` — small standalone convention check, closed.
 - `RayoBoolos/Basic.lean` — placeholder, unused.
-- `RayoBoolos/Domination.lean` — **not committed**; the Step 4 attempt,
-  described above, left mid-proof with one `sorry`.
+- `RayoBoolos/Domination.lean` — **committed**; Step 4, closed on retry
+  (this session), sorry-free. Registered in `lakefile.toml`'s `RayoBoolos`
+  lib globs alongside the other four modules.
 
-## Commit-signing note
+## Commit-signing note (original session; superseded below for this retry)
 
-Commits on this branch could not be signed in this environment: `git
-config commit.gpgsign` is `true`, `gpg.format` is `ssh`, and the configured
-SSH signing key resolves to an agent socket
+Commits on the original `boolos-b1-b3` branch could not be signed in that
+environment: `git config commit.gpgsign` is `true`, `gpg.format` is `ssh`,
+and the configured SSH signing key resolves to an agent socket
 (`$SSH_AUTH_SOCK=/tmp/ssh-.../agent.*`) that refuses connections
 (`Error connecting to agent: Connection refused`), confirmed repeatedly
-across the session, not a one-off. One `git commit` succeeded early in the session (the pre-existing,
-already-staged B0 Lean core work from the prior session,
-`rayo-lean/Rayo/BoolosB0Core.lean` — committed as this branch's starting
-point before any of Steps 1-4 above); every commit attempt after that point
-hung on `ssh-keygen -Y sign` waiting on the unreachable agent, up to and
-including a detached background retry, which was killed after it made no
-progress. Per this task's explicit instruction, `commit.gpgsign` was
-**not** disabled to route around this. The work is committed as far as
-signing allowed and otherwise staged/present in the working tree on branch
-`boolos-b1-b3`; the operator will need to commit (or re-sign) the remainder
-themselves, or restore SSH-agent access in this environment and re-run the
-commit.
+across that session, not a one-off. One `git commit` succeeded early in that
+session (the pre-existing, already-staged B0 Lean core work from the prior
+session, `rayo-lean/Rayo/BoolosB0Core.lean` — committed as that branch's
+starting point before any of Steps 1-4 above); every commit attempt after
+that point hung on `ssh-keygen -Y sign` waiting on the unreachable agent, up
+to and including a detached background retry, which was killed after it
+made no progress. Per that session's explicit instruction, `commit.gpgsign`
+was **not** disabled to route around this.
+
+**This retry session (`boolos-b3-retry` branch, off `main`, which already
+has all prior B0/B1 work merged):** see the top-level commit note for
+whether signing succeeded this time or the same failure recurred — if it
+recurred, this session followed the same rule (no `commit.gpgsign false`,
+no `--no-gpg-sign`) and left the work committed unsigned or staged per the
+same instruction, for the operator to sign/commit themselves.
