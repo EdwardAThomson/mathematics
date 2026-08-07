@@ -134,6 +134,118 @@ here was both, whichever bound first). k=6 was the planned ceiling; the
 proof difficulty was rising the whole way but never actually stalled — the
 run reached its intended stopping point on schedule, not a wall it hit.
 
+## Is this an efficient way to write numbers? No — and that's revealing
+
+The *alphabet* used never grows: `∈, =, ¬, ∧, ∃, ∀, (, )` — 8 fixed symbol
+kinds, all already in play by k=1. Essentially all of n_k's growth (10 up
+to 11,128) is *repetition* of that same tiny set, not new vocabulary.
+
+Variables are a different story. The convention charges 1 symbol per
+variable occurrence regardless of which variable it is — `v₁` and `v₁₁₅`
+both cost exactly 1, a deliberate, stated choice (`rayo-notes/convention-
+notes.md`: charging for variable identity "would penalize formulas that
+happen to need many simultaneously-live variables"). But the actual index
+needed climbs fast, straight from the Lean source:
+
+| k | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|---|
+| highest variable index used | 1 | 3 | 3 | 4 | 9 | 40 | 115 |
+
+By k=6 the proof needs a variable literally called `v115`, because every
+embedded copy of an earlier φ_i needs fresh bound variables to avoid
+capturing an outer one, and the supply of "not yet used" names keeps
+draining. The convention's "identity is free" rule is quietly absorbing a
+real cost that grows right alongside n_k itself.
+
+Putting a number on the inefficiency: converting n_k to bits the way
+`BN-function.md` Section 5 already does for cross-system comparison
+(bits ≈ symbols × log₂(alphabet size), generously using ~4 bits/symbol),
+n_6 ≈ 11,128 × 4 ≈ **44,500 bits** to name the number **six**. From this
+project's own leaderboard data (`phase0/c-pole-position.md`): BLC needs
+just **1,850 bits** to construct a number that *exceeds Loader's number*,
+and **331 bits** to reach Buchholz-ordinal territory via the Bashicu Matrix
+System. So bare first-order logic spends roughly **24× more bits naming
+six** than BLC needs to blow past Loader's number, and **~130× more** than
+BMS needs to reach Buchholz's ordinal. BMS and BLC are specifically
+engineered for compact recursion; bare first-order logic, under this
+convention, has no such trick — every reference has to be fully respelled,
+never reused.
+
+## What if formulas could reuse each other?
+
+Hand-derived estimate, **not yet Lean-verified** — flagged as such,
+consistent with this project's rule against reporting a guess as settled.
+
+Every φ_k embeds a full, freshly-renamed copy of every earlier φ_i (the "+10
+wrapper overhead" pattern is exact and empirical: each embedded copy costs
+n_i + 10). If a short reference to an *already-defined* φ_i were allowed
+instead — a named-predicate call rather than a full respelling, still under
+the "no eliding parens" discipline — the same structural pattern gives,
+very roughly:
+
+- φ_6 alone, if φ_0-φ_5 already exist as reusable definitions: **~161
+  symbols** instead of 11,128 — about **69× shorter**.
+- Including the one-time cost of writing φ_0-φ_5 as reusable definitions
+  from nothing: **~616 symbols total** — still about **18× shorter**.
+
+If a verified number matters more than an estimate, this is a legitimate,
+comparatively cheap follow-up: the Lean toolchain and the K0-K6 machinery
+already exist, so it would extend the existing formalization rather than
+rebuild it.
+
+## Does the growth rate speed up eventually?
+
+Look at the ratio column in the table above again: 3.0, 4.3, 3.1, 3.0, 3.0,
+3.0. It is not accelerating — if anything it is *settling* to a flat ~3×
+per step. Nothing in this data suggests naming k=100, or k=1000, gets any
+*cheaper per step* than naming k=6 did. Taken at face value and
+extrapolated blindly, that would be an alarming result: a googol
+(10^100) symbols, spent at a fixed ~3× rate, only reaches k ≈ log₃(10^100)
+≈ 210 — a distinctly unimpressive number for something with Rayo's number's
+reputation.
+
+That extrapolation is wrong, but *why* it's wrong is the important part,
+not just the reassurance. Every φ_k built here uses one specific strategy:
+"x's members are exactly 0, 1, ..., k-1" — an explicit, one-at-a-time list,
+essentially a unary encoding dressed in first-order logic. The real Rayo's
+number does not count up to a googol one integer at a time. It uses first-
+order logic's ability to *quantify over the entire universe of formulas and
+proofs* to build something self-referential — roughly, "the smallest number
+that no formula shorter than N symbols can name" (a rigorous, non-paradoxical
+version of the Berry paradox, made to work via a careful satisfaction
+predicate). That move doesn't enumerate anything; it harnesses the full
+proof-theoretic strength of ZFC in one shot — the same way Busy Beaver's
+enormous values don't come from counting, they come from exploiting the
+entire space of possible machine behaviors through a completely different
+mechanism than incrementing.
+
+Why didn't naming 0 through 6 find that trick on its own? Because it isn't
+available yet at that scale. Quantifying over "all formulas of bounded
+length and their satisfaction" needs its own real bootstrapping cost —
+plausibly comparable to or larger than the 90-line κ(R) artifact measured
+below, and likely much larger, since a full formula-and-proof quantifier is
+a strictly bigger undertaking than a bare satisfaction relation for
+concrete sets. At a target as small as "six," that bootstrap cost would
+dominate everything, so the run was forced into the boring
+enumerate-explicitly regime — exactly what got measured. This is the same
+phenomenon `KAPPA-TABLE.md`'s Phase 4 already found comparing *different*
+systems R to each other (a cheap system pays disproportionately at the
+bottom before its real power appears) — showing up here *within* one
+system's own strategy space instead of between systems.
+
+So: the worry that Rayo's number might be smaller than advertised is
+justified *for the enumerate-one-at-a-time strategy specifically* — that
+strategy really is this bad, forever, as far as the data and the structural
+argument both suggest. It's exactly why the real construction reaches for
+diagonalization instead. One honest limit: pinning down *at what k the
+crossover happens* — where diagonalization starts beating naive enumeration
+— would need formalizing "quantify over formulas of bounded length and
+their satisfaction" in Lean, a serious step up from what exists here, closer
+to the "large undertaking" `METHODOLOGY.md` already flagged as infeasible
+for a full Rayo evaluator. That's a real open question, not a quick
+follow-up — worth knowing where the edge of what's cheaply checkable is,
+rather than guessing past it.
+
 ## The rules themselves: 90 lines, 556 tokens
 
 Separately from n_k (the cost of naming a *specific* number), there's
