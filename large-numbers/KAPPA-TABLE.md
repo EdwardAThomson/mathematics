@@ -179,7 +179,10 @@ one infeasible, is a sketch, not a theorem.
 
 Added after the B0/B1/B3 (Boolos fork) and R0 (Rayo fork) work — see
 `BOOLOS-B0-WELLDEFINEDNESS.md`, `BOOLOS-B3-PAPER-VERIFICATION.md`,
-`rayo-lean-boolos/BOOLOS-B1-B3-REPORT.md`, and `RAYO-R0-WELLDEFINEDNESS.md`.
+`rayo-lean-boolos/BOOLOS-B1-B3-REPORT.md`, `RAYO-R0-WELLDEFINEDNESS.md`, and
+`RAYO-GROWTH-RATE.md` (the growth-side companion: it shows the two rows below use
+the *same* naming mechanism, so the growth gap is due entirely to the
+naming-predicate strength this section contrasts).
 
 **Unit warning.** The rows below are **not** BLC-bit measurements and do not
 belong in the table above; merging them would be a category error, the same one
