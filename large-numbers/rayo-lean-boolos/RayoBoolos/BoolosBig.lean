@@ -413,34 +413,173 @@ theorem tSize_numeral_le (n k : ℕ) : tSize (Semiterm.numeral k : Semiterm ℒ�
     · rw [tSize_numeral_succ (by omega), tSize_numeral_one]
       omega
 
-/-! ### Where this attempt stops: `fSize` under substitution
+/-! ### `fSize` under substitution: the previously-stuck bridging lemma, closed
 
-**Not closed.** The domination theorem needs one more fact: for `graphAt n
-:= graph ⇜ ![#0, numeral n]` (`RayoBoolos.ProvablyTotal.graphAt`,
-`Domination.lean`), `fSize (graphAt n) ≤ fSize graph * B` where `B` is a
-uniform bound on `tSize (numeral n)` — i.e. substitution blows a formula's
-`fSize` up by at most a multiplicative factor tied to the size of what gets
-substituted in. The *term*-level version of this (`tSize` under a `Rew`)
-worked out cleanly by structural induction using `Rew.func`'s `@[simp]`
-lemma. The *formula*-level version does not close in the time available:
-`Rewriting.app`/`▹` for the concrete `Semiformula ℒₒᵣ Empty` instance is
-**not** `rfl`-transparent on `verum`/`falsum`/`and`/`or` (`rfl` fails outright
-on `ω ▹ Semiformula.verum = Semiformula.verum`), and the generic
-`LO.HomClass.map_top`/`map_and`/`map_or` simp lemmas that should cover these
-cases either don't resolve by that name from this import chain or don't fire
-via plain `simp` here — `Rewriting.app_all`/`app_exs` (the quantifier cases,
-which *are* `Rewriting`-specific and do exist) fire but the connective cases
-are the blocker. This is the same flavor of de-Bruijn/`Rew`-API bookkeeping
-difficulty the *previous* session hit in `subst_existsUnique_eq`
-(`Domination.lean`'s docstring), just one layer further out. Finding the
-right lemma (or the right way to unfold `Rewriting.app` for `Semiformula`)
-would very likely close it; that is exactly where a follow-up session should
-resume. `BoolosBig_PA`, its monotonicity, its upper-bound property, and the
-`O(n)` numeral-cost fact above it are unaffected and sorry-free — this gap is
-confined to the one remaining bridging lemma. -/
+A follow-up session's finding, contrary to the previous session's conclusion
+recorded in the note this section used to contain: `Rewriting.app`/`▹` for
+the concrete `Semiformula ℒₒᵣ Empty` instance **is** `rfl`-transparent on
+`verum`/`falsum`/`and`/`or`. `Rewriting.app` for this instance is literally
+`Semiformula.rew`, itself `rewAux` (`Foundation/FirstOrder/Basic/Syntax/
+Rew.lean`) bundled into a `→ˡᶜ` hom; `rewAux` is a direct structural pattern
+match on its formula argument, and `verum`/`falsum`/`and`/`or` are exactly
+its non-recursing base-case patterns, so `ω ▹ Semiformula.verum =
+Semiformula.verum` (and the `and`/`or` analogues) close by plain `rfl` —
+verified directly before writing the lemmas below. It is not clear why the
+previous attempt's `rfl` failed; possibly a different concrete goal shape
+(e.g. under a bigger elaboration context) was actually tried. Recorded here
+as named `@[simp]` facts so the induction below closes uniformly, alongside
+`Foundation`'s own `Rewriting.app_all`/`app_exs` (quantifiers) and
+`rew_rel_eq_comp`/`rew_nrel_eq_comp` (atomic, both already `@[simp]`). -/
+
+/-- `tSize` is invariant under `Rew.bShift` — `bShift` (`= Rew.map Fin.succ
+id`) only relabels bound-variable indices, it never adds or removes a
+function-symbol node, so the symbol count is unchanged. -/
+private theorem tSize_bShift {n : ℕ} (t : Semiterm ℒₒᵣ Empty n) :
+    tSize (Rew.bShift t) = tSize t := by
+  induction t with
+  | bvar x => simp [tSize, Rew.bShift, Rew.map]
+  | fvar x => exact x.elim
+  | func f v ih => simp [tSize, ih, Rew.func, Function.comp_apply]
+
+/-- Term-level substitution bound: if every bound variable of a term is sent
+by `ω` to a term of `tSize ≤ B` (`B ≥ 1`), the whole term's `tSize` blows up
+by at most a factor `B`. The "term-level analogue" the module docstring
+refers to — structural induction, closing via `Rew.func`'s existing
+`@[simp]` lemma. -/
+private theorem tSize_rew_le {n m : ℕ} (ω : Rew ℒₒᵣ Empty n Empty m) (B : ℕ) (hB : 1 ≤ B)
+    (hω : ∀ i : Fin n, tSize (ω (Semiterm.bvar i)) ≤ B) :
+    ∀ t : Semiterm ℒₒᵣ Empty n, tSize (ω t) ≤ tSize t * B := by
+  intro t
+  induction t with
+  | bvar x => simpa [tSize] using hω x
+  | fvar x => exact x.elim
+  | func f v ih =>
+    simp only [Rew.func, tSize, Function.comp_apply]
+    calc 1 + Finset.univ.sum (fun i => tSize (ω (v i)))
+        ≤ 1 + Finset.univ.sum (fun i => tSize (v i) * B) := by
+          exact Nat.add_le_add_left (Finset.sum_le_sum (fun i _ => ih i)) 1
+      _ ≤ B + Finset.univ.sum (fun i => tSize (v i) * B) := by omega
+      _ = (1 + Finset.univ.sum (fun i => tSize (v i))) * B := by
+          rw [add_mul, one_mul, Finset.sum_mul]
+
+/-- `ω.q` sends every bound variable of `Fin (n+1)` to a term of `tSize ≤ B`,
+given `ω` does so on `Fin n` (`B ≥ 1`) — the inductive step needed to push
+`tSize_rew_le`'s hypothesis under a quantifier, via `Foundation`'s
+`q_bvar_zero`/`q_bvar_succ` plus `tSize_bShift` above. -/
+private theorem q_bound {n m : ℕ} (ω : Rew ℒₒᵣ Empty n Empty m) (B : ℕ) (hB : 1 ≤ B)
+    (hω : ∀ i : Fin n, tSize (ω (Semiterm.bvar i)) ≤ B) :
+    ∀ i : Fin (n + 1), tSize (ω.q (Semiterm.bvar i)) ≤ B := by
+  intro i
+  cases i using Fin.cases with
+  | zero => simpa [tSize] using hB
+  | succ j => simpa [tSize_bShift] using hω j
+
+/-- **The previously-stuck bridging lemma, closed.** Substitution blows up a
+formula's `fSize` by at most a multiplicative factor `B`, when every bound
+variable is sent to a term of `tSize ≤ B` (`B ≥ 1`). Structural induction on
+`φ`, generalizing the codomain `m`/rewriting `ω`/bound `B` at each step
+(needed for the quantifier cases, which recurse at `n + 1` against `ω.q`).
+Uses plain `induction φ with` (raw-constructor case tags, matching how the
+rest of this file splits on `Semiformula` — see `formsUpTo_finite` above),
+**not** `Semiformula.rec'`: the latter states its `and`/`or`/`verum`/`falsum`
+cases using the `⋏`/`⋎`/`⊤`/`⊥` `LogicalConnective` notation, which — despite
+being `rfl`-equal to the raw `Semiformula.and`/`.or`/`.verum`/`.falsum`
+constructors `fSize` pattern-matches on — is not syntactically what `simp`
+matches against by default; the raw-constructor recursion sidesteps that
+entirely. -/
+private theorem rew_app_verum {n₁ n₂ : ℕ} (ω : Rew ℒₒᵣ Empty n₁ Empty n₂) :
+    ω ▹ (Semiformula.verum : Semiformula ℒₒᵣ Empty n₁) = Semiformula.verum := rfl
+
+private theorem rew_app_falsum {n₁ n₂ : ℕ} (ω : Rew ℒₒᵣ Empty n₁ Empty n₂) :
+    ω ▹ (Semiformula.falsum : Semiformula ℒₒᵣ Empty n₁) = Semiformula.falsum := rfl
+
+theorem fSize_rew_le {n : ℕ} (φ : Semiformula ℒₒᵣ Empty n) :
+    ∀ {m : ℕ} (ω : Rew ℒₒᵣ Empty n Empty m) (B : ℕ), 1 ≤ B →
+      (∀ i : Fin n, tSize (ω (Semiterm.bvar i)) ≤ B) → fSize (ω ▹ φ) ≤ fSize φ * B := by
+  induction φ with
+  | verum =>
+    intro m ω B hB _
+    rw [rew_app_verum]; simpa [fSize] using hB
+  | falsum =>
+    intro m ω B hB _
+    rw [rew_app_falsum]; simpa [fSize] using hB
+  | rel r v =>
+    intro m ω B hB hω
+    simp only [Semiformula.rew_rel_eq_comp, fSize]
+    calc 1 + Finset.univ.sum (fun i => tSize (ω (v i)))
+        ≤ 1 + Finset.univ.sum (fun i => tSize (v i) * B) :=
+          Nat.add_le_add_left (Finset.sum_le_sum (fun i _ => tSize_rew_le ω B hB hω (v i))) 1
+      _ ≤ B + Finset.univ.sum (fun i => tSize (v i) * B) := by omega
+      _ = (1 + Finset.univ.sum (fun i => tSize (v i))) * B := by
+          rw [add_mul, one_mul, Finset.sum_mul]
+  | nrel r v =>
+    intro m ω B hB hω
+    simp only [Semiformula.rew_nrel_eq_comp, fSize]
+    calc 1 + Finset.univ.sum (fun i => tSize (ω (v i)))
+        ≤ 1 + Finset.univ.sum (fun i => tSize (v i) * B) :=
+          Nat.add_le_add_left (Finset.sum_le_sum (fun i _ => tSize_rew_le ω B hB hω (v i))) 1
+      _ ≤ B + Finset.univ.sum (fun i => tSize (v i) * B) := by omega
+      _ = (1 + Finset.univ.sum (fun i => tSize (v i))) * B := by
+          rw [add_mul, one_mul, Finset.sum_mul]
+  | and φ ψ ihφ ihψ =>
+    intro m ω B hB hω
+    have h1 := ihφ ω B hB hω
+    have h2 := ihψ ω B hB hω
+    have hgoal : ω ▹ (Semiformula.and φ ψ) = Semiformula.and (ω ▹ φ) (ω ▹ ψ) := rfl
+    rw [hgoal]
+    simp only [fSize]
+    have hring : fSize φ * B + fSize ψ * B + B = (1 + fSize φ + fSize ψ) * B := by ring
+    omega
+  | or φ ψ ihφ ihψ =>
+    intro m ω B hB hω
+    have h1 := ihφ ω B hB hω
+    have h2 := ihψ ω B hB hω
+    have hgoal : ω ▹ (Semiformula.or φ ψ) = Semiformula.or (ω ▹ φ) (ω ▹ ψ) := rfl
+    rw [hgoal]
+    simp only [fSize]
+    have hring : fSize φ * B + fSize ψ * B + B = (1 + fSize φ + fSize ψ) * B := by ring
+    omega
+  | all φ ih =>
+    intro m ω B hB hω
+    have hq := q_bound ω B hB hω
+    have hih := ih (ω.q) B hB hq
+    have hgoal : ω ▹ (Semiformula.all φ) = Semiformula.all (ω.q ▹ φ) := rfl
+    rw [hgoal]
+    simp only [fSize]
+    have hring : fSize φ * B + B = (1 + fSize φ) * B := by ring
+    omega
+  | exs φ ih =>
+    intro m ω B hB hω
+    have hq := q_bound ω B hB hω
+    have hih := ih (ω.q) B hB hq
+    have hgoal : ω ▹ (Semiformula.exs φ) = Semiformula.exs (ω.q ▹ φ) := rfl
+    rw [hgoal]
+    simp only [fSize]
+    have hring : fSize φ * B + B = (1 + fSize φ) * B := by ring
+    omega
+
+/-- Specialized to `graphAt n := graph ⇜ ![#0, numeral n]`
+(`ProvablyTotal.graphAt`, `Domination.lean`): its `fSize` is bounded by
+`fSize graph * (2n + 1)`, i.e. `O(n)`, matching the paper-verification's
+finding — the substitution vector's two components are `#0` (`tSize = 1`)
+and `numeral n` (`tSize ≤ 2n + 1` by `tSize_numeral_le`), both `≤ 2n + 1`. -/
+theorem fSize_graphAt_le {f : ℕ → ℕ} (P : ProvablyTotal f) (n : ℕ) :
+    fSize (P.graphAt n) ≤ fSize P.graph * (2 * n + 1) := by
+  have hb : ∀ i : Fin 2, tSize ((Rew.subst (![#0, Semiterm.numeral n] : Fin 2 → Semiterm ℒₒᵣ Empty 1))
+      (Semiterm.bvar i)) ≤ 2 * n + 1 := by
+    intro i
+    cases i using Fin.cases with
+    | zero => simp [tSize]
+    | succ j =>
+      cases j using Fin.cases with
+      | zero => simpa using tSize_numeral_le 1 n
+      | succ k => exact k.elim0
+  exact fSize_rew_le P.graph (Rew.subst ![#0, Semiterm.numeral n]) (2 * n + 1) (by omega) hb
 
 end RayoBoolos
 
 #print axioms RayoBoolos.BoolosBig_PA_mono
 #print axioms RayoBoolos.namedValues_le_BoolosBig_PA
 #print axioms RayoBoolos.tSize_numeral_le
+#print axioms RayoBoolos.fSize_rew_le
+#print axioms RayoBoolos.fSize_graphAt_le
