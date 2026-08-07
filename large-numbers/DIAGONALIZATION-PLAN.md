@@ -49,6 +49,25 @@ building from scratch where it doesn't, and calibrating Stage 2's resource
 caps against how long comparable prior efforts (incompleteness
 formalizations) are known to have taken.
 
+**Stage 0 complete — see `DIAGONALIZATION-STAGE0-FINDINGS.md`.** The gate
+above was answered, but it also surfaced a bigger decision than "how to
+scope Stage 1-2": Rayo's own diagonalization has never been given a fully
+rigorous proof anywhere, informally or mechanically — his own account (ch.
+9.4, *On the Brink of Paradox*) is a prose sketch, not a theorem, and every
+genuinely rigorous Berry-paradox-style construction found in the literature
+(Boolos 1989, and everything built on it) uses a different escape mechanism
+than Rayo's. Targeting Rayo's specific construction is therefore closer to
+original research than to formalizing known math. A real Lean library
+(`FormalizedFormalLogic/Foundation`) exists with internal coding, an
+internal diagonal lemma, and full incompleteness proofs over hereditarily
+finite sets — but built on the Boolos-style route, not Rayo's. This is a
+decision point for a human, not something to resolve by picking a default:
+attempt Rayo's own construction (higher risk, more novel, closer to the
+original motivating question) or the Boolos-style construction instead
+(lower risk, real formalized precedent to build on, demonstrates the same
+"diagonalization beats enumeration" phenomenon without needing unestablished
+rigor).
+
 ## Stage 1 — Encode formulas as sets (build, bounded, low risk)
 
 Extend `rayo-lean/Rayo/Syntax.lean` and `Satisfaction.lean` so a `Formula`

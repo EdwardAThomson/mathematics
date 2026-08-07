@@ -53,10 +53,21 @@ assignment sends x₁→m (unique denotation).
 takes ∀ as derived, which is consistent with our expansion rule). So the alphabet
 side of our convention is externally corroborated, not idiosyncratic.
 
-Primary source for the Sat construction: Agustín Rayo, "On Specifying
-Truth-Conditions," Philosophical Review (MIT copy at web.mit.edu/arayo/www/fc.pdf).
-The PDF is not machine-text-extractable via our fetch tool (binary/FlateDecode),
-so it is cited by reference, not quoted.
+**Correction (2026-08-07, via the diagonalization-plan Stage 0 audit):** the
+line above originally cited Agustín Rayo, "On Specifying Truth-Conditions,"
+*Philosophical Review* (web.mit.edu/arayo/www/fc.pdf) as the primary source
+for the Sat construction, unread at the time because the PDF wasn't
+machine-text-extractable via our fetch tool. A later agent fetched and
+full-text-searched that PDF directly: it contains zero occurrences of
+"Rayo's number," "googol," or "paradox" — it is an unrelated paper, about
+ontological commitment in arithmetic/modal discourse, not Rayo's number at
+all. The actual primary source is Agustín Rayo, "The Big Number Duel,"
+Chapter 9.4 of *On the Brink of Paradox* (MIT Press, 2019), MIT copy at
+web.mit.edu/arayo/www/brink-duel.pdf — successfully fetched and read in
+full by that agent. See `DIAGONALIZATION-STAGE0-FINDINGS.md` §3 for what it
+actually says about the Sat construction and the paradox escape (notably:
+Rayo's own account never uses the words "Berry" or "paradox" at all — that
+framing is a later overlay from Wikipedia/Googology Wiki, not his own).
 
 ## 3. What prior work does NOT provide (the core gap this run fills)
 
@@ -98,9 +109,14 @@ not a matter of locating a citation.
 
 ## 5. Citable sources (bibliography)
 
-- Agustín Rayo, "On Specifying Truth-Conditions," *The Philosophical Review*
-  117(3), 2008. MIT copy: https://web.mit.edu/arayo/www/fc.pdf  (primary; Sat
-  machinery / microlanguage). Not text-extracted here.
+- ~~Agustín Rayo, "On Specifying Truth-Conditions," *The Philosophical
+  Review* 117(3), 2008 (https://web.mit.edu/arayo/www/fc.pdf)~~ — **wrong
+  citation, see the correction above**: this paper is unrelated to Rayo's
+  number.
+- Agustín Rayo, "The Big Number Duel," ch. 9.4 of *On the Brink of Paradox*
+  (MIT Press, 2019). MIT copy: https://web.mit.edu/arayo/www/brink-duel.pdf
+  (primary; Sat machinery / microlanguage / the actual paradox-escape
+  account). Fetched and read in full.
 - Rayo's MIT publications page: https://philpeople.org/profiles/agustin-rayo
 - "Rayo's number," Wikipedia: https://en.wikipedia.org/wiki/Rayo's_number
   (definition, construction rules, Duel date 26 Jan 2007). Fetched.
