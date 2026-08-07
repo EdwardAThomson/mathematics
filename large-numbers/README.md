@@ -40,14 +40,24 @@ Letting formulas *reuse* each other instead of respelling (`rayo-lean/
 Rayo/Reuse.lean`) cuts naming 6 to 148/550 symbols (75×/20× cheaper),
 mechanically confirmed, slightly beating a hand estimate made first.
 
-**Correction, found later (`RAYO-GROWTH-RATE.md` §2):** this ~3^k table is
-the cost of one specific bad strategy — *enumerate every predecessor* — not
-the minimum. A **successor-chain** naming (just count up to k, `O(k)`
-symbols) is almost certainly far cheaper, possibly by orders of magnitude at
-k=6. Not yet verified in Lean — this is `LAPTOP-HANDOFF.md`'s Task 2, a
-self-contained, no-Mathlib check ready to run in `rayo-lean/` whenever
-wanted. K0-K6 stay correct as upper bounds either way (never claimed
-minimal); this just narrows how far from minimal they are.
+**Correction, found later and now verified (`RAYO-EXPLAINER.md`, "Is
+enumerate-predecessors the cheapest strategy?"):** the ~3^k table is the
+cost of one specific bad strategy — *enumerate every predecessor* — not the
+minimum. A **successor-chain** naming (just count up to k, reusing the
+"successor of" step each time instead of re-deriving everything) names 6 in
+**388 symbols — 28.7× cheaper** than `K6.lean`'s 11,128, mechanically
+confirmed (`rayo-lean/Rayo/K6Chain.lean`, sorry-free). K0-K6 stay correct as
+upper bounds under their own strategy (never claimed minimal); this narrows
+how far from minimal they actually were.
+
+**A real correction to an earlier claim in this project, caught while
+building the check above:** `K0.lean`/`K1.lean` are genuinely
+`Classical.choice`-free (`[propext, Quot.sound]` only), but `K2.lean`
+through `K6.lean` (and `K6Chain.lean`) do use `Classical.choice`, via
+`Classical.em` to extract witnesses from `¬∀¬`-encoded existentials. This
+project previously stated "never `Classical.choice`" for all seven files;
+that was wrong for k ≥ 2, and is corrected in `RAYO-EXPLAINER.md` with the
+exact line numbers rather than left standing.
 
 ## Part 3 — why counting is the wrong question
 
@@ -142,9 +152,9 @@ smooth dial you can turn partway.
    substitution); the eventual fix was a `Foundation` API mismatch between
    two notations for the same connectives, not a real mathematical
    obstacle.
-2. **The successor-chain naming check** (`LAPTOP-HANDOFF.md` Task 2) — is
-   minimal FOST naming actually `O(k)`, not `~3^k`? Self-contained, no
-   Mathlib, ready to run.
+2. **Done** — the successor-chain naming check confirmed it: 388 symbols
+   for k=6, 28.7× cheaper than `K6.lean`'s enumerate-predecessors 11,128
+   (`rayo-lean/Rayo/K6Chain.lean`, sorry-free).
 3. **The Mathlib/`Foundation` dependency paid off** — it delivered the full
    B3 proof, so `LAPTOP-HANDOFF.md` Task 3's question is settled in favor
    of keeping it. Task 2 (below) doesn't need it regardless.
