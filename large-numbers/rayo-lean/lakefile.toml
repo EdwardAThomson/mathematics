@@ -1,0 +1,10 @@
+name = "rayo-lean"
+defaultTargets = ["Rayo"]
+
+# Self-contained, no-Mathlib project: first-order set theory over `in`,
+# with a hereditarily-finite-set model, satisfaction relation, and the
+# k = 0 uniqueness spike.
+
+[[lean_lib]]
+name = "Rayo"
+globs = ["Rayo", "Rayo.Syntax", "Rayo.Satisfaction", "Rayo.K0"]
