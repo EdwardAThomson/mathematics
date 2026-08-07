@@ -1,0 +1,16 @@
+name = "rayo-lean-boolos"
+defaultTargets = ["RayoBoolos"]
+
+# Boolos-fork B1-B3 work: depends on FormalizedFormalLogic/Foundation (and
+# transitively Mathlib), unlike the self-contained, Mathlib-free `rayo-lean/`
+# next to this directory. Kept as a separate Lean project deliberately —
+# see BOOLOS-B0-WELLDEFINEDNESS.md section 7.
+
+[[require]]
+name = "Foundation"
+git = "https://github.com/FormalizedFormalLogic/Foundation"
+rev = "31bb5856c1086e3289c05f2db7356642754e02d3"
+
+[[lean_lib]]
+name = "RayoBoolos"
+globs = ["RayoBoolos.Sanity", "RayoBoolos.TNames", "RayoBoolos.Probe", "RayoBoolos.Basic"]

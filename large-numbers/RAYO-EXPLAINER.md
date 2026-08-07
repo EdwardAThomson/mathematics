@@ -173,25 +173,32 @@ never reused.
 
 ## What if formulas could reuse each other?
 
-Hand-derived estimate, **not yet Lean-verified** — flagged as such,
-consistent with this project's rule against reporting a guess as settled.
+**Now Lean-verified** (`rayo-lean/Rayo/Reuse.lean`, `Rayo/ReuseSix.lean`;
+full record in `rayo-lean/REUSE-COMPRESSION-REPORT.md`) — this started as a
+hand-derived estimate, flagged at the time as not yet checked, and has since
+been built and mechanically confirmed.
 
 Every φ_k embeds a full, freshly-renamed copy of every earlier φ_i (the "+10
 wrapper overhead" pattern is exact and empirical: each embedded copy costs
-n_i + 10). If a short reference to an *already-defined* φ_i were allowed
-instead — a named-predicate call rather than a full respelling, still under
-the "no eliding parens" discipline — the same structural pattern gives,
-very roughly:
+n_i + 10). Allowing a short reference to an *already-defined* φ_i instead —
+a named-predicate call (`ref`, costing a fixed 2 symbols, matching the
+existing convention's own atom-cost rule) rather than a full respelling —
+was built as a real extension of the `Formula` language, given proper
+expansion semantics, and proven `Sat`-equivalent to the existing, independent
+`K6.lean` construction (not just shorter-looking: mechanically confirmed to
+name the same number, six).
 
-- φ_6 alone, if φ_0-φ_5 already exist as reusable definitions: **~161
-  symbols** instead of 11,128 — about **69× shorter**.
-- Including the one-time cost of writing φ_0-φ_5 as reusable definitions
-  from nothing: **~616 symbols total** — still about **18× shorter**.
+| | estimated | real, machine-checked |
+|---|---|---|
+| φ_6 alone, 0-5 already defined | ~161 | **148** (75.2× shorter than 11,128) |
+| Including defining 0-5 from scratch | ~616 | **550** (20.2× shorter) |
 
-If a verified number matters more than an estimate, this is a legitimate,
-comparatively cheap follow-up: the Lean toolchain and the K0-K6 machinery
-already exist, so it would extend the existing formalization rather than
-rebuild it.
+The original estimate held up directionally and was a little pessimistic —
+the real numbers land 8-11% below the guess, not above it. One genuine bug
+was caught and fixed along the way: existentials are encoded internally as
+`¬∀¬` with no dedicated symbol, and a first pass at the cost function
+overcounted every `∃` by 6 symbols before being corrected to match
+`convention-notes.md`'s stated convention.
 
 ## Does the growth rate speed up eventually?
 
