@@ -187,6 +187,19 @@ machinery), so this sidesteps Tarski's undefinability barrier entirely.
   `[propext, Classical.choice, Quot.sound]`, the project's standard bar for
   Foundation-based work.
 
+  What that theorem actually says, in plain terms: `BoolosBig_PA(m)` is
+  *defined* as the biggest number provably nameable within m symbols, so
+  "it beats every nameable number" is trivial, like pointing at the
+  tallest person in the room. The definition alone doesn't say anyone in
+  the room is tall. Part 2 shows that worry is real: if enumerating
+  predecessors were the best naming strategy available, the biggest number
+  nameable in m symbols would only be ~log(m). The content of the theorem
+  is that the room contains giants: for any function f that PA proves
+  total, *short* formulas (linear in n) provably name values as huge as
+  f(n²), so past a threshold every budget m reaches at least f(m). The
+  restriction to PA-provably-total functions is also exactly why this
+  rung's growth caps at ε₀.
+
 ### The Rayo fork: truth, MK-strength
 
 This fork ([`RAYO-RIGOR-PLAN.md`](RAYO-RIGOR-PLAN.md)) attempts Rayo's own
@@ -227,6 +240,23 @@ to **one variable, the strength of what "names" is allowed to mean**: not a
 different mechanism, not a cleverer trick. That is real, sharpened evidence
 for Part 1's open question. The jump is a sharp, Tarski-drawn step between
 two commitment levels, not a smooth dial you can turn partway.
+
+### Is Rayo's rung the top? (standard theory, not a project result)
+
+No, and it's worth being explicit that this paragraph is inherited from
+standard theory rather than verified by this project. The naming game
+relativizes: it takes a language plus a notion of naming and returns a
+function. Rayo's rung plays it over first-order set theory, with truth
+supplied by an MK-strength metatheory (the R0 finding). But that metatheory
+is itself a formal language, so the identical game can be played one level
+up, and by the same diagonal argument the resulting function eventually
+dominates Rayo's. Tarski's hierarchy guarantees there is always a stronger
+rung and never a top, so "the biggest number for a given symbol count,
+across all systems" has no answer in principle. This project verified
+exactly one step of that ladder (PA-provability vs truth-in-V); nothing
+above Rayo's rung has been checked here. And climbing carelessly does fail:
+BIG FOOT (Part 1) was an attempted higher rung whose language turned out to
+be ill-defined.
 
 ---
 
