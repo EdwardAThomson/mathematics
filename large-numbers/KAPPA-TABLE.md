@@ -107,6 +107,17 @@ second-order arithmetic, a stronger ceiling); the 331-bit anchor is retained as
 the conservative upper bound regardless of which of those two ordinals is the
 exact growth rate.
 
+**Correction from the `LADDER.md` audit (Aug 2026):** both labels above
+overstate what is proven. The psi(Omega_omega) figure is the proven bound for
+the *2-row fragment* only (p進大好きbot's 2018 pair-sequence proof); the full
+system's ordinal is simply open, with no proven value and no rigorously stated
+conjecture, and "PTO(Z_2)" is community aspiration. Moreover BMS versions
+BM1-BM3 were each refuted (explicit non-terminating inputs), and termination
+of the current BM4 rests on one unrefereed 2023 preprint (arXiv:2307.04606).
+See `LADDER.md` rung 5 for the full audit. This row's kappa figure is
+unaffected; its growth-rate column should be read as "at least
+psi(Omega_omega)-class (2-row fragment), full system open".
+
 ### System F / Calculus of Constructions (Loader's number)
 
 kappa charges for a **type-checker**: the term/type parser, the typing rules

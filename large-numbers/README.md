@@ -146,9 +146,13 @@ it would take to verify the real strategy rigorously.
 The **Stage 0 audit**
 ([`DIAGONALIZATION-STAGE0-FINDINGS.md`](DIAGONALIZATION-STAGE0-FINDINGS.md))
 turned up something surprising: nobody has ever formalized Rayo's
-construction, and (the bigger finding) nobody has ever given it a fully
-*rigorous* proof at all, informal or mechanized. His own account is a prose
-sketch.
+construction in a proof assistant, and no fully rigorous end-to-end proof
+of it exists in the mainstream literature. His own account is a prose
+sketch. (One honest amendment, found by the later [`LADDER.md`](LADDER.md)
+audit: the googology community's own technical wing has carefully analyzed
+the *well-definedness* half since 2018, reaching the same MK-strength
+verdict as R0 below; nothing there is mechanized, and the growth-rate half
+remains unproven outside this project.)
 
 Real, usable Lean prior art does exist for the *other* classical route to
 self-reference, Gödel/Boolos-style diagonalization:
@@ -212,9 +216,10 @@ plan's own exit conditions.
   relative to a commitment the popular description hides. "Satisfies" for
   first-order formulas secretly needs a second-order truth predicate, and
   by Tarski that can't be first-order set theory itself; it needs roughly
-  **Morse-Kelley (MK) strength** (independently checked against the
-  literature). Grant that, and Rayo's number is real and well-defined.
-  Withhold it, and the construction names nothing.
+  **Morse-Kelley (MK) strength** (independently derived here; later found
+  to have precedent in the googology community's technical literature, see
+  [`LADDER.md`](LADDER.md) rung 9). Grant that, and Rayo's number is real
+  and well-defined. Withhold it, and the construction names nothing.
 - **Growth rate, given the commitment**
   ([`RAYO-GROWTH-RATE.md`](RAYO-GROWTH-RATE.md)): using the *same*
   direct-naming-plus-pre-inflation argument as Boolos B3, Rayo eventually
@@ -305,6 +310,7 @@ Still open:
 | the formal question | [`BN-function.md`](BN-function.md) |
 | κ(R) convention, all definitional choices flagged | [`METHODOLOGY.md`](METHODOLOGY.md) |
 | the six-system comparison, no compactness law | [`KAPPA-TABLE.md`](KAPPA-TABLE.md) |
+| the famous numbers audited rung by rung | [`LADDER.md`](LADDER.md) |
 | naming 0-6 in bare FOST, mechanized | [`RAYO-EXPLAINER.md`](RAYO-EXPLAINER.md), [`K0`](rayo-lean/Rayo/K0.lean)–[`K6.lean`](rayo-lean/Rayo/K6.lean) |
 | successor-chain naming (388 vs 11,128 symbols) | [`K6Chain.lean`](rayo-lean/Rayo/K6Chain.lean) |
 | Gödel-coding formulas as data | [`Encoding.lean`](rayo-lean/Rayo/Encoding.lean) |
