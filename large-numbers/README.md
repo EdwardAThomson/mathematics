@@ -258,6 +258,20 @@ above Rayo's rung has been checked here. And climbing carelessly does fail:
 BIG FOOT (Part 1) was an attempted higher rung whose language turned out to
 be ill-defined.
 
+A concrete example makes the step vivid. The metatheory has the one tool
+FOST lacks: a satisfaction predicate `Sat(⌜φ⌝, v)` saying "FOST formula φ
+is true of v". With that predicate, "φ names x" and then "Rayo(n)" become
+ordinary definitions, so the metatheory can write "x is the successor of
+Rayo(10^100)" in a few thousand symbols. By the definition of Rayo's
+function, naming that same number in FOST takes more than a googol
+symbols. A number costing over 10^100 symbols at level 0 costs about 10^3
+one level up, and for barely more you can write Rayo(Rayo(googol)) or
+worse. Note what paid for the win: not cleverness, but the assumption that
+"true FOST formula" is a determinate notion, the same MK-strength
+commitment R0 identified. And the metatheory cannot define *its own*
+satisfaction predicate (Tarski again), which is exactly why the game
+repeats forever instead of closing.
+
 ---
 
 ## Status, as of this writing
