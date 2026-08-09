@@ -41,7 +41,8 @@ the work back up later.
   route is fully mechanized in Lean, sorry-free, and tops out at growth
   class ε₀; **Rayo's own truth-in-V** route transcends every fixed ordinal
   notation, but only holds up given an unstated **Morse-Kelley-strength**
-  commitment, and is verified on paper only so far (Part 4).
+  commitment. Its domination argument is now also mechanized, relative to
+  that commitment as an explicit Lean hypothesis (Part 4).
 
 ---
 
@@ -228,8 +229,12 @@ plan's own exit conditions.
   `KAPPA-TABLE.md` (ε₀, Buchholz, Γ₀, BMS, System F's PTO) rather than
   sitting at one rung. It strictly transcends the whole definable-total
   class, and unlike Boolos this falls out immediately from Tarski, no
-  diagonalization needed. Paper only (Lean was unavailable in that
-  session).
+  diagonalization needed. The domination argument is now mechanized at its
+  honest ceiling: `rayoBig_dominates`
+  ([`RayoBig.lean`](rayo-lean-boolos/RayoBoolos/RayoBig.lean), sorry-free)
+  proves it relative to an abstract satisfaction interface, with the
+  truth-in-V commitment as a visible hypothesis rather than a constructed
+  object, which Tarski forbids.
 
 ### The throughline
 
@@ -296,10 +301,22 @@ Settled:
    B3 proof, settling `LAPTOP-HANDOFF.md` Task 3's keep-or-drop question in
    favor of keeping it.
 
+4. **Rayo's growth-rate domination is now mechanized, at its honest
+   ceiling.** `rayoBig_dominates`
+   ([`RayoBig.lean`](rayo-lean-boolos/RayoBoolos/RayoBig.lean), sorry-free,
+   standard axioms) proves the full pre-inflation argument *relative to* an
+   abstract satisfaction interface: the truth-in-V predicate rides in as a
+   structure hypothesis, never constructed, because by Tarski it cannot be.
+   That relative form is the most that can honestly be mechanized; the
+   R0 commitment now lives as a visible Lean hypothesis instead of prose.
+
 Still open:
 
-4. **Rayo's growth-rate result is paper-only.** No Lean session has had
-   toolchain access at the same time as attempting it yet.
+5. **The BM4 termination preprint** (the Bashicu rung's sole support) was
+   audited lemma by lemma ([`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md)): no
+   error found, the Kranakis citation checks out, but its load-bearing
+   Σₙ₊₁-reflection construction could not be line-verified, so
+   [`LADDER.md`](LADDER.md) rung 5 stays `disputed`, now with a receipt.
 
 ---
 

@@ -225,6 +225,74 @@ Tarski-drawn, qualitative jump the section describes, not a smooth dial.
   not appear to have been written down for Rayo's construction.
 - Paper, not Lean.
 
+## 7. Lean mechanization of the domination half (relative scope)
+
+§2's domination argument is now **mechanized in Lean 4**, sorry-free, in
+`rayo-lean-boolos/RayoBoolos/RayoBig.lean` (module `RayoBoolos.RayoBig`,
+theorem `rayoBig_dominates`; `lake build` clean, `#print axioms
+rayoBig_dominates = [propext, Classical.choice, Quot.sound]`). It is the exact
+Lean realization of this note's §6 "same machine, different fuel" claim: the
+proof is `RayoBoolos.BoolosBig.BoolosBig_PA_dominates` (the Boolos fork's
+mechanized pre-inflation √-argument) transported **character-for-character**,
+with only the naming predicate underneath swapped out.
+
+### What was mechanized
+
+Everything the growth argument *does* with the naming predicate, gap-free:
+
+- `RayoBig I : ℕ → ℕ`, the `Rayo(n) = sup{ m : |φ| ≤ n names m }` construction,
+  built as a finite `Finset.sup` over the values nameable within budget `n`
+  (the `+1` of R0's definition is dropped — immaterial to growth rate).
+- `RayoBig` is well-defined and monotone (`RayoBig_mono`), and every nameable
+  value is `≤ RayoBig` at its budget (`namedValues_le_RayoBig`) — the finite-max
+  machinery, reproved for the abstract carrier.
+- **Uniqueness naming is *derived*, not assumed**: `Names_unique` (a formula
+  names at most one value) falls out of the naming biconditional `∀j (Sat φ j ↔
+  j = k)`, i.e. `∀x(φ(x) ↔ x=k̄)`, the R0/B0 "names" condition verbatim.
+- The full §2 domination inequality `∃N ∀m>N, RayoBig m ≥ f m` for every
+  monotone `Definable` `f`, via the `F(n)=f(n²)` pre-inflation and the `n ≈ √m`
+  composition — the same ℕ-arithmetic bookkeeping already checked for the
+  Boolos fork.
+
+### What remains axiomatized — the `Sat` interface — and why that is the honest ceiling
+
+The satisfaction predicate is **axiomatized as structure fields / hypotheses,
+never as Lean `axiom` declarations or constructed objects**. `RayoBig` and
+`rayoBig_dominates` are stated *relative to* an abstract `structure
+SatInterface` bundling: a carrier `Fml` of coded one-free-variable FOST
+formulas; a symbol-count `size`; finiteness of each size-bounded set; and the
+truth-in-`V` readout `Sat : Fml → ℕ → Prop`. The definability class's closure
+under `n ↦ n²` pre-inflation with constant size overhead (the abstract analogue
+of `BoolosBig`'s `graphSq`) rides in as the theorem's `sq` hypothesis.
+
+The reason this `Sat` is assumed rather than *built* — the way the Boolos
+fork's `TNames` predicate is built outright from `Foundation`'s
+object-language provability predicate — is **exactly §4 of this note**: the
+Rayo naming predicate is truth-in-`V`, which by **Tarski's undefinability
+theorem is not first-order definable**. It is the same MK / impredicative-truth
+commitment `RAYO-R0-WELLDEFINEDNESS.md` isolated. There is therefore no honest
+way to construct it inside first-order Lean; assuming it as an interface and
+proving the growth theorem conditionally on it is the faithful move, and it is
+the Lean form of this note's opening "everything below is conditional on R0's
+well-definedness commitment." Because the interface enters as structure fields
+rather than `axiom`s, `#print axioms` reports **zero** Rayo-specific axioms: the
+mathematical dependence on truth-in-`V` lives, visibly, in the `SatInterface`
+argument the theorem quantifies over — one cannot invoke `rayoBig_dominates`
+without exhibiting such an interface. This asymmetry (Boolos: predicate built,
+no extra hypothesis; Rayo: predicate axiomatized as an interface) is precisely
+the Tarski-drawn gap §4 and §6 describe, now visible in the two files' type
+signatures.
+
+**Honest limits of the mechanization.** Only the §2 *lower bound* (domination
+of the monotone-definable class) is mechanized. §3 (past every fixed ordinal
+notation) and §4's *upper bound* (strict transcendence) are not — the latter
+would need the Tarski-undefinability half formalized against the interface,
+which is a separate undertaking. The `Definable` witness for a given `f`, and
+the `sq` closure, are the interface's responsibility, not the file's; the file
+proves what *follows* from having them. This is the same relative scope §6's
+"Limits, kept honest" already declared for the paper analysis, now discharged
+to the exact hypothesis boundary in code.
+
 ## Sources
 
 Builds on this project's own `RAYO-R0-WELLDEFINEDNESS.md` (the MK commitment and

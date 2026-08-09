@@ -119,7 +119,9 @@ The version history is exactly the cautionary tale it smelled like:
 - **BM4 (2018), the current official version** (equivalent to the
   community fix BM2.3 by code analysis, itself an unproven equivalence):
   termination/well-ordering is proven only in an unrefereed arXiv preprint
-  (arXiv:2307.04606, 2023, read in full for this audit). The proof is
+  (arXiv:2307.04606, 2023; read structurally for this audit, see
+  [`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md) for exactly what could and could
+  not be line-verified). The proof is
   serious: it maps BMS order-preservingly into the ordinals using
   Σₙ-stable ordinals in the constructible hierarchy L, so even the
   *well-definedness proof* requires a strong set-theoretic metatheory, and
@@ -129,6 +131,24 @@ The version history is exactly the cautionary tale it smelled like:
   public challenger admitted to not reading it. Scope caveat: the theorem
   covers matrices reachable from the standard seeds (which does cover
   Bashicu's number as currently defined), not arbitrary seed matrices.
+  A dedicated lemma-by-lemma audit
+  ([`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md)) reads the preprint unit by unit
+  and reaches the *same* `disputed` verdict, now earned rather than
+  asserted: the combinatorial half (Definition 1.1, Lemmas 2.1-2.4,
+  reducing the BMS order to the lexicographic order and correctly *not*
+  mistaking that for well-ordering) is structurally sound; Theorem 2.7 is a
+  valid ordinal-embedding deduction; the Kranakis 1982 citation the proof
+  leans on is real and topically apt. No error was found. But the audit
+  could not independently certify the two places the whole result rests on
+  and where any error would most plausibly hide: **Lemma 2.6's Σₙ₊₁
+  reflection construction** (line-verifying it needs verbatim formula text
+  and a reading of Kranakis's Theorem 1.8 that was not obtainable) and the
+  **Definition 1.1 ↔ basmat.c/BM2.3 faithfulness**, which the paper asserts
+  rather than proves. The audit also corrects the provenance: "Rachel
+  Hunter" (current arXiv metadata) and "Samuel Vargovčík" (Goucher/arXiv
+  announcement, ResearchGate DOI) are one author and one paper under a name
+  correction, so there is exactly one unrefereed preprint and no
+  corroborating second proof.
 - **The solid fragments**: 1-row (primitive sequences) is textbook, order
   type ε₀. 2-row (pair sequences) has a rigorous, detailed 2018 community
   proof (p進大好きbot, ~142 pages in translation) bounding the order type
