@@ -310,13 +310,21 @@ Settled:
    That relative form is the most that can honestly be mechanized; the
    R0 commitment now lives as a visible Lean hypothesis instead of prose.
 
+5. **The BM4 termination preprint** (the Bashicu rung's sole support) was
+   audited lemma by lemma, in two passes
+   ([`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md)). The second pass, from the
+   paper's arXiv LaTeX source, line-verified the load-bearing Σₙ₊₁
+   reflection lemma and independently re-proved the one fact it cites
+   from Kranakis's unreachable 1982 paper. No error found anywhere;
+   [`LADDER.md`](LADDER.md) rung 5 upgrades to "unrefereed; core lemma
+   line-verified by this project".
+
 Still open:
 
-5. **The BM4 termination preprint** (the Bashicu rung's sole support) was
-   audited lemma by lemma ([`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md)): no
-   error found, the Kranakis citation checks out, but its load-bearing
-   Σₙ₊₁-reflection construction could not be line-verified, so
-   [`LADDER.md`](LADDER.md) rung 5 stays `disputed`, now with a receipt.
+6. **What still separates BM4 from full certification**: peer review or
+   mechanization, the paper's asserted "Of course" seed step, and
+   exhaustive checking of its tedious combinatorial lemma (see the audit's
+   addendum).
 
 ---
 

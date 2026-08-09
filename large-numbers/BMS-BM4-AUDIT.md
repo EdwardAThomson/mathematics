@@ -345,6 +345,9 @@ than proves its BM4/`basmat.c` faithfulness, and has exactly one (favorable
 but informal) expert reading and no corroborating second proof, the honest
 tag is unchanged: **disputed**.
 
+*(First-pass verdict; partially superseded by the Addendum below, which
+obtained the full LaTeX source and closed the Lemma 2.6 gap.)*
+
 This is not a downgrade or an upgrade of LADDER rung 5's verdict: it is the
 same verdict, now *earned by a unit-by-unit reading* rather than asserted
 from reputation. What the audit specifically adds to rung 5:
@@ -360,15 +363,100 @@ from reputation. What the audit specifically adds to rung 5:
 3. Provenance corrected: "Hunter" and "Vargovčík" are one author/one paper;
    there is no independent second proof to lean on.
 
+## Addendum: second pass from the arXiv LaTeX source (the gap closed)
+
+A second audit pass obtained the paper's full LaTeX source from arXiv's
+e-print endpoint (`bmsproof.tex`, 37KB), removing the extraction ceiling
+the first pass worked under. Lemma 2.6's proof was then read line by line.
+Result: **the first pass's central "could not verify" is now closed in the
+paper's favor**, as follows.
+
+**1. The five-clauses-simultaneously worry dissolves.** The proof does not
+construct `f` clause by clause. It builds *one* `Σ_{n+1}` sentence, with
+the elements of `X` as parameters, asserting simultaneously every true
+instance of: the order facts `γ < δ` and `δ_i < δ_j`, the between-levels
+stability facts `γ <_k δ` and `δ_i <_k δ_j`, and the toward-`β` stability
+facts `δ_i <_m β` (`m < n`). The sentence is true in `L_β` (witnessed by
+`Y`), transfers to `L_α` by `Σ_{n+1}`-elementarity, and its witnesses
+*are* `Y′`, with `f` the unique order isomorphism (well-defined because
+the strict inequalities among the `δ_i` are among the conjuncts, so
+witnesses are distinct and ordered). All five clauses hold by
+construction, at once.
+
+**2. The complexity bookkeeping is exactly right, including the suspected
+off-by-one point.** The proof's quiet asymmetry is correct and necessary:
+
+- Stability *between two set-sized levels* (`η <_k ξ`, clauses 2 and 4,
+  `k` unrestricted) is `Σ₁` uniformly in `k`: existentially assert the
+  level `L_ξ`, then satisfaction inside a set structure is bounded. This
+  is why arbitrary `k` is harmless there.
+- Stability *toward the ambient model* (`δ <_m β`, clause 5) must use the
+  class-level predicate "`η <_m Ord`", which is `Π_{m+1}`; and
+  `Π_{m+1} ⊆ Σ_{m+2} ⊆ Σ_{n+1}` iff `m < n`. **The lemma's `m < n`
+  restriction is precisely the boundary the arithmetic forces**, so the
+  off-by-one the first pass feared is not there.
+- The finiteness of the true `γ <_k δ` instances (needed so the conjunction
+  is a real formula) is where `α, β < σ` earns its keep: infinitely many
+  `k` would mean `∀k (η <_k ξ)`, contradicting the minimality of `σ`. The
+  hypothesis is load-bearing and correctly placed.
+
+**3. The Kranakis-cited bound is independently derivable, so the unread
+Theorem 1.8 is no longer a trust point.** The one external input is
+"`η <_k Ord` (i.e. `L_η ≺_{Σ_{k+1}} L`) is `Π_{k+1}`". This audit
+re-proved it from classical facts, without access to Kranakis's text:
+upward transfer is free (if a `Σ_{k+1}` statement held in `L_η` and failed
+in `L`, its `Π_{k+1}` negation `∀x ψ`, `ψ ∈ Σ_k`, would transfer downward
+instance by instance through the `Σ_k` fragment and refute it in `L_η`),
+so `Σ_{k+1}`-elementarity is equivalent to downward transfer alone:
+`∀φ∀p (Sat_{Σ_{k+1}}(φ,p) → φ^{L_η}(p))`, a universal over
+(`Σ_{k+1}` implies bounded), which is `Π_{k+1}`, using only the classical
+`Σ_{k+1}`-definability of `Σ_{k+1}`-truth for `L` (standard fine-structure
+material, e.g. Devlin, *Constructibility*). So the bound the paper needs
+is true regardless of Kranakis's exact wording.
+
+**Residual gaps after the second pass, in decreasing order of substance:**
+
+1. **The "Of course" seed step of Theorem 2.7.** The proof needs, for
+   every `n`, a pair `ω < α <_n β` with both below `σ` (stable
+   representations of the seed arrays, which also keeps every later
+   `f`-value below `σ` so Lemma 2.6 stays applicable). The paper asserts
+   this with "Of course". It is standard stability folklore, consistent
+   with the paper's own introductory discussion, but it is asserted, not
+   proven, and a referee should ask for the two-line lemma.
+2. **Lemma 2.5's case analysis** was checked structurally, not
+   exhaustively; the paper itself calls it "straightforward, but tedious".
+   (Source curiosity: `bmsproof.tex` contains a commented-out abandoned
+   earlier draft of this lemma that breaks off mid-sentence; the live
+   proof is complete and different.)
+3. **Definition 1.1 ↔ `basmat.c` faithfulness** remains asserted, not
+   proven, unchanged from the first pass.
+4. Assorted standard-but-unstated absoluteness conveniences (a transitive
+   set satisfying `V=L` with ordinal height `ξ` *is* `L_ξ`; the internal
+   satisfaction apparatus behaves in the relevant `L`-levels). Routine for
+   ordinals at stability strength, worth one sentence each in a journal
+   version.
+
+**Revised overall verdict: no error found, and the load-bearing lemma is
+now line-verified, with its one external dependency independently
+re-proved.** What remains between this and full certification is peer
+review or mechanization, the "Of course" seed lemma, and exhaustive
+checking of Lemma 2.5's cases: real but sharply smaller residue than the
+first pass's. LADDER rung 5's tag accordingly upgrades from "disputed" to
+"unrefereed; core lemma line-verified by this project."
+
 ## Sources
 
 - Paper: [arXiv:2307.04606](https://arxiv.org/abs/2307.04606),
-  "Well-Orderedness of the Bashicu Matrix System" (read via ar5iv HTML;
-  the full expansion rule and full proof text could not be extracted
-  verbatim, which bounds this audit as stated above).
+  "Well-Orderedness of the Bashicu Matrix System". First pass: ar5iv HTML
+  (bounded extraction). Second pass: full LaTeX source via arXiv e-print
+  (`bmsproof.tex`), read in full.
 - Kranakis: E. Kranakis, "Reflection and partition properties of admissible
-  ordinals," *Annals of Mathematical Logic* 22 (1982) 213–242 (citation
-  confirmed real and topically correct; its Theorem 1.8 not read verbatim).
+  ordinals," *Annals of Mathematical Logic* 22 (1982) 213–242. Citation
+  confirmed real and topically correct; text unreachable (paywall/dead
+  mirrors), but the cited `Π_{k+1}` bound is independently derived in the
+  addendum above, so nothing now rests on its wording.
+- Classical background for the derivation: `Σ_n`-truth for `L` is
+  `Σ_n`-definable (see e.g. K. Devlin, *Constructibility*, Springer 1984).
 - Expert reception: A. P. Goucher, cp4space, "Miscellaneous discoveries,"
   2023-07-23.
 - Prior project context: [`LADDER.md`](LADDER.md) rung 5,

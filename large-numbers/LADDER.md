@@ -37,7 +37,7 @@ Audit date: August 2026.
 | 2 | Goodstein-type numbers | Goodstein sequences | Goodstein's theorem (descent below ε₀) | PA + TI(ε₀); unprovable in PA (Kirby-Paris 1982) | **literature-solid** |
 | 3 | TREE(3) | labeled finite trees | Kruskal's tree theorem, Friedman's finite form | small Veblen level (~ACA₀ + Π¹₂-BI); already beyond ATR₀ unlabeled | **literature-solid** (theorem); magnitude claims are FOM folklore |
 | 4 | SCG(13) | subcubic graph sequences | wqo of subcubic graphs (graph-minor machinery) | beyond Π¹₁-CA₀; GMT provable just above it (Krombholz-Rathjen) | **literature-solid** (theorem); number claims are FOM folklore |
-| 5 | Bashicu matrix numbers | BMS expansion rules (BM4, the 4th ruleset; BM1-BM3 all refuted) | termination of BM4: one unrefereed 2023 preprint | the only proof uses Σₙ-stable ordinals in L, far beyond arithmetic | **disputed** (2-row fragment solid; full system rests on the preprint) |
+| 5 | Bashicu matrix numbers | BMS expansion rules (BM4, the 4th ruleset; BM1-BM3 all refuted) | termination of BM4: one unrefereed 2023 preprint | the only proof uses Σₙ-stable ordinals in L, far beyond arithmetic | **unrefereed; core lemma line-verified by this project** ([`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md) addendum) |
 | 6 | Loader's number | Calculus of Constructions (`loader.c`) | strong normalization of CoC | higher-order-arithmetic strength (unprovable there; ZFC proves it easily) | **literature-solid** |
 | 7 | BB(n) (Busy Beaver) | k-state Turing machines | Radó: finitely many machines | trivial to define; specific values independent of ZFC | **literature-solid** |
 | 8 | BoolosBig_PA | provability-naming over PA | B0 well-definedness proof | PA-strength | **project-audited** (mechanized, sorry-free) |
@@ -106,7 +106,7 @@ Everything numeric about SCG(13) specifically is Friedman FOM folklore
 [SF], and the primary FOM archive links 404'd during this audit, so even
 the exact SCG-vs-SSCG attribution is [CNV] at the primary-source level.
 
-### Bashicu matrix numbers (rung 5): disputed, the shakiest rung
+### Bashicu matrix numbers (rung 5): unrefereed, core lemma line-verified here
 
 The version history is exactly the cautionary tale it smelled like:
 
@@ -132,23 +132,26 @@ The version history is exactly the cautionary tale it smelled like:
   covers matrices reachable from the standard seeds (which does cover
   Bashicu's number as currently defined), not arbitrary seed matrices.
   A dedicated lemma-by-lemma audit
-  ([`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md)) reads the preprint unit by unit
-  and reaches the *same* `disputed` verdict, now earned rather than
-  asserted: the combinatorial half (Definition 1.1, Lemmas 2.1-2.4,
-  reducing the BMS order to the lexicographic order and correctly *not*
-  mistaking that for well-ordering) is structurally sound; Theorem 2.7 is a
-  valid ordinal-embedding deduction; the Kranakis 1982 citation the proof
-  leans on is real and topically apt. No error was found. But the audit
-  could not independently certify the two places the whole result rests on
-  and where any error would most plausibly hide: **Lemma 2.6's Σₙ₊₁
-  reflection construction** (line-verifying it needs verbatim formula text
-  and a reading of Kranakis's Theorem 1.8 that was not obtainable) and the
-  **Definition 1.1 ↔ basmat.c/BM2.3 faithfulness**, which the paper asserts
-  rather than proves. The audit also corrects the provenance: "Rachel
-  Hunter" (current arXiv metadata) and "Samuel Vargovčík" (Goucher/arXiv
-  announcement, ResearchGate DOI) are one author and one paper under a name
-  correction, so there is exactly one unrefereed preprint and no
-  corroborating second proof.
+  ([`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md)), in two passes, ends
+  substantially in the paper's favor. First pass (structural, via ar5iv):
+  the combinatorial half is sound, Theorem 2.7 is a valid
+  ordinal-embedding deduction, the Kranakis 1982 citation is real and
+  topically apt, no error found, but the load-bearing **Lemma 2.6** could
+  not be line-verified. Second pass (full LaTeX source from arXiv):
+  **Lemma 2.6 is now line-verified**. Its single reflected-formula
+  construction discharges all five clauses at once, its complexity
+  bookkeeping is exactly right (the `m < n` restriction is precisely the
+  `Π_{m+1} ⊆ Σ_{n+1}` boundary, and the `α, β < σ` hypothesis is what
+  makes the formula finite), and the one fact cited from Kranakis's
+  unreachable text was independently re-proved in the audit's addendum, so
+  nothing rests on its wording. Remaining residue: the paper's "Of course"
+  seed-representation step (needs `n`-stable pairs below `σ`, asserted not
+  proven), exhaustive checking of Lemma 2.5's tedious cases, and the
+  asserted **Definition 1.1 ↔ basmat.c/BM2.3 faithfulness**. The audit
+  also corrects the provenance: "Rachel Hunter" (current arXiv metadata)
+  and "Samuel Vargovčík" (announcement-era mirrors) are one author and one
+  paper under a name correction, so there is exactly one unrefereed
+  preprint and no corroborating second proof.
 - **The solid fragments**: 1-row (primitive sequences) is textbook, order
   type ε₀. 2-row (pair sequences) has a rigorous, detailed 2018 community
   proof (p進大好きbot, ~142 pages in translation) bounding the order type
@@ -163,9 +166,11 @@ The version history is exactly the cautionary tale it smelled like:
   the full system's ordinal is simply open.
 
 Bottom line: Bashicu's number K = Bm¹⁰(9) against BM4 is well-defined
-*conditional on one unrefereed preprint*. That's a strictly weaker
-epistemic position than every other computable rung on this ladder, and
-the honest tag is disputed.
+*conditional on one unrefereed preprint whose core lemma this project has
+now line-verified*. Still no peer review, no formalization, and no second
+proof, so it remains the weakest computable rung; but after the audit the
+honest tag is "unrefereed, core lemma line-verified here" rather than
+bare "disputed".
 
 ### Loader's number (rung 6): literature-solid
 
