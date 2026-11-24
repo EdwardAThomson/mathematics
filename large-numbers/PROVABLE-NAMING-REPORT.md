@@ -1,7 +1,7 @@
 # The largest number a theory can name in n symbols
 
-*Report, 2026-11-24.* The literature check is summarized in §10; the
-full survey is [`LITERATURE-SURVEY.md`](LITERATURE-SURVEY.md).
+*Report, 2026-11-24.* The literature check is
+summarized in §10; the full survey is `LITERATURE-SURVEY.md`.
 
 Every statement is tagged:
 
@@ -401,7 +401,12 @@ source, is `LITERATURE-SURVEY.md`. In brief:
   uses. The program-size analogue `K(f(n)) ≤ K(n) + c_f` is textbook.
 - **The Busy Beaver sandwich and its independence of the axioms**
   (Theorems 5, 6, Corollary 7) follow from standard facts in a few
-  lines. We did not find them stated for the naming function, and expect
+  lines. The upper half appears informally: a MathOverflow discussion
+  (question 34710, 2010) bounds definability-by-provability in ZFC by a
+  second-level Busy Beaver, and the Googology Wiki page on Rayo's number
+  remarks that a provability reading would not be much larger than a
+  Busy Beaver value. We did not find the lower half, the two-sided
+  sandwich, or the independence of the axioms stated anywhere, and expect
   they are known to specialists. Closely related: Chaitin (1974, 1987);
   Chaitin, Arslanov and Calude (1995), who prove the program-size form
   of Theorem 5; Lafitte, "Busy beavers gone wild" (2009); Lacerda (2014);
@@ -412,8 +417,13 @@ source, is `LITERATURE-SURVEY.md`. In brief:
   not find it applied to the naming function. It is offered as an
   observation. Related: Aaronson, "The Busy Beaver Frontier" (2020),
   Prop. 4; Kritchman and Raz (2010); Kikuchi (1997).
+- **The complexity `D_T` of §8** is a known notion: Kikuchi, Kurahashi
+  and Sakai (2012) define a provability-based Kolmogorov complexity.
 - **Theorem 9 and the table of rungs** restate Berry's paradox and
-  Tarski's theorem; oracle Busy Beavers are in Aaronson (2020) §3.
+  Tarski's theorem; oracle Busy Beavers are in Aaronson (2020) §3. That
+  truth for formulas with `k` quantifier alternations should match a
+  `k`-th level Busy Beaver was conjectured by Aaronson in the same
+  MathOverflow discussion; we know of no proof.
 
 **What is claimed.** Not new theorems. The contribution is:
 
@@ -432,9 +442,8 @@ interpreting Chaitin's incompleteness theorem", 1998). The claim here is
 only about growth class.
 
 **Gaps in the survey.** Not yet read in full: Kikuchi, Kurahashi and
-Sakai (2012); the later sections of Simmons; Googology Wiki pages on
-provability-based variants. Some standard references are cited from
-memory and need checking against the publications.
+Sakai (2012) beyond its abstract and definitions, and the last section
+and appendices of Simmons.
 
 ## 11. Open items
 
