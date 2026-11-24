@@ -266,6 +266,18 @@ the two lies a whole ladder of intermediate notions of truth
 for Part 1's open question. The jump is a sharp, Tarski-drawn step between
 two commitment levels, not a smooth dial you can turn partway.
 
+*Added 2026-11-24.* The rungs in between are worked out in three further
+notes. [`MIDDLE-RUNGS.md`](MIDDLE-RUNGS.md): naming by truth of formulas
+with k blocks of "for all" matches the Busy Beaver function with the k-th
+halting oracle (paper proof for every k, machine-checked at the first
+level). [`GENERAL-NAMING-THEOREM.md`](GENERAL-NAMING-THEOREM.md): for any
+consistent theory, provable naming is Busy Beaver over the oracles the
+theory can decide (paper proof). [`PROOF-BUDGETS-AND-COMPLEXITY.md`](PROOF-BUDGETS-AND-COMPLEXITY.md):
+what changes when the proof is given a length budget as well. A
+plain-language essay, [`BIG-NUMBERS-AS-COMPRESSION.md`](BIG-NUMBERS-AS-COMPRESSION.md),
+reads the whole subject as compression with a fixed message length. The
+paper proofs in these notes have not had an outside check.
+
 ### Is Rayo's rung the top? (standard theory, not a project result)
 
 No, and it's worth being explicit that this paragraph is inherited from

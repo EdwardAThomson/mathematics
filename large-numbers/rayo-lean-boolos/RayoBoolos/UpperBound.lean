@@ -15,9 +15,10 @@ number of a naming template for a formula of size at most `n` and does not
 depend on `T` or `U`. So any two such theories have the same provable-naming
 function up to one fixed rescaling of the argument plus a constant.
 
-Not proved here: an explicit bound on `templateCode n`. With an efficient
-encoding it is `2^{O(n log n)}`; `Foundation`'s encoding uses nested pairing
-and is larger.
+Not proved here: an explicit bound on `templateCode n`; `Foundation`'s
+encoding uses nested pairing and is much larger than `2^{O(n log n)}`.
+`RayoBoolos.CompactCode` avoids it with a compact code and proves the
+explicit `n log n` rescaling (`BoolosBigIn_le_any_nlogn'`).
 -/
 
 module

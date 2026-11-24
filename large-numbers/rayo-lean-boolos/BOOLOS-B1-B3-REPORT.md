@@ -1,4 +1,16 @@
-# B1-B3 report: `TNames` and an attempted domination proof
+# B1-B3 report: `TNames` and the domination proof
+
+> **Current status (rebuilt and confirmed 2026-11-23): B1 and B3 are both
+> closed.** `RayoBoolos.BoolosBig_PA_dominates` — for every PA-provably-total,
+> monotone `f`, `∃ N, ∀ m > N, BoolosBig_PA m ≥ f m` — is proved in
+> `RayoBoolos/BoolosBig.lean` with no `sorry`. A clean from-source `lake build`
+> of the pinned manifest (Lean `v4.32.2`, `Foundation` `31bb585`, 1262 jobs)
+> succeeds, and `#print axioms` on it reports only
+> `[propext, Classical.choice, Quot.sound]`. The sections below are a
+> chronological record of the sessions that got there; statements in them
+> that the numeric domination theorem is "out of scope" or "does not close"
+> describe the state at the time and are superseded by the final section,
+> "B3 domination closed".
 
 Follow-up to `BOOLOS-B0-WELLDEFINEDNESS.md` (paper proof of well-definedness,
 plus a self-contained machine-checked combinatorial core in
@@ -328,7 +340,8 @@ re-instantiating it concretely for PA-formula syntax (a length function on
 etc.) is a distinct piece of infrastructure — out of scope for this retry,
 which was scoped narrowly to the one blocked lemma and "the rest of the
 argument that was blocked on it." That numeric-domination wrap-up, if
-wanted, is a natural next B3.5 task, now unblocked.
+wanted, is a natural next B3.5 task, now unblocked. *(Since done: see "B3
+domination closed" at the end of this report.)*
 
 What was already committed from the original Step 4 attempt remains useful:
 `RayoBoolos/Probe.lean` — a small, fully verified, sorry-free check of the
@@ -348,6 +361,10 @@ convention above.
 - `RayoBoolos/Domination.lean` — **committed**; Step 4, closed on retry
   (this session), sorry-free. Registered in `lakefile.toml`'s `RayoBoolos`
   lib globs alongside the other four modules.
+- `RayoBoolos/BoolosBig.lean` — **committed**; `tSize`/`fSize`,
+  `BoolosBig_PA`, monotonicity, the numeral and substitution size bounds,
+  `graphSq`, and the final theorem `BoolosBig_PA_dominates`. Sorry-free.
+  Also registered in the `RayoBoolos` lib globs.
 
 ## Commit-signing note (original session; superseded below for this retry)
 
@@ -373,6 +390,11 @@ no `--no-gpg-sign`) and left the work committed unsigned or staged per the
 same instruction, for the operator to sign/commit themselves.
 
 ## B3 domination, third session (`boolos-b3-domination` branch): `BoolosBig_PA` built, domination not closed
+
+> **Superseded.** This section records where the third session stopped. The
+> blocker it describes was resolved afterwards and the theorem is proved; see
+> "B3 domination closed" below. The work is also committed and on `main`,
+> so the closing commit-signing paragraph no longer applies.
 
 Scope for this session, per `large-numbers/BOOLOS-B3-PAPER-VERIFICATION.md`:
 turn the witness-existence result above (`provablyTotal_names`) into a real
@@ -467,3 +489,120 @@ here (`SSH_AUTH_SOCK` points at a defunct/zombie `ssh-agent` process,
 and hung until timeout every time; per instruction, `commit.gpgsign` was
 **not** disabled. All work is staged on `boolos-b3-domination` but
 **uncommitted** — the operator will need to commit (and push) it.
+
+## B3 domination closed (follow-up session; rebuilt and confirmed 2026-11-23)
+
+The domination theorem the third session could not finish is now proved, in
+the same file, `RayoBoolos/BoolosBig.lean`:
+
+```
+theorem BoolosBig_PA_dominates {f : ℕ → ℕ} (P : ProvablyTotal f) (hf_mono : Monotone f) :
+    ∃ N, ∀ m > N, BoolosBig_PA m ≥ f m
+```
+
+What closed it, piece by piece (all in `BoolosBig.lean`):
+
+- **`fSize_rew_le`, the bridging lemma the third session was stuck on.** The
+  third session's diagnosis above was wrong: `Rewriting.app`/`▹` for
+  `Semiformula ℒₒᵣ Empty` *is* `rfl`-transparent on `verum`/`falsum`/`and`/
+  `or` (it is `Semiformula.rew`, i.e. `rewAux`, a direct structural match).
+  With the constant cases recorded as named facts (`rew_app_verum`,
+  `rew_app_falsum`), together with `Foundation`'s own quantifier and atomic
+  lemmas, the size bound goes through
+  by structural induction. The obstacle was API bookkeeping, as predicted,
+  not mathematics. It is not known why `rfl` failed in the third session.
+- **`fSize_graphAt_le`**: the naming formula `graphAt n` has size linear in
+  `n`, from `fSize_rew_le` and the mechanized numeral cost
+  `tSize_numeral_le` (`tSize (numeral k) ≤ 2k + 1`).
+- **`graphSq`, `graphSq_total`, `ProvablyTotal.sq`**: the `F(n) := f(n²)`
+  pre-inflation from `BOOLOS-B3-PAPER-VERIFICATION.md` §3. `graphSq` wraps
+  the graph as `∃z (z = x·x ∧ θ(y,z))`, adding only a constant to the size and
+  no numeral, and `F` is shown PA-provably-total whenever `f` is.
+- **`sq_names_le`**: `f (n * n) ≤ BoolosBig_PA (c * (2 * n + 1))` with
+  `c = fSize P.graph + 2000`.
+- **`BoolosBig_PA_dominates`**: take `n = Nat.sqrt m + 1`, so `m ≤ n * n`,
+  and for `m > (4c + 4)²` also `c * (2n + 1) ≤ m`; then chain monotonicity of
+  `f`, `sq_names_le`, and `BoolosBig_PA_mono`.
+
+**One difference from the statement in `LAPTOP-HANDOFF.md`, flagged.** The
+theorem carries the extra hypothesis `Monotone f`. It is what lets the bound
+on `f (n * n)` transfer down to `f m`, and it is the same use of monotonicity
+that `BOOLOS-B3-PAPER-VERIFICATION.md` §3 makes. So what is mechanized is
+"eventually dominates every *monotone* PA-provably-total function". The
+unrestricted statement follows on paper by applying this to the running
+maximum `g(n) := max_{i ≤ n} f(i)`, which is monotone, PA-provably-total when
+`f` is, and satisfies `g ≥ f`; that last step is **not** mechanized.
+
+**Verification, 2026-11-23.** Clean checkout of `main`, no `.lake`
+directory, pinned `lake-manifest.json` untouched, Lean `v4.32.2`. Mathlib's
+prebuilt cache was unavailable, so every dependency was compiled from
+source. `lake build` finished with `Build completed successfully (1262
+jobs)` and no errors. No `sorry`, `admit`, or added `axiom` appears in any
+`.lean` file of this project, and the `#print axioms` lines emitted during
+the build read:
+
+| theorem | axioms |
+|---|---|
+| `BoolosBig_PA_dominates` | `propext`, `Classical.choice`, `Quot.sound` |
+| `ProvablyTotal.sq`, `graphSq_total` | same |
+| `fSize_graphAt_le`, `fSize_rew_le`, `tSize_numeral_le` | same |
+| `namedValues_le_BoolosBig_PA`, `BoolosBig_PA_mono` | same |
+| `provablyTotal_names` (`Domination.lean`) | same |
+| `subst_existsUnique_eq` (`Domination.lean`) | `propext`, `Quot.sound` |
+| `TNames`, `tNames_iff_provable` (`TNames.lean`) | `propext`, `Classical.choice`, `Quot.sound` |
+| `namesSentence` (`TNames.lean`) | `propext` |
+
+No `sorryAx` appears anywhere, which is the machine-level confirmation that
+nothing is left unproved.
+
+## Beyond B3: domination of every computable function (2026-11-24)
+
+New file `RayoBoolos/Minimization.lean`, sorry-free, same axiom set
+(`propext`, `Classical.choice`, `Quot.sound`). It proves
+
+```
+theorem BoolosBig_PA_dominates_computable {f : ℕ → ℕ} (hf : Computable f) :
+    ∃ N, ∀ m > N, BoolosBig_PA m ≥ f m
+
+theorem BoolosBig_PA_not_computable : ¬ Computable BoolosBig_PA
+```
+
+This supersedes `BoolosBig_PA_dominates` as the headline result: the
+`ProvablyTotal` and `Monotone` hypotheses are both gone. It also shows that
+describing `BoolosBig_PA` as an `ε₀`-class function, as several notes in
+`large-numbers/` do, mistakes that earlier lower bound for the function's
+size. See `large-numbers/BOOLOS-IS-BUSY-BEAVER-CLASS.md` for the argument
+and for what remains on paper, and the file's own header for the route.
+
+The one idea: `Domination.lean` obtained "`θ(·, n̄)` names `f n`" from
+`𝗣𝗔 ⊢ ∀x ∃!y θ(y, x)`. `Minimization.lean` wraps `θ` in a bounded search
+(`minGraph`) whose uniqueness is provable from the linear order alone, so
+only Σ₁-completeness at the single point `n` is needed.
+
+`lake build` for the whole project: `Build completed successfully (1255
+jobs)`.
+
+## Any theory, and Busy Beaver (2026-11-24)
+
+Two further files, both sorry-free with axioms `propext`,
+`Classical.choice`, `Quot.sound`; full build 1258 jobs.
+
+- `RayoBoolos/AnyTheory.lean`: `NamesIn T`, `BoolosBigIn T` for an arbitrary
+  theory. `NamesIn.unique` needs only consistency of `T ⊇ 𝗣𝗔⁻`.
+  `BoolosBigIn_log_bound`, `BoolosBigIn_dominates_computable` and
+  `BoolosBigIn_not_computable` hold for every such `T` with constants that
+  do not depend on `T`. `BoolosBigIn_PA` identifies the `𝗣𝗔` instance with
+  `BoolosBig_PA`; `BoolosBigIn_mono_theory` says stronger theories name at
+  least as much.
+- `RayoBoolos/BusyBeaver.lean`: `BoolosBigIn_partrec_bound` (every value of
+  a partial recursive function is nameable within `C + 6·log₂` of its
+  input), and from it `BB_le_BoolosBigIn`, `BBtime_le_BoolosBigIn` for the
+  Busy Beaver functions of Mathlib's `Nat.Partrec.Code` indexed by code
+  number.
+
+- `RayoBoolos/UpperBound.lean` (build now 1259 jobs): `exists_search`
+  (proof search for a `Δ₁` theory as a partial recursive function on codes
+  of naming templates) and `BoolosBigIn_le_any`, `BoolosBig_PA_le_any`:
+  `BoolosBigIn T n ≤ BoolosBigIn U (C + 6 * Nat.log2 (templateCode n))`.
+
+Not done: an explicit bound on `templateCode n`.

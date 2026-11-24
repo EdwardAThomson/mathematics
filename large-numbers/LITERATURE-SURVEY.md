@@ -49,15 +49,14 @@ Suggested wording for the public report is in §5.
 Sources marked **[read]** below were read in full or in the relevant
 sections during this survey. Sources marked **[memory]** are standard
 references cited from memory. The second pass checked all of them; §4
-now says how each was confirmed. One source was only
-partly read; this is noted at the entry.
+now says how each was confirmed.
 
 Not reachable in either pass: the full text of Kikuchi, Kurahashi and
 Sakai (2012) (publisher and ResearchGate refused automated access; abstract,
 zbMATH review and a 2022 thesis summarizing it were read); the Googology
-Wiki talk page for Rayo's number; Section 5 and Appendices B–F of Simmons
-(both the arXiv PDF and the ar5iv HTML were cut off before them). §6 lists
-what is left.
+Wiki talk page for Rayo's number. Simmons's §5 and appendices were cut off
+in both automated passes; Ed supplied the PDF and they were read in a third
+pass (§8). §6 lists what is left.
 
 ## 2. Claim-by-claim assessment
 
@@ -88,7 +87,7 @@ What is known:
   recursively bounded. That is the Kolmogorov form of our Theorem 2.
 - *Upper half (≤ BB after `n log n` rescaling).* Proof search; the same
   idea is used by Lacerda (2014) [read] to bound proof length by a Busy
-  Beaver of the sentence length, and by Simmons [partly read], whose
+  Beaver of the sentence length, and by Simmons, whose
   `f_A{n}` ("largest output of an algorithm that `A` proves halts with a
   proof of length ≤ n") is computed by an `O(log n)`-size program
   (his Thm 1.5). Simmons measures *proof* length, we measure *formula*
@@ -102,7 +101,16 @@ What is known:
 - *Theory dominance in Simmons.* His Cor. 1.6 / 2.5: if `(L₁, A₁)` is at
   least as strong as the meta-system of `(L₂, A₂)`, the axiomatic strategy
   of `A₁` beats that of `A₂`. That is a dominance statement, not the
-  "equal up to rescaling" statement we make.
+  "equal up to rescaling" statement we make. In §5 (read from the full PDF,
+  supplied 2026-11-24) Simmons adds Theorem 5.2: if `A₁` proves `A₂`
+  ω-consistent, `A₁`'s axiomatic strategy wins. He then leaves "as an
+  exercise to mathematical logicians" whether ordering large-cardinal
+  axioms by consistency strength matches ordering them by their Busy
+  Beaver strategies. His comparisons are of values at a fixed, physically
+  feasible input, where theory strength matters a great deal. Our Corollary
+  4 is about growth class, where it matters only up to rescaling. The two
+  are compatible and say different things; the report can cite Simmons as
+  the place where the fixed-input question is posed.
 
 Caution to carry into the report. Our Corollary 4 says theory strength
 "hides in the constant `c_T`". Raatikainen (1998) criticizes
@@ -191,7 +199,7 @@ Repo: `THE-LADDER.md` §2, `COMPLEXITY-AND-ENTROPY.md` §5.2.
   not read]; relativised `Ω`: Becher, Daicz and Chaitin (2001), Becher,
   Figueira, Nies and Picchi (2005).
 - A hierarchy of naming languages ordered by "can express the previous
-  one's semantics": Simmons [partly read], §2 and §4, which also invokes
+  one's semantics": Simmons, §2 and §4, which also invokes
   Tarski and Kripke-style self-referential truth.
 - The googology version of "add the previous naming function as an
   oracle": Fish number 7's Rayo hierarchy `R_α` (Fish, October 2013)
@@ -228,7 +236,7 @@ Repo: `THE-LADDER.md` §3; Lean `Rayo/NoTop.lean`.
 least number not named by a formula with fewer than `10k` symbols") has
 about `2k + 24` symbols, is true of exactly one number, and the naming
 sentence is not a theorem. Tarski's undefinability theorem gives the
-truth-rung version, and Simmons §2 [partly read] states the general form
+truth-rung version, and Simmons §2 states the general form
 ("no classical language reproduces its own metalanguage"). Iterated
 truth-predicate extensions are what Fish number 7 does.
 
@@ -396,8 +404,8 @@ always; **[memory]** not yet checked.
 **Large-number naming**
 
 34. D. Simmons, "Naming the largest number: exploring the boundary between
-    mathematics and the philosophy of mathematics", arXiv:1809.08676.
-    [partly read]
+    mathematics and the philosophy of mathematics", arXiv:1809.08676v2
+    (2022). [read, full PDF]
 35. A. Rayo, "Big Number Duel" (vs. A. Elga), MIT, 26 January 2007;
     web.mit.edu/arayo/www/bignums.html; Wikipedia, "Rayo's number". [read
     via Wikipedia]
@@ -463,11 +471,7 @@ verification".
    zbMATH review, and a thesis that cites it (Grego 2022). None of these
    mentions a growth rate, a Busy Beaver comparison, or Claim 3. A library
    copy would settle it.
-2. Simmons, Section 5 and Appendices B–F. Section 5 opens by saying that
-   consistency strength is not the right ordering for comparing axiomatic
-   strategies "in the Busy Beaver" contest, and the text breaks off there.
-   This is the most likely place for a statement close to Corollary 4
-   (theory independence). Needs a local copy of the PDF.
+2. ~~Simmons, Section 5 and Appendices B–F.~~ Read in the third pass (§8).
 3. Googology Wiki talk page for Rayo's number and Deedlit11's blog post
    "Keith Ramsay on the largest definable number" (refused automated
    access).
@@ -479,7 +483,7 @@ verification".
 |---|---|---|
 | 1. Busy Beaver class for every `T`, rescaled sandwich, theory independence | apparently unstated folklore | unchanged as a precise statement; the **upper half is informally stated** (Aaronson, MathOverflow 2010; Googology Wiki, Rayo's number) |
 | 2. least-witness naming in `C + O(log n)` | known | unchanged |
-| 3. `T` proves no exact value of its own function | apparently unstated | unchanged; not in the KKS abstract or review, Grego 2022, Simmons (readable part), MathOverflow 34710 or the Googology pages read |
+| 3. `T` proves no exact value of its own function | apparently unstated | unchanged; not in the KKS abstract or review, Grego 2022, Simmons (full text, third pass), MathOverflow 34710 or the Googology pages read |
 | 4a. Σ_k truth naming ≈ oracle BB level, up to rescaling | [expected], not found | **conjectured by Aaronson (MathOverflow 34710, 2010)**: `z_k(n)` "more-or-less like `BB_{k+c}(n)`"; informal discussion by Goucher (2013) and commenters; no proof found |
 | 4b. no top via Berry/Tarski | known | unchanged |
 | `D_T` as a notion | presented as ours | **known**: Kikuchi, Kurahashi and Sakai (2012) define a provability-based Kolmogorov complexity; Kikuchi (1993), Grego (2022) |
@@ -491,3 +495,45 @@ not needed); Raatikainen is in issue 6; Bienvenu et al. is *ToCS* 47(3),
 720–736; Becher–Daicz–Chaitin appeared in the DMTCS'01 proceedings
 (Springer). For the `ε₀` characterization, cite Schwichtenberg and Wainer
 (2012) instead of the original papers.
+
+## 8. Third pass: Simmons in full (2026-11-24)
+
+Ed supplied the PDF of arXiv:1809.08676v2 (66 pages). Everything below is
+from the full text.
+
+- **Provability-based naming appears, but only as a step up the ladder.**
+  Theorem 2.4 / C.7: if `L₁` can reproduce `L₂`, the metalanguage `L₂ + 1`
+  has a term of length `O(log n)` naming "the largest number named by any
+  term `t` such that `A` proves that `t` succeeds at naming a number using
+  less than `n` symbols". That is our `BoolosBig_A(n)`, for terms rather
+  than formulas, shown to be cheaply nameable one level up. It is the
+  provability instance of our Claim B ("the next rulebook can name the
+  record"). **Cite it for Claim B.** Simmons does not compare this function
+  with Busy Beaver, and does not ask how it depends on `A`.
+- **Busy Beaver comparisons are between axiom systems, at fixed inputs.**
+  `f_A{n}` (Theorem 1.5) is proof-length based; Corollary 1.6 / C.6 and
+  Theorem 5.2 say when one axiomatic strategy beats another. No growth-class
+  statement, and no rescaled sandwich. §5 says the consistency-strength
+  ordering "is not the appropriate one" for this comparison and replaces
+  it with ω-consistency, posing the match with large-cardinal strength as
+  an open question for logicians.
+- **No statement that `A` cannot prove exact values** of its own function.
+  The closest is the informal remark (§1) that Alice's entry's validity
+  "cannot be proven in the axiom system `A` in a physically realistic
+  timeframe", which concerns feasibility.
+- **No Σ_k / oracle-Busy-Beaver hierarchy.** Theorem C.11 shows that "every
+  Σ₁ sentence provable in `A` using ≤ n nested quantifiers is true" has a
+  proof of size `O(n² log n)` (or `O(n log n)` with definitions), via partial
+  truth predicates for formulas with `i` quantifier alternations. It uses
+  levels of the arithmetical hierarchy as a device, not as a naming
+  hierarchy. Example 4.5 mentions Aaronson's `BB_{α(n)}(n)` from
+  MathOverflow 34710 only to say it is definable in his language GC.
+- **Kolmogorov complexity** appears once. Theorem E.1: the winning Busy
+  Beaver entry of length `≤ n` has complexity `≥ n − C`. This is a standard
+  argument, close to our Claim A.
+
+**Status changes: none for Claims 1, 2, 3 or 4a.** Claim B of the "no top"
+argument gains a citation (Simmons Theorem 2.4 / C.7 for the provability
+rung). Only the Kikuchi–Kurahashi–Sakai full text and the Googology talk
+page remain unread.
+

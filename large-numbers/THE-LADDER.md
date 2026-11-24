@@ -102,28 +102,36 @@ strong theory's proofs.
 
 *Names means:* "this program halts", for programs equipped with a box that
 answers halting questions about rung `k − 1` programs. Equivalently: the
-formula is a statement of arithmetic with at most `k` alternations of "there
-exists" and "for all", and it is *true* of the number and nothing else.
+formula is a statement of arithmetic with `k − 1` blocks of "for all" (a `Π_{k−1}`
+formula, or a `Σ_k` formula, which may put one more "there exists" block in
+front), and it is *true* of the number and nothing else.
 
-The Busy Beaver function of rung `k` eventually dominates every function
-computable with the rung `k − 1` box, in particular the rung `k − 1` Busy
-Beaver function, by the same argument as at rung 1. **[classical: relativized
-Busy Beaver and the arithmetical hierarchy]** The match between "oracle
-level `k`" and "`k` quantifier alternations, by truth" is Post's theorem
-**[classical]**; that the two resulting naming functions bound each other up
-to argument rescaling is **[expected]** and would be proved like Theorems 2
-and 3 of the Busy Beaver note.
+The two descriptions give the same growth class: naming by truth of `Π_{k−1}`
+or `Σ_k` formulas, and Busy Beaver with the `(k−1)`-th halting oracle, bound
+one another after a rescaling of the argument by at most `n log n`. A leading
+"there exists" is free, because what it asserts exists can be packed into the
+named number; each "for all" block costs one oracle level. The same holds for
+provable naming in any theory that contains every true `Π_{k−1}` sentence,
+which proves Aaronson's 2010 guess that this grows like `BB_{k+c}`.
+**[paper, `MIDDLE-RUNGS.md`, every level; [Lean] for the bottom two levels and
+the step between them, `RayoBoolos/TruthNaming.lean`]**
 
-Rung 1 fits the same description: a provable existential statement and a
-true existential statement are the same thing for a theory that can check
-computations, which is why provability lands exactly there.
+Rung 1 fits the same description with no "for all" at all: a provable
+existential statement and a true existential statement are the same thing for
+a theory that can check computations, which is why provability lands exactly
+there. Truth of *bounded* formulas already reaches rung 1: a bounded formula
+can say "`x` is the complete record of a halting run of program `e`".
+**[paper, `MIDDLE-RUNGS.md` Theorem 1 at `k = 0`]**
 
 ### Rung ω: all of arithmetic truth
 
 *Names means:* the formula is any statement of first-order arithmetic, and it
 is true of the number and nothing else.
 
-Dominates every finite rung. **[expected; immediate from the previous rung]**
+Dominates every finite rung, and is still beaten by Busy Beaver with the
+full arithmetic-truth oracle `0^(ω)`, so it is a limit of the finite rungs
+rather than an oracle Busy Beaver of its own. **[paper,
+`GENERAL-NAMING-THEOREM.md` Theorem 8]**
 
 *What you must accept:* that every statement about the whole numbers,
 however many quantifiers it has, is definitely true or false. Equivalently,
@@ -194,11 +202,14 @@ argument. **[Lean, `Extends.record_le`, `record_lt_of_names_succ_record` and
 an arbitrary naming scheme, together with existence and uniqueness of the
 record `BN_R(n)` when the formulas of each size form a finite list, using
 Lean core only. It includes a toy pair of schemes meeting every hypothesis
-of Claim B, so the hypotheses are not vacuous. It does **not** show that any
-particular rung supplies the short formulas "one more than the record below":
-that a truth predicate or an oracle really lets you write that formula in
-`c + 6·log₂(n+2)` symbols is a fact about the specific language, argued on
-paper in §2. The abstract step is checked; each instance of it is not.
+of Claim B, so the hypotheses are not vacuous. It does not itself show that any
+particular rung supplies the short formulas "one more than the record below".
+One instance is checked separately: `sigma2_record_gt_sigma1` in
+`rayo-lean-boolos/RayoBoolos/TruthNaming.lean` shows that a `Σ₂` formula of
+size `C + 6·log₂(h n)` names a number above everything `Σ₁` truth naming
+reaches with `n` symbols (`MIDDLE-RUNGS.md` §8). The other instances, in
+particular those involving a truth predicate, are argued on paper in §2 and
+`MIDDLE-RUNGS.md`.
 
 Together: the relation "names" for `R` is never expressible in `R` in a way
 that `R` itself counts as naming, and adding it always gives a strictly
@@ -243,7 +254,7 @@ that proves the scheme well defined. **[proposal, not carried out]**
 |---|---|---|---|---|
 | 0 | evaluates by a terminating rule | digits, towers, BMS, System F | (sub-rungs by ordinal) | nothing beyond calculation |
 | 1 | program halts / theory proves | Busy Beaver, BLC, `BoolosBig_T` for any `T` | every computable function | whether each program halts |
-| k | halts, with a box for rung k−1 | oracle Busy Beavers | rung k−1 | arithmetic statements with k quantifier alternations |
+| k | halts, with a box for rung k−1 / true `Π_{k−1}` or `Σ_k` formula | oracle Busy Beavers, bounded-truth naming | rung k−1 | arithmetic statements with k−1 "for all" blocks |
 | ω | true statement of arithmetic | arithmetic-truth naming | every finite rung | all statements about whole numbers |
 | … | truth for richer languages | higher-order arithmetic | everything below | sets of numbers, sets of those, … |
 | Rayo | true statement of set theory | Rayo's function | everything below | all statements about the universe of sets |
@@ -259,15 +270,19 @@ In rough order of value for effort:
    bound in `RayoBoolos/Binary.lean`. Also done, 2026-11-24: the Busy Beaver lower
    bound and the theory-independent lower bound (`RayoBoolos/BusyBeaver.lean`,
    `RayoBoolos/AnyTheory.lean`). The upper bound is done too, in a non-quantitative
-   form (`RayoBoolos/UpperBound.lean`). Remaining there: the explicit
-   `n log n` rescaling.
+   form (`RayoBoolos/UpperBound.lean`), and with the explicit `n log n`
+   rescaling (`RayoBoolos/CompactCode.lean`, 2026-11-24). Also in Lean: a
+   theory proves no exact value, and no upper bound, of its own naming
+   function (`RayoBoolos/NoExactValue.lean`).
 2. ~~Machine-check Claims A and B of §3 in the abstract setting.~~ **Done,
    2026-11-24:** `rayo-lean/Rayo/NoTop.lean`, sorry-free, Lean core only.
    The natural follow-up is one concrete instance: exhibit a real pair of
    languages (for example bare arithmetic and arithmetic with a halting
    predicate) and prove the short "one more than the record" formulas exist.
-3. Write out the rung-k sandwich (oracle Busy Beaver against bounded-truth
-   naming) on paper.
+3. ~~Write out the rung-k sandwich (oracle Busy Beaver against bounded-truth
+   naming) on paper.~~ **Done, 2026-11-24:** `MIDDLE-RUNGS.md`, with the
+   bottom two levels and one concrete instance of Claim B (`Σ₁` against `Σ₂`
+   truth naming) in Lean, `RayoBoolos/TruthNaming.lean`.
 4. Check the tagged **[classical]** and **[expected]** statements against
    sources, and look for prior statements of the "provable naming is Busy
    Beaver class for every theory" result. **First pass done, 2026-11-24:** `LITERATURE-SURVEY.md`.

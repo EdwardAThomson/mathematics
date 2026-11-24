@@ -1,6 +1,6 @@
 # The largest number a theory can name in n symbols
 
-*Report, 2026-11-24.* The literature check is
+**Report, 2026-11-24.** The literature check is
 summarized in §10; the full survey is `LITERATURE-SURVEY.md`.
 
 Every statement is tagged:
@@ -41,18 +41,26 @@ this project made that guess. It is wrong. The results:
    rescaling: a halting program with code number `N` outputs, and runs
    for, at most `Big_T(C + 6·log₂ N)`. (Theorem 5) **[Lean]**
 5. **`Big_T` is dominated by a Busy Beaver function** after a rescaling
-   of the argument, when `T` is computably axiomatized. (Theorem 6)
-   **[Lean]** with a rescaling that is fixed but not bounded explicitly;
-   **[paper]** for the `n log n` form.
+   of the argument by `O(n log n)`, when `T` is computably axiomatized.
+   (Theorem 6) **[Lean]**, in the form "one fixed program, run on an input
+   of `O(n log n)` bits"; see Theorem 6(b) for the one form that remains
+   **[paper]**.
 6. Consequently **the choice of axioms changes `Big_T` only by a rescaling
    of its argument**. PA, a fragment with no induction at all, and ZFC all
-   give the same growth class. (Corollary 7) **[Lean]**, same proviso.
-7. **`T` cannot prove any exact value of `Big_T`**, although it proves
-   every true lower bound. (Theorem 8) **[paper]**
+   give the same growth class: `Big_T(n) ≤ Big_U(C + 240·(n+1)·(log₂(n+1)+6))`.
+   (Corollary 7) **[Lean]**
+7. **`T` cannot prove any exact value of `Big_T`**, nor even any upper
+   bound, although it proves every true lower bound. (Theorem 8) **[Lean]**
 8. **No naming scheme is final.** In an abstract setting: a scheme cannot
    name "its own record at budget n, plus one" within budget n, and any
    extension that can do so cheaply has a strictly larger record.
    (Theorem 9) **[Lean]**
+9. **The rungs between Busy Beaver and arithmetic truth are located.**
+   Naming by *truth* of arithmetic formulas with `k` "for all" blocks
+   matches the Busy Beaver function for machines with the `k`-th iterated
+   halting oracle. This proves a 2010 guess of Aaronson. (Theorem 10)
+   **[paper]** for all `k`; the bottom level and the first step up are
+   **[Lean]**.
 
 The distinction that explains the wrong guess: ε₀ measures which functions
 PA can prove **total**, a statement about all inputs at once. Naming asks
@@ -223,9 +231,22 @@ axiomatized.
   whenever `φ` names `k` in `T`, `g_T(⌜N_φ⌝) = k`, where `N_φ(y)` is the
   formula `∀x (φ(x) ↔ x = y)` and `⌜·⌝` is the Gödel number.
   (`exists_search`.)
-- (b) **[paper]** There are constants `c` (absolute) and `c_T` such that
+- (b) There are constants `c` (absolute) and `c_T` such that
   `Big_T(n)` is at most the largest output of any halting program of at
   most `c·n·log₂ n + c_T` bits.
+  - **[Lean]** in the form: there is one partial recursive function
+    `g_T` such that every number `T` names with a formula of size at most
+    `n` is an output of `g_T` on some input `m` with
+    `log₂ m < 4·(2n+10)·(log₂(2n+26)+1)` (`exists_compact_search`). The
+    program `g_T` is fixed, so its size is `c_T`, and the input carries
+    the `O(n log n)` bits.
+  - **[paper]** only the step of hard-wiring the input into the program
+    so that the *code number* of the combined program has `O(n log n)`
+    bits. That step depends on the program numbering: in Mathlib's
+    numbering of `Nat.Partrec.Code`, which the Lean `BB` uses, constants
+    are built by repeated successor and nested pairing, so the code
+    number of "output `m`" is far larger than `m`. With a numbering in
+    which constants cost their bit length, the step is immediate.
 
 *Proof.* (a) The relation "`x` codes a formula `N` and `T ⊢ N(k̄)`" is
 Σ₁ in `(x, k)`, hence recursively enumerable; a partial recursive
@@ -241,6 +262,15 @@ has a description of `c·n·log₂ n` bits. Hard-wiring that description
 into `P_T` gives a program of `c·n·log₂ n + c_T` bits that outputs
 `k`. ∎
 
+In Lean (`RayoBoolos/CompactCode.lean`) the description is the formula in
+Polish notation, one token per symbol (`fSize φ` tokens, each below
+`b = 15 + fSize φ`), packed as base-`b` digits together with `b` and the
+length. A stack machine turns the token list back into `Foundation`'s
+Gödel number; it is proved primitive recursive (`primrec_compactDecode`)
+and correct (`compactDecode_compactCode`). The code of the naming
+template of a formula of size `n` then has fewer than
+`4·(2n+10)·(log₂(2n+26)+1)` bits (`log2_compact_template_lt`).
+
 **Corollary 7 (the axioms do not matter).** Let `T ⊇ PA⁻` be consistent
 and computably axiomatized, and let `U ⊇ PA⁻` be consistent.
 
@@ -251,16 +281,25 @@ and computably axiomatized, and let `U ⊇ PA⁻` be consistent.
   where `M(n)` is the largest Gödel number of `N_φ` over formulas `φ` of
   size at most `n`. `M` depends on neither theory.
   (`BoolosBigIn_le_any`; for `T = PA`, `BoolosBig_PA_le_any`.)
-- (b) **[paper]** With an efficient encoding of formulas,
-  `log₂ M(n) ≤ c·n·log₂ n`, so `Big_T(n) ≤ Big_U(a·n·log₂ n + b)`.
+- (b) **[Lean]** With the compact encoding of formulas of Theorem 6(b),
+  there is a constant `C` (depending on `T` only through its proof-search
+  program) such that for every consistent `U ⊇ PA⁻`, computably
+  axiomatized or not, and every `n`,
+
+      Big_T(n) ≤ Big_U(C + 240·(n+1)·(log₂(n+1) + 6)).
+
+  (`BoolosBigIn_le_any_nlogn'`; the sharper `C + 6·nlogBound(n)` with
+  `nlogBound(n) = 4·(2n+10)·(log₂(2n+26)+1)` is `BoolosBigIn_le_any_nlogn`;
+  for `T = PA`, `BoolosBig_PA_le_any_nlogn`.)
 
 *Proof.* (a) Theorem 6(a) for `T`, then Theorem 2 for `U` applied to
-`g_T`. (b) Theorem 6(b), then Theorem 5. ∎
+`g_T`. (b) Theorem 2 for `U` applied to the function `g_T` of Theorem
+6(b), whose inputs have `O(n log n)` bits. ∎
 
-The Lean statement (a) does not bound `M(n)`. The Gödel numbering of the
-underlying library uses nested pairing, for which `log₂ M(n)` is larger
-than `n log n`. What (a) establishes is that one fixed rescaling of the
-argument, the same for all theories, absorbs any difference in axioms.
+In (a), `M(n)` is not bounded: the Gödel numbering of the underlying
+library uses nested pairing, for which `log₂ M(n)` is far larger than
+`n log n`. (b) replaces that numbering by the compact code, which is why
+it needs no hard-wiring step and is fully machine-checked.
 
 So strengthening the axioms from `PA⁻` to PA to ZFC does make more
 formulas name numbers, and `Big` does increase pointwise (Theorem 1), but
@@ -269,12 +308,34 @@ weakest theory.
 
 ## 6. What the theory can know about its own function
 
-**Theorem 8. [paper]** Let `T ⊇ IΣ₁` be consistent and computably
+**Theorem 8. [Lean]** Let `T ⊇ IΣ₁` be consistent and computably
 axiomatized, and let `n ≥ 1`. Formalize "`Big_T(n) = k`" in arithmetic in
 the natural way. Then:
 
 - (a) for every true inequality `Big_T(n) ≥ k`, `T` proves it;
-- (b) `T` does not prove `Big_T(n) = k` for any `k`.
+- (b) `T` does not prove `Big_T(n) = k` for any `k`. In fact `T` proves
+  no upper bound `Big_T(n) ≤ k` at all.
+
+**The formalization in Lean** (`RayoBoolos/NoExactValue.lean`). The
+formulas of size at most `n` are finitely many and are listed outside the
+theory, so size is not arithmetized. For each such `φ`, with `N_φ(y)` the
+formula `∀x (φ(x) ↔ x = y)`:
+
+- "`Big_T(n) ≤ k`" (`bigLe T n k`) is the conjunction over these `φ` of
+  `∀m ∀y (y = ⌜N_φ(m̄)⌝ ∧ Prov_T(y) → m ≤ k)`, where `y = ⌜N_φ(m̄)⌝` is
+  `Foundation`'s Σ₁ graph of substituting the numeral of `m` into the
+  code of `N_φ`, and `Prov_T` is its standard provability predicate;
+- "`Big_T(n) ≥ k`" (`bigGe T n k`) is the disjunction over these `φ` of
+  `∃m ∃y (k ≤ m ∧ y = ⌜N_φ(m̄)⌝ ∧ Prov_T(y))`, a Σ₁ sentence;
+- "`Big_T(n) = k`" (`bigEq T n k`) is their conjunction.
+
+These mean what they should: `bigLe T n k` is true in ℕ exactly when
+`Big_T(n) ≤ k` (`bigLe_true_iff`), and `bigGe T n k` is true exactly when
+some formula of size at most `n` names a number `≥ k` (`bigGe_true_iff`).
+The theorems are `provable_bigGe` (a), `not_provable_bigLe` and
+`not_provable_bigEq` (b). Part (b) uses only one conjunct of `bigLe`, so
+any formalization that provably in `T` implies "the fixed formula `⊤`
+names no number above `k`" is covered as well.
 
 *Proof.* (a) "`Big_T(n) ≥ k`" asserts that some formula of size at most
 `n` provably names some number `≥ k`. That is a Σ₁ sentence, and true Σ₁
@@ -329,11 +390,33 @@ machine-checked here.
 | rung | "names" may refer to | Big(n) |
 |---|---|---|
 | 0 | a fixed terminating process | a computable function |
-| 1 | halting, or provability in any reasonable theory | Busy Beaver class (§§4, 5) |
-| k | halting with k−1 nested halting oracles | k-th order Busy Beaver |
+| 1 | halting; provability in any reasonable theory; truth of Σ₁ formulas | Busy Beaver class (§§4, 5) |
+| k+1 | truth of formulas with k "for all" blocks (Π_k or Σ_{k+1}) | Busy Beaver with the k-th halting oracle (Theorem 10) |
 | ω | truth in arithmetic | beats every rung k |
 | … | truth in richer languages | … |
 | Rayo | truth in first-order set theory | Rayo's function |
+
+**Theorem 10 (the middle rungs).** Let `Truth_Γ(n)` be the largest number
+`m` such that some formula of class `Γ` and size at most `n` is true of `m`
+and of nothing else, in the standard model.
+
+- (a) **[Lean]** `BB(N) ≤ Truth_{Σ₁}(C + 6·log₂ N)`, and
+  `Truth_{Σ₁}(n) ≤ BB(h(n))` for a fixed function `h`. So naming by Σ₁
+  truth is Busy Beaver class, like provable naming.
+  (`BB_le_TruthBig_sigma1`, `TruthBig_sigma1_le_BB`.) With `h` made
+  explicit in the input form of Theorem 6(b): one fixed program outputs
+  every value of `Truth_{Σ₁}(n)` on an input of fewer than
+  `4·n·(log₂(n+16)+1)` bits (`TruthBig_sigma1_compact`).
+- (b) **[Lean]** `BB(N) < Truth_{Σ₂}(C + 6·log₂ N)`: one "for all" block
+  names "one more than the Busy Beaver value". This is a concrete instance
+  of Theorem 9(c). (`BB_lt_TruthBig_sigma2`, `sigma2_record_gt_sigma1`.)
+- (c) **[paper]** For every `k`, `Truth_{Π_k}`, `Truth_{Σ_{k+1}}` and the
+  Busy Beaver function for machines with oracle `0^(k)` bound one another
+  after a rescaling of the argument by at most `n log n`. A leading
+  "there exists" is free; each "for all" block costs one oracle level.
+
+The proofs are in `MIDDLE-RUNGS.md`. Part (c) is a paper proof that has
+not been independently checked.
 
 Rung 1 is the content of this report: Turing machines, lambda calculus
 and provable naming in every consistent computably axiomatized theory
@@ -351,10 +434,23 @@ language:
   `K(g(n)) ≤ K(n) + C_g`. **[Lean]**
 - Theorem 5: `D_T(k) ≤ C + 6·K'(k)`, where `K'(k)` is the bit length of
   the smallest code number of a program printing `k`. **[Lean]**
-- Theorem 6: `K(k) ≤ c·D_T(k)·log D_T(k) + c_T`. **[paper]**
+- Theorem 6: `K(k) ≤ c·D_T(k)·log D_T(k) + c_T`. **[Lean]** with `K`
+  measured as input length to a fixed program (Theorem 6(b)); **[paper]**
+  for program code numbers.
 
 So provability complexity and Kolmogorov complexity are the same measure
 up to a constant factor and a logarithm, for every admissible `T`.
+
+**Bounding the proof as well.** All of the above bounds only the formula.
+[`PROOF-BUDGETS-AND-COMPLEXITY.md`](PROOF-BUDGETS-AND-COMPLEXITY.md) asks
+what happens when the proof is also given a length budget. In short
+**[paper, with open checks listed in that note]**: if the proof must
+exhibit the number, the number is capped by the proof length and nothing
+interesting grows; if the proof need only show that a unique value
+exists, the strength of the theory matters again and the function tracks
+the theory's provably total functions; and the natural budgeted measure
+sits between two standard time-bounded complexity measures. Nothing there
+bears on P versus NP.
 
 ## 9. Machine-checked statements and how to reproduce
 
@@ -367,12 +463,16 @@ up to a constant factor and a logarithm, for every admissible `T`.
 | Theorem 3 | `BoolosBigIn_dominates_computable`, `BoolosBigIn_not_computable` | `RayoBoolos/AnyTheory.lean` |
 | Theorem 5 | `BB_le_BoolosBigIn`, `BBtime_le_BoolosBigIn` | `RayoBoolos/BusyBeaver.lean` |
 | Theorem 6(a), Corollary 7(a) | `exists_search`, `BoolosBigIn_le_any`, `BoolosBig_PA_le_any` | `RayoBoolos/UpperBound.lean` |
+| Theorem 6(b) (input form), Corollary 7(b) | `compactDecode_compactCode`, `primrec_compactDecode`, `log2_compactCode_lt`, `exists_compact_search`, `BoolosBigIn_le_any_nlogn`, `BoolosBigIn_le_any_nlogn'`, `BoolosBig_PA_le_any_nlogn` | `RayoBoolos/CompactCode.lean` |
+| Theorem 8 | `bigLe_true_iff`, `bigGe_true_iff`, `provable_bigGe`, `not_provable_bigLe`, `not_provable_bigEq` | `RayoBoolos/NoExactValue.lean` |
 | Theorem 9 | see §7 | `rayo-lean/Rayo/NoTop.lean` |
+| Theorem 10(a), (b) | `BB_le_TruthBig_sigma1`, `TruthBig_sigma1_le_BB`, `BB_lt_TruthBig_sigma2`, `sigma2_record_gt_sigma1` | `RayoBoolos/TruthNaming.lean` |
+| Theorem 10(a), explicit input length | `TruthBig_sigma1_compact` | `RayoBoolos/TruthCompact.lean` |
 
 All `RayoBoolos` files are under `large-numbers/rayo-lean-boolos/`.
 Toolchain: Lean 4 `v4.32.2`, with Mathlib and Foundation pinned by
 `lake-manifest.json`. To check: run `lake build` in
-`large-numbers/rayo-lean-boolos/` (1260 jobs) and in
+`large-numbers/rayo-lean-boolos/` (1264 jobs) and in
 `large-numbers/rayo-lean/`. Each file ends with `#print axioms` for its
 headline theorems.
 
@@ -420,15 +520,25 @@ source, is `LITERATURE-SURVEY.md`. In brief:
 - **The complexity `D_T` of §8** is a known notion: Kikuchi, Kurahashi
   and Sakai (2012) define a provability-based Kolmogorov complexity.
 - **Theorem 9 and the table of rungs** restate Berry's paradox and
-  Tarski's theorem; oracle Busy Beavers are in Aaronson (2020) §3. That
-  truth for formulas with `k` quantifier alternations should match a
-  `k`-th level Busy Beaver was conjectured by Aaronson in the same
-  MathOverflow discussion; we know of no proof.
+  Tarski's theorem; oracle Busy Beavers are in Aaronson (2020) §3.
+  Simmons (Theorem 2.4 and Appendix C) gives the provability instance of
+  the step up: a metalanguage names "the largest number named by a term
+  that the theory proves names a number in fewer than n symbols" with a
+  term of size about log n.
+- **Theorem 10** proves a guess of Aaronson from the same MathOverflow
+  discussion (2010), that definability with truth fixed for `Π_k`
+  sentences grows like a Busy Beaver function `k` levels up. The
+  ingredients are classical; we found no earlier proof or precise
+  statement. Upper bounds of this kind appear in Goucher, "The Ξ
+  function" (2013) and Cao (2025).
 
-**What is claimed.** Not new theorems. The contribution is:
+**What is claimed.** For Theorems 1 to 9, not new theorems. Theorem 10
+is offered as a proof of a stated guess, on paper for general `k`. The
+contribution is:
 
-1. machine-checked proofs of Theorems 1, 2, 3, 5, 6(a), Corollary 7(a)
-   and Theorem 9, with explicit constants and a base theory with no
+1. machine-checked proofs of Theorems 1, 2, 3, 5, 6 (with the input form
+   of 6(b)), Corollary 7, Theorem 8 and Theorem 9, with explicit
+   constants and a base theory with no
    induction (we are not aware of a prior formalization of a Boolos-style
    naming function or of its growth);
 2. the wrapper of Lemma A, which obtains provable uniqueness from the
@@ -442,17 +552,79 @@ interpreting Chaitin's incompleteness theorem", 1998). The claim here is
 only about growth class.
 
 **Gaps in the survey.** Not yet read in full: Kikuchi, Kurahashi and
-Sakai (2012) beyond its abstract and definitions, and the last section
-and appendices of Simmons.
+Sakai (2012) beyond its abstract and definitions.
 
-## 11. Open items
+## 11. What the results say
 
-- Machine-check the quantitative forms Theorem 6(b) and Corollary 7(b),
-  which need an efficient encoding of formulas and a bound on its size.
-- Machine-check Theorem 8.
-- Exhibit one concrete pair of languages meeting the hypothesis of
-  Theorem 9(c), for example arithmetic and arithmetic with a halting
-  predicate.
-- State and prove the rung-k analogue of the sandwich.
+Five conclusions, in plain terms. None is a new theorem; each is a reading
+of the results above.
+
+1. **Bits are the wrong currency.** The project began by asking how the
+   cost of a naming scheme, measured in bits, relates to how fast its
+   numbers grow, and found no clean law. The reason is now visible.
+   Within one rung, changing the scheme shifts the budget by a constant
+   (Corollary 7), and a step up to the next rung costs about `log n`
+   symbols (Theorems 2 and 9). Symbols are nearly free. What a faster
+   function costs is the strength of what is assumed.
+
+2. **There are two regimes, with a sharp line between them.** While
+   "names" means *provably names*, stronger axioms buy nothing: every
+   consistent, computably axiomatized theory lands in the Busy Beaver
+   class (Theorems 5 and 6, Corollary 7). Once "names" means *truly
+   names*, stronger assumptions are the only thing that buys anything,
+   and Theorem 10 says exactly what moves a scheme up: which truths are
+   added, counted by blocks of "for all", and never how many axioms
+   there are.
+
+3. **A largest-number contest has no winner without a referee.** "The
+   biggest number in `n` symbols" means something only once the scheme
+   and the assumptions behind it are fixed. Left open, the winner is
+   whoever assumes the most, up to the point of contradiction (Section 7).
+   BIG FOOT, whose defining notion of truth turned out to be
+   inconsistent, shows what crossing that point looks like.
+
+4. **Every rung has its own blind spot.** A theory proves no exact value
+   of its own naming function (Theorem 8), and each rung's values encode
+   about `n` bits that the rung below cannot obtain (Section 8). So the
+   cost of a rung shows up twice: in what must be assumed, and in what
+   can no longer be proved.
+
+5. **Size is not information.** These numbers are unimaginably long and
+   carry at most about `n` symbols of information. The ladder ranks how
+   much can be unpacked from a short description, given what a
+   description is allowed to mean. The essay
+   [`BIG-NUMBERS-AS-COMPRESSION.md`](BIG-NUMBERS-AS-COMPRESSION.md)
+   develops this reading.
+
+Two questions these suggest, both open:
+
+- **One scale for the whole ladder.** The computable rung is measured by
+  ordinals, the middle rungs by halting oracles, the top by set-theoretic
+  assumptions. Is there a single measure of assumption cost covering all
+  three?
+- **A general theorem behind points 1 and 2.** This one now has an
+  answer, in [`GENERAL-NAMING-THEOREM.md`](GENERAL-NAMING-THEOREM.md)
+  **[paper, not independently checked; supporting lemmas in Lean,
+  `RayoBoolos/Decided.lean`]**. The first guess, that the naming function
+  of `T` is Busy Beaver relative to the set of theorems of `T`, is false
+  by exactly one jump: the theorems of PA compute the halting problem,
+  but PA's naming function is plain Busy Beaver. The correct statement
+  is that for every consistent `T ⊇ PA⁻`, computably axiomatized or not,
+  the naming function is Busy Beaver over the oracles that `T` *decides*
+  (sets `A` with a formula that `T` proves at every member and refutes
+  at every non-member). When `T` decides one set `A` from which its
+  theorems can be listed, this is Busy Beaver with oracle `A`. Theorems
+  5 and 6 are the case `A = ∅` and Theorem 10(c) the case `A = 0^(k)`.
+  True arithmetic has no such single set, and its naming function is a
+  limit over the finite levels, not a level of its own.
+
+## 12. Open items
+
+- Theorem 6(b) with the input hard-wired into a program whose Mathlib
+  code number has `O(n log n)` bits. Needs a numbering in which constants
+  cost their bit length, or a log-size constant builder for
+  `Nat.Partrec.Code`. Corollary 7(b) does not need it and is done.
+- Have Theorem 10(c) checked independently, and machine-check it, which
+  needs oracle machines tied to the arithmetical hierarchy.
 - Sharpen the constants: the `6` in Theorem 2 comes from the term
   encoding of binary numerals and is not optimal.

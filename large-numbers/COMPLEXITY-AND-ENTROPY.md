@@ -259,6 +259,10 @@ complexity relative to a stronger oracle.*
 
 ### 5.3 Complexity classes: P, NP and the polynomial hierarchy
 
+*Follow-up: `PROOF-BUDGETS-AND-COMPLEXITY.md` works this section out in
+detail (proof-length budgets, the ε₀ rung, `Kt`/`KNt`, bounded
+quantifiers).*
+
 The classes of practical complexity theory are a scaled-down copy of
 §5.2. **[analogy]** Take the arithmetical hierarchy and require every
 quantified object to be short (polynomial length) and every check to be
