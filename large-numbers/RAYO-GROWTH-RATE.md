@@ -16,14 +16,21 @@ intrinsic ordinal definitions it passes the fast-growing hierarchy at *every
 fixed ordinal notation* — ε₀, the Buchholz ordinal, Γ₀, the proof-theoretic
 ordinals of BMS and System F — which is exactly *why* it dominates the ordinal
 and type-theory systems in `KAPPA-TABLE.md` (§3). It is itself **not**
-definable-total, so it strictly transcends that whole class, and — unlike
-Boolos's fork — this transcendence is immediate from Tarski, no diagonalization
-needed (§4). The honest ceiling: **no single proof-theoretic ordinal
+definable-total, so it strictly transcends that whole class, immediately from
+Tarski (§4). The honest ceiling: **no single proof-theoretic ordinal
 characterizes `Rayo`** — its growth is tied to truth-in-V and outruns every
-fixed ordinal notation (§5). The gap between Boolos's ε₀ and Rayo's
-above-every-notation is due **entirely to the strength of the naming predicate**
-(provability-in-PA vs truth-in-V), not to a different naming mechanism — which
+fixed ordinal notation (§5). The gap between Boolos's Busy-Beaver class and
+Rayo's beyond-arithmetical growth is due **entirely to the naming predicate**
+(a proof existing vs truth-in-V), not to a different naming mechanism — which
 sharpens the `KAPPA-TABLE.md` diagonalization-family finding.
+
+**Correction, 2026-11-24.** Earlier versions of this note gave the Boolos
+fork's growth as `ε₀`. That was its first proved lower bound, not its size:
+`BoolosBig_PA` dominates every computable function
+(`rayo-lean-boolos/RayoBoolos/Minimization.lean`) and is Busy-Beaver class
+(`BOOLOS-IS-BUSY-BEAVER-CLASS.md`). The statements about `Rayo` in this note
+are unaffected; the comparisons with Boolos in the summary, §4, §5 and §6 are
+corrected.
 
 **Plain-English version.** Rayo's number grows faster than any function ordinary
 mathematics (even all of ZFC set theory) can prove will always finish — and then
@@ -162,14 +169,15 @@ immediate:
   definable-total, hence — by §2's contrapositive — not dominated by any
   definable-total function. It strictly transcends the entire class of §2.
 
-**The asymmetry worth noting.** For the Boolos fork, strict transcendence needed
-Boolos's **diagonalization** (`BOOLOS-B3-PAPER-VERIFICATION.md` §4), because
-provability *is* first-order-expressible, so Tarski does not directly forbid a
-provably-total bound. For Rayo it is the reverse: the naming predicate is
-truth-in-V, which Tarski forbids at first order outright, so transcendence falls
-out with **no diagonalization at all**. The very feature that made Rayo's
-*well-definedness* hard (needing the MK truth predicate, R0) makes its
-*transcendence* easy. This is a clean structural mirror of the two forks.
+**The parallel worth noting.** Both forks transcend the class they dominate,
+and in both cases for a cheap reason. `BoolosBig_PA` dominates every computable
+function and so cannot itself be computable (apply domination to
+`BoolosBig_PA + 1`); in particular it is not PA-provably-total. `Rayo`
+dominates every definable-total function and is not definable, by Tarski. An
+earlier version of this note said the Boolos fork needed Boolos's
+diagonalization for this step; that was when only the weaker domination result
+was known. The very feature that made Rayo's *well-definedness* hard (needing
+the MK truth predicate, R0) makes its *transcendence* easy.
 
 ---
 
@@ -177,9 +185,10 @@ out with **no diagonalization at all**. The very feature that made Rayo's
 
 For the sub-Turing systems in `KAPPA-TABLE.md`, growth has a crisp
 proof-theoretic-ordinal characterization: single-row BMS is exactly `ε₀`,
-multi-row BMS the Buchholz ordinal, System F/CoC its PTO, and (Boolos fork)
-`BoolosBig_PA` is `≈ ε₀` (`= PTO(PA)`). **`Rayo` has no such characterization**,
-and that is the finding, not a gap in the analysis:
+multi-row BMS the Buchholz ordinal, System F/CoC its PTO. (The Boolos fork is
+not one of these: `BoolosBig_PA` is uncomputable, Busy-Beaver class.) **`Rayo`
+has no such characterization**, and that is the finding, not a gap in the
+analysis:
 
 - Its growth outruns `f_β` for *every* fixed recursive ordinal `β` (§3), so no
   fixed ordinal notation bounds it.
@@ -203,13 +212,13 @@ commonly used."
 **Sharpens the diagonalization-family finding (`KAPPA-TABLE.md`).** §2–§4 show
 Boolos and Rayo use the *same* naming mechanism — direct naming, `O(k)` input
 cost, pre-inflation to dominate — and even the *same* proof shape. The entire
-growth gap (Boolos `= ε₀`; Rayo beyond every notation) comes from **one thing:
-the strength of the naming predicate** — first-order provability-in-PA
-(Tarski-safe, PA-strength) versus truth-in-V (Tarski-forbidden, MK-strength).
-Same machine, different fuel. This is the cleanest possible evidence for that
-section's claim that, in the diagonalization family, *commitment strength is what
-buys growth* — and that the step between the two rungs is the sharp,
-Tarski-drawn, qualitative jump the section describes, not a smooth dial.
+growth gap (Boolos: Busy-Beaver class; Rayo: beyond anything arithmetically
+definable) comes from **one thing: the naming predicate** — a proof existing
+(Tarski-safe, checkable) versus truth-in-V (Tarski-forbidden, MK-strength).
+Same machine, different fuel. Note what this is *not* evidence for: within
+provable naming, a stronger theory does not buy a higher growth class. The
+step that buys growth is from provability to truth, and it is the sharp,
+Tarski-drawn, qualitative jump that section describes, not a smooth dial.
 
 **Limits, kept honest.**
 - §2's domination is a genuine theorem-shape argument; §3's "how far" is a
