@@ -1,5 +1,11 @@
 # Dev Log
 
+## 2026-11-24
+
+A correction and a set of new machine-checked results on the Boolos fork. The project had described `BoolosBig_PA`, the largest number PA can provably name in n symbols, as an ε₀-class function. That was the lower bound we had proved, read as the function's size, and it is wrong. The function eventually beats every computable function, sits between two Busy Beaver functions, and has the same growth class for every consistent, computably axiomatized theory containing a base theory with no induction. PROVABLE-NAMING-REPORT.md states all of this with proofs; five new Lean files (Minimization, Binary, AnyTheory, BusyBeaver, UpperBound) check it, sorry-free. Rayo/NoTop.lean checks an abstract form of the Berry/Tarski argument that no naming scheme is final. THE-LADDER.md arranges the schemes into rungs by what "names" may mean, COMPLEXITY-AND-ENTROPY.md reads the results as description complexity, and LITERATURE-SURVEY.md records what is already known.
+
+**Decisions & notes:** Same honesty-first policy as the August audit: README, KAPPA-TABLE, RAYO-GROWTH-RATE and BOOLOS-B0-WELLDEFINEDNESS carry dated correction notes rather than silent edits. The literature survey found the notion of naming is Boolos's (1989) and the results are classical or unstated folklore, so the report claims the mechanization and the framing, not new theorems. Still on paper: the explicit n log n size of the rescaling in the upper bound, and the observation that a theory proves no exact value of its own naming function.
+
 ## 2026-08-09
 
 Added LADDER.md, a rung-by-rung audit of sixteen famous large numbers: for each, whether it is actually well-defined, what metatheoretic strength its existence proof needs, and a per-claim confidence tag, with sources chased past the wikis. The audit turned back on the project itself and landed two corrections: the Morse-Kelley-strength observation about Rayo (R0) has community precedent from 2018 onward, so the README now records it as an independent rediscovery rather than a novel result, and KAPPA-TABLE's multi-row BMS ordinal was really the 2-row fragment's bound, with the full system open and BM4 termination resting on one unrefereed preprint.
