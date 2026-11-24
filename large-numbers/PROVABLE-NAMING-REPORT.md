@@ -450,7 +450,10 @@ interesting grows; if the proof need only show that a unique value
 exists, the strength of the theory matters again and the function tracks
 the theory's provably total functions; and the natural budgeted measure
 sits between two standard time-bounded complexity measures. Nothing there
-bears on P versus NP.
+bears on P versus NP, and [`P-VS-NP-LIMITS.md`](P-VS-NP-LIMITS.md) explains
+why it could not: every argument in this report still works when all
+machines are given the same oracle, and such arguments are known not to
+settle that question.
 
 ## 9. Machine-checked statements and how to reproduce
 
