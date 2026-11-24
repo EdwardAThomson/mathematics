@@ -260,6 +260,47 @@ that proves the scheme well defined. **[proposal, not carried out]**
 | Rayo | true statement of set theory | Rayo's function | everything below | all statements about the universe of sets |
 | Rayo+ | truth for set theory plus its truth predicate, iterated | Fish number 7 | Rayo | more again; no last step |
 
+## 5a. Where the famous numbers sit
+
+Added 2026-11-24. Placements are from the literature unless marked. The
+question of whether each of these numbers is well defined at all, and
+what it takes to prove so, is a different one; it is audited number by
+number in [`LADDER.md`](LADDER.md). The two documents are meant to
+be read together: this one says how fast each scheme grows, that one says
+what must be assumed for the number to exist.
+
+**Inside rung 0: the fast-growing hierarchy.** Everything computable sits
+on rung 0. Within it, growth is measured by the fast-growing hierarchy
+`f_α`, indexed by ordinals. This is a ruler inside the bottom rung, not a
+set of further rungs: Busy Beaver beats every level of it.
+
+| level `α` | what grows about this fast | famous numbers | status |
+|---|---|---|---|
+| 0, 1 | adding one, doubling | | [classical] |
+| 2 | exponentials | googol, googolplex | [classical] |
+| 3 | power towers | | [classical] |
+| ω | Ackermann's function, Knuth's up-arrows | | [classical] |
+| ω + 1 | iterating the up-arrow construction | Graham's number, about `f_{ω+1}(64)` | [classical] |
+| ω² | Conway's chained arrows | | [classical] |
+| ε₀ | Goodstein sequences, the Kirby and Paris hydra; also the limit of what PA proves total | Goodstein numbers | [classical] |
+| Γ₀ | the limit of predicative mathematics | | [classical] |
+| small Veblen ordinal, at least | Kruskal's tree sequences | TREE(3) | theorem [classical]; the level is a lower bound |
+| about ψ(Ω_ω) | subcubic graph sequences; two-row Bashicu matrices | SCG(13) | theorem [classical]; the level is a lower bound |
+| ψ(ε_{Ω_ω+1}) | Buchholz hydras | | [classical] |
+| above the measured levels | the Bashicu matrix system; programs in the calculus of constructions. Both are on the ruler, above everything listed, at a level nobody has pinned down, and which of the two is higher is not settled | Bashicu matrix numbers; Loader's number | Loader's number is computable for certain; termination of Bashicu matrices rests on one unrefereed proof |
+| off the scale | Busy Beaver: this is rung 1 | `BB(n)` | [classical] |
+
+**On the upper rungs.**
+
+| rung | famous residents | status |
+|---|---|---|
+| 1, Busy Beaver | `BB(n)`, Radó's `Σ(n)`, binary lambda calculus; the largest number provably nameable in `n` symbols, for any reasonable theory | [classical]; provable naming [Lean] |
+| k, higher Busy Beavers | `BB₂`, `BB₃`, … (halting oracles) | [classical]; the match with "for all" blocks is [paper] (`MIDDLE-RUNGS.md`) |
+| ω, arithmetic truth | Goucher's Ξ function sits near here | not audited by this project |
+| richer languages | Busy Beaver for infinite-time Turing machines | placement approximate |
+| Rayo | Rayo's number | well defined only given a strong extra assumption (`RAYO-R0-WELLDEFINEDNESS.md`) |
+| above Rayo | Fish number 7. BIG FOOT aimed here, but its definition does not determine a number | community constructions |
+
 ## 6. What would make this solid
 
 In rough order of value for effort:

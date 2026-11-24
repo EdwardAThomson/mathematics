@@ -8,7 +8,12 @@ Every statement is tagged:
 - **[Lean]** machine-checked in Lean 4 against Mathlib and
   FormalizedFormalLogic/Foundation, with no `sorry` and no axioms beyond
   `propext`, `Classical.choice`, `Quot.sound`;
-- **[paper]** proved in this report, not machine-checked.
+- **[paper]** proved in this report or in the note it cites, not
+  machine-checked.
+
+§9 lists each machine-checked statement beside its Lean name, and records
+the places where the formal statement is narrower or differently phrased
+than the prose.
 
 ---
 
@@ -61,6 +66,10 @@ this project made that guess. It is wrong. The results:
    halting oracle. This proves a 2010 guess of Aaronson. (Theorem 10)
    **[paper]** for all `k`; the bottom level and the first step up are
    **[Lean]**.
+10. **One statement covers all of these.** For any consistent theory,
+    computably axiomatized or not, provable naming is the Busy Beaver
+    function over the oracles the theory can decide. (Theorem 11)
+    **[paper]**
 
 The distinction that explains the wrong guess: ε₀ measures which functions
 PA can prove **total**, a statement about all inputs at once. Naming asks
@@ -75,7 +84,14 @@ semirings, with no induction.
 
 **Size.** `|t|` and `|φ|` count nodes of the syntax tree: one for each
 variable occurrence, constant, function symbol, relation symbol,
-connective and quantifier. (Lean: `tSize`, `fSize`.) There are finitely
+connective and quantifier. (Lean: `tSize`, `fSize`.) Formulas are in
+negation normal form, as in the underlying library: the connectives are
+`∧` and `∨`, negation is applied only to atomic formulas and a negated
+atom costs the same as an atom, and `→` and `↔` are abbreviations that are
+counted after expansion (so `A ↔ B` counts `A` and `B` twice). Variables
+are de Bruijn indices and each occurrence costs one. Every bound in this
+report is stated for this size measure; another reasonable measure changes
+the constants. There are finitely
 many formulas of a given size with one free variable
 (`formsUpTo_finite`). **[Lean]**
 
@@ -209,7 +225,12 @@ Mathlib's `Nat.Partrec.Code` and its numbering. Let
 - `BBtime(N)` = the largest halting time of such a program.
 
 A program with code number `N` is `log₂ N` bits long, so these are Busy
-Beaver functions indexed by `2^(program length)`.
+Beaver functions indexed by `2^(program length)`. Two points about the
+formal definitions. "Halting time" is the least step bound at which
+Mathlib's bounded evaluator `Code.evaln` returns a result, which is that
+library's notion of running time and not a count of Turing machine steps.
+And the numbering is Mathlib's numbering of `Nat.Partrec.Code`, in which
+some small programs have large code numbers (see Theorem 6(b)).
 
 **Theorem 5 (lower bound). [Lean]** There is a constant `C` such that for
 every consistent `T ⊇ PA⁻` and every `N`,
@@ -312,7 +333,9 @@ weakest theory.
 axiomatized, and let `n ≥ 1`. Formalize "`Big_T(n) = k`" in arithmetic in
 the natural way. Then:
 
-- (a) for every true inequality `Big_T(n) ≥ k`, `T` proves it;
+- (a) whenever some formula of size at most `n` names a number `≥ k`,
+  `T` proves "`Big_T(n) ≥ k`" (this is every true lower bound, except
+  the empty case `k = 0` at budgets too small to name anything);
 - (b) `T` does not prove `Big_T(n) = k` for any `k`. In fact `T` proves
   no upper bound `Big_T(n) ≤ k` at all.
 
@@ -375,7 +398,10 @@ the largest number named by an expression of size at most `n`.
 Lean: `exists_isBN_of_finite`, `IsBN.unique`, `IsBN.mono`,
 `size_gt_of_names_succ_record`, `record_lt_of_names_succ_record`
 (`Rayo/NoTop.lean`, Lean core only), with a toy pair of schemes
-satisfying (c).
+satisfying (c). The Lean form of (c) is slightly more general than the
+prose: it does not use that `S'` extends `S`, and it concludes that the
+`S'`-record at the budget of the naming expression exceeds the `S`-record
+at `n`; the statement above follows by monotonicity (a).
 
 Part (b) says no scheme can describe its own record cheaply. Part (c)
 says any scheme that can describe another's record cheaply beats it. A
@@ -392,13 +418,15 @@ machine-checked here.
 | 0 | a fixed terminating process | a computable function |
 | 1 | halting; provability in any reasonable theory; truth of Σ₁ formulas | Busy Beaver class (§§4, 5) |
 | k+1 | truth of formulas with k "for all" blocks (Π_k or Σ_{k+1}) | Busy Beaver with the k-th halting oracle (Theorem 10) |
-| ω | truth in arithmetic | beats every rung k |
+| ω | truth in arithmetic | beats every rung k; a limit, not an oracle rung (Theorem 11(c)) |
 | … | truth in richer languages | … |
 | Rayo | truth in first-order set theory | Rayo's function |
 
 **Theorem 10 (the middle rungs).** Let `Truth_Γ(n)` be the largest number
 `m` such that some formula of class `Γ` and size at most `n` is true of `m`
-and of nothing else, in the standard model.
+and of nothing else, in the standard model. The classes are the liberal
+ones of the underlying library: bounded quantifiers are free, and
+`Σ_{k+1}` contains `Π_k`.
 
 - (a) **[Lean]** `BB(N) ≤ Truth_{Σ₁}(C + 6·log₂ N)`, and
   `Truth_{Σ₁}(n) ≤ BB(h(n))` for a fixed function `h`. So naming by Σ₁
@@ -417,6 +445,36 @@ and of nothing else, in the standard model.
 
 The proofs are in `MIDDLE-RUNGS.md`. Part (c) is a paper proof that has
 not been independently checked.
+
+**Theorem 11 (the general form). [paper]** Say a formula `Θ(y)`
+**decides** a set `A` in `T` when `T ⊢ Θ(ī)` for every `i ∈ A` and
+`T ⊢ ¬Θ(ī)` for every `i ∉ A`. Let `BB^{[T]}(ℓ)` be the longest halting
+time of an oracle program `p` with oracle `A`, over all pairs of a program
+and a formula `Θ` deciding `A` in `T` with `|Θ| + |p| ≤ ℓ`. Let `T ⊇ PA⁻`
+be consistent, computably axiomatized or not.
+
+- (a) With absolute constants `a, b, c`,
+  `BB^{[T]}(ℓ) ≤ Big_T(aℓ + b)` and `Big_T(n) ≤ BB^{[T]}(n + c)`.
+- (b) If `T` decides a set `A` from which the theorems of `T` can be
+  computably listed, then `Big_T` is in the growth class of Busy Beaver
+  with oracle `A`, up to an `n log n` rescaling. Computably axiomatized
+  theories are the case `A = ∅` (Theorems 5, 6); theories containing every
+  true `Π_k` sentence are the case `A = 0^(k)`.
+- (c) Naming in true arithmetic eventually dominates Busy Beaver with
+  oracle `0^(k)` for every `k`, and is dominated by Busy Beaver with an
+  oracle for arithmetic truth. It is a limit of the rungs below it, not an
+  oracle rung of its own.
+
+The oracle here is what `T` decides, not what `T` proves. The set of
+theorems of PA computes the halting problem, yet `Big_PA` is plain Busy
+Beaver: "Busy Beaver relative to the theorems of `T`" overshoots by
+exactly one jump.
+
+The proofs are in `GENERAL-NAMING-THEOREM.md`, and have not been
+independently checked. Machine-checked there **[Lean]**: a formula naming
+`m` decides `{m}`, which is the first step of the upper bound in (a), and
+a consistent theory decides at most one set with a given formula
+(`namesIn_decides_singleton`, `DecidesIn.unique`, `RayoBoolos/Decided.lean`).
 
 Rung 1 is the content of this report: Turing machines, lambda calculus
 and provable naming in every consistent computably axiomatized theory
@@ -455,6 +513,11 @@ why it could not: every argument in this report still works when all
 machines are given the same oracle, and such arguments are known not to
 settle that question.
 
+**A picture of the whole ladder.** [`THE-LADDER.md`](THE-LADDER.md) lays
+out every rung with its status, places the fast-growing hierarchy and the
+well-known named numbers on it, and gives the argument that there is no
+top.
+
 ## 9. Machine-checked statements and how to reproduce
 
 | result | Lean name | file |
@@ -471,11 +534,32 @@ settle that question.
 | Theorem 9 | see §7 | `rayo-lean/Rayo/NoTop.lean` |
 | Theorem 10(a), (b) | `BB_le_TruthBig_sigma1`, `TruthBig_sigma1_le_BB`, `BB_lt_TruthBig_sigma2`, `sigma2_record_gt_sigma1` | `RayoBoolos/TruthNaming.lean` |
 | Theorem 10(a), explicit input length | `TruthBig_sigma1_compact` | `RayoBoolos/TruthCompact.lean` |
+| Theorem 11, first step of the upper bound only | `namesIn_decides_singleton`, `DecidesIn.unique` | `RayoBoolos/Decided.lean` |
+
+**How the formal statements differ from the prose.** Each line of the
+table was compared with the Lean statement on 2026-11-24. The statements
+agree, with these qualifications, all noted where the theorem is stated:
+
+- size is the node count of negation normal form (§2);
+- "computably axiomatized" is the library's `T.Δ₁` (the axiom set has a
+  Δ₁ definition), and "`T ⊇ PA⁻`" is `𝗣𝗔⁻ ⪯ T` (`T` proves every axiom of
+  `PA⁻`);
+- `BB` and `BBtime` use Mathlib's program numbering and its bounded
+  evaluator's notion of time (§5);
+- Theorem 6(b) is checked in the input form only;
+- Theorem 8(a) is checked in the form "some formula names a number
+  `≥ k`", and Theorem 8 needs `n ≥ 1`;
+- Theorem 9(c) is checked in a slightly more general form (§7);
+- in Theorem 10(a) and Corollary 7(a) the rescaling functions `h` and
+  `M` are not bounded; the bounded forms are `TruthBig_sigma1_compact` and
+  Corollary 7(b);
+- Theorem 10(b) is checked for `Σ₂`, not for the smaller class `Π₁`;
+- Theorems 10(c) and 11 are not machine-checked beyond the entries above.
 
 All `RayoBoolos` files are under `large-numbers/rayo-lean-boolos/`.
 Toolchain: Lean 4 `v4.32.2`, with Mathlib and Foundation pinned by
 `lake-manifest.json`. To check: run `lake build` in
-`large-numbers/rayo-lean-boolos/` (1264 jobs) and in
+`large-numbers/rayo-lean-boolos/` (1265 jobs) and in
 `large-numbers/rayo-lean/`. Each file ends with `#print axioms` for its
 headline theorems.
 
@@ -535,9 +619,18 @@ source, is `LITERATURE-SURVEY.md`. In brief:
   statement. Upper bounds of this kind appear in Goucher, "The Ξ
   function" (2013) and Cao (2025).
 
+- **Theorem 11** is built from classical ingredients: strong
+  representability (Tarski, Mostowski and Robinson 1953), the
+  representable sets of complete theories (Scott 1962), and oracle
+  search. We found no earlier statement of it, of its single-oracle form
+  for theories that are not computably axiomatized, or of the one-jump
+  overshoot.
+
 **What is claimed.** For Theorems 1 to 9, not new theorems. Theorem 10
-is offered as a proof of a stated guess, on paper for general `k`. The
-contribution is:
+is offered as a proof of a stated guess, on paper for general `k`, and
+Theorem 11 as a general statement we did not find in the literature, on
+paper. Neither has been checked by an outside reader. The contribution
+is:
 
 1. machine-checked proofs of Theorems 1, 2, 3, 5, 6 (with the input form
    of 6(b)), Corollary 7, Theorem 8 and Theorem 9, with explicit
@@ -575,9 +668,9 @@ of the results above.
    consistent, computably axiomatized theory lands in the Busy Beaver
    class (Theorems 5 and 6, Corollary 7). Once "names" means *truly
    names*, stronger assumptions are the only thing that buys anything,
-   and Theorem 10 says exactly what moves a scheme up: which truths are
-   added, counted by blocks of "for all", and never how many axioms
-   there are.
+   and Theorems 10 and 11 say exactly what moves a scheme up: which
+   questions the theory can settle both ways, counted in the arithmetic
+   case by blocks of "for all", and never how many axioms there are.
 
 3. **A largest-number contest has no winner without a referee.** "The
    biggest number in `n` symbols" means something only once the scheme
@@ -599,27 +692,15 @@ of the results above.
    [`BIG-NUMBERS-AS-COMPRESSION.md`](BIG-NUMBERS-AS-COMPRESSION.md)
    develops this reading.
 
-Two questions these suggest, both open:
+Two questions these suggest. The first is open:
 
 - **One scale for the whole ladder.** The computable rung is measured by
   ordinals, the middle rungs by halting oracles, the top by set-theoretic
   assumptions. Is there a single measure of assumption cost covering all
   three?
-- **A general theorem behind points 1 and 2.** This one now has an
-  answer, in [`GENERAL-NAMING-THEOREM.md`](GENERAL-NAMING-THEOREM.md)
-  **[paper, not independently checked; supporting lemmas in Lean,
-  `RayoBoolos/Decided.lean`]**. The first guess, that the naming function
-  of `T` is Busy Beaver relative to the set of theorems of `T`, is false
-  by exactly one jump: the theorems of PA compute the halting problem,
-  but PA's naming function is plain Busy Beaver. The correct statement
-  is that for every consistent `T ⊇ PA⁻`, computably axiomatized or not,
-  the naming function is Busy Beaver over the oracles that `T` *decides*
-  (sets `A` with a formula that `T` proves at every member and refutes
-  at every non-member). When `T` decides one set `A` from which its
-  theorems can be listed, this is Busy Beaver with oracle `A`. Theorems
-  5 and 6 are the case `A = ∅` and Theorem 10(c) the case `A = 0^(k)`.
-  True arithmetic has no such single set, and its naming function is a
-  limit over the finite levels, not a level of its own.
+- **A general theorem behind points 1 and 2.** Answered by Theorem 11.
+  The first guess, Busy Beaver relative to the theorems of `T`, was wrong
+  by one jump; the right oracle is what `T` decides.
 
 ## 12. Open items
 
@@ -627,7 +708,7 @@ Two questions these suggest, both open:
   code number has `O(n log n)` bits. Needs a numbering in which constants
   cost their bit length, or a log-size constant builder for
   `Nat.Partrec.Code`. Corollary 7(b) does not need it and is done.
-- Have Theorem 10(c) checked independently, and machine-check it, which
-  needs oracle machines tied to the arithmetical hierarchy.
+- Have Theorems 10(c) and 11 checked independently, and machine-check
+  them, which needs oracle machines tied to the arithmetical hierarchy.
 - Sharpen the constants: the `6` in Theorem 2 comes from the term
   encoding of binary numerals and is not optimal.

@@ -25,6 +25,12 @@ A standing caution inherited from the whole project: wiki claims are chased
 to their actual cited sources before being repeated here. Where a rung's
 entry rests on something we could not verify, the entry says so.
 
+*Added 2026-11-24.* This document asks what it costs to know each number
+exists. How fast each scheme grows, and how the schemes are ordered, is
+the subject of [`THE-LADDER.md`](THE-LADDER.md), whose §5a places the same
+numbers by growth rate. The two use "rung" differently: here a rung is one
+famous number; there a rung is one meaning of "names".
+
 ---
 
 ## The rungs
