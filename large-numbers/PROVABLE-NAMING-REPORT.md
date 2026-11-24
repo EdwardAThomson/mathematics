@@ -47,9 +47,9 @@ this project made that guess. It is wrong. The results:
    for, at most `Big_T(C + 6·log₂ N)`. (Theorem 5) **[Lean]**
 5. **`Big_T` is dominated by a Busy Beaver function** after a rescaling
    of the argument by `O(n log n)`, when `T` is computably axiomatized.
-   (Theorem 6) **[Lean]**, in the form "one fixed program, run on an input
-   of `O(n log n)` bits"; see Theorem 6(b) for the one form that remains
-   **[paper]**.
+   (Theorem 6) **[Lean]**: `Big_T(n) ≤ BB(2^(C·(n+1)·(log₂(n+1)+6)))`, so
+   every number `T` names in `n` symbols is printed by a program of
+   `O(n log n)` bits.
 6. Consequently **the choice of axioms changes `Big_T` only by a rescaling
    of its argument**. PA, a fragment with no induction at all, and ZFC all
    give the same growth class: `Big_T(n) ≤ Big_U(C + 240·(n+1)·(log₂(n+1)+6))`.
@@ -261,13 +261,26 @@ axiomatized.
     `log₂ m < 4·(2n+10)·(log₂(2n+26)+1)` (`exists_compact_search`). The
     program `g_T` is fixed, so its size is `c_T`, and the input carries
     the `O(n log n)` bits.
-  - **[paper]** only the step of hard-wiring the input into the program
-    so that the *code number* of the combined program has `O(n log n)`
-    bits. That step depends on the program numbering: in Mathlib's
-    numbering of `Nat.Partrec.Code`, which the Lean `BB` uses, constants
-    are built by repeated successor and nested pairing, so the code
-    number of "output `m`" is far larger than `m`. With a numbering in
-    which constants cost their bit length, the step is immediate.
+  - **[Lean]** with the input built into the program, so that the
+    bound is on the *code number* in Mathlib's numbering of
+    `Nat.Partrec.Code`, the numbering the Lean `BB` uses: there is `C`
+    with
+
+        Big_T(n) ≤ BB(2^(C·(n+1)·(log₂(n+1)+6)))     for all n
+
+    (`BoolosBigIn_le_BB_nlogn'`; for `T = PA`, `BoolosBig_PA_le_BB_nlogn`).
+    This step needs care because Mathlib's `Code.const m` writes `m` in
+    unary, as `m` nested compositions, and each nesting roughly squares
+    the code number, so "output `m`" written that way has a code number
+    near `2^(2^m)`. `RayoBoolos/HardWire.lean` instead writes `m` as a
+    balanced binary tree of its bits (`binCode`): a tree of depth `j`
+    holds `2^j` bits and has a code number below `2^(8·2^j)`
+    (`encode_binCode_le`), so constants cost a constant times their bit
+    length. A fixed primitive recursive decoder turns the tree back into
+    `m` (`binDecode_binTree`, `primrec_binDecode`), and
+    `exists_hardwire` gives, for every partial recursive `f`, a constant
+    `A` such that an input `m` of fewer than `L` bits can be built into a
+    program for `f(m)` with code number below `2^(A·L)`.
 
 *Proof.* (a) The relation "`x` codes a formula `N` and `T ⊢ N(k̄)`" is
 Σ₁ in `(x, k)`, hence recursively enumerable; a partial recursive
@@ -291,6 +304,16 @@ Gödel number; it is proved primitive recursive (`primrec_compactDecode`)
 and correct (`compactDecode_compactCode`). The code of the naming
 template of a formula of size `n` then has fewer than
 `4·(2n+10)·(log₂(2n+26)+1)` bits (`log2_compact_template_lt`).
+`exists_hardwire` then builds that code into the search program.
+
+**The sandwich in one statement. [Lean]** For a consistent, computably
+axiomatized `T ⊇ PA⁻` there is one constant `C` with, for all `n` and `s`,
+
+    BB(2^s) ≤ Big_T(C + 6·s),     Big_T(n) ≤ BB(2^(C·(n+1)·(log₂(n+1)+6))).
+
+In words: programs of `s` bits are beaten by formulas of `C + 6s`
+symbols, and formulas of `n` symbols are beaten by programs of
+`O(n log n)` bits. (`busy_beaver_sandwich`.)
 
 **Corollary 7 (the axioms do not matter).** Let `T ⊇ PA⁻` be consistent
 and computably axiomatized, and let `U ⊇ PA⁻` be consistent.
@@ -320,7 +343,7 @@ and computably axiomatized, and let `U ⊇ PA⁻` be consistent.
 In (a), `M(n)` is not bounded: the Gödel numbering of the underlying
 library uses nested pairing, for which `log₂ M(n)` is far larger than
 `n log n`. (b) replaces that numbering by the compact code, which is why
-it needs no hard-wiring step and is fully machine-checked.
+it needs no hard-wiring step.
 
 So strengthening the axioms from `PA⁻` to PA to ZFC does make more
 formulas name numbers, and `Big` does increase pointwise (Theorem 1), but
@@ -435,7 +458,9 @@ ones of the underlying library: bounded quantifiers are free, and
   (`BB_le_TruthBig_sigma1`, `TruthBig_sigma1_le_BB`.) With `h` made
   explicit in the input form of Theorem 6(b): one fixed program outputs
   every value of `Truth_{Σ₁}(n)` on an input of fewer than
-  `4·n·(log₂(n+16)+1)` bits (`TruthBig_sigma1_compact`).
+  `4·n·(log₂(n+16)+1)` bits (`TruthBig_sigma1_compact`), and with the
+  input built in, `Truth_{Σ₁}(n) ≤ BB(2^(C·(n+1)·(log₂(n+16)+1)))`
+  (`TruthBig_sigma1_le_BB_nlogn`).
 - (b) **[Lean]** `BB(N) < Truth_{Σ₂}(C + 6·log₂ N)`: one "for all" block
   names "one more than the Busy Beaver value". This is a concrete instance
   of Theorem 9(c). (`BB_lt_TruthBig_sigma2`, `sigma2_record_gt_sigma1`.)
@@ -503,9 +528,8 @@ language:
   `K(g(n)) ≤ K(n) + C_g`. **[Lean]**
 - Theorem 5: `D_T(k) ≤ C + 6·K'(k)`, where `K'(k)` is the bit length of
   the smallest code number of a program printing `k`. **[Lean]**
-- Theorem 6: `K(k) ≤ c·D_T(k)·log D_T(k) + c_T`. **[Lean]** with `K`
-  measured as input length to a fixed program (Theorem 6(b)); **[paper]**
-  for program code numbers.
+- Theorem 6: `K(k) ≤ c·D_T(k)·log D_T(k) + c_T`, with `K` measured by
+  code numbers of Mathlib programs (Theorem 6(b)). **[Lean]**
 
 So provability complexity and Kolmogorov complexity are the same measure
 up to a constant factor and a logarithm, for every admissible `T`.
@@ -541,6 +565,7 @@ top.
 | Theorem 5 | `BB_le_BoolosBigIn`, `BBtime_le_BoolosBigIn` | `RayoBoolos/BusyBeaver.lean` |
 | Theorem 6(a), Corollary 7(a) | `exists_search`, `BoolosBigIn_le_any`, `BoolosBig_PA_le_any` | `RayoBoolos/UpperBound.lean` |
 | Theorem 6(b) (input form), Corollary 7(b) | `compactDecode_compactCode`, `primrec_compactDecode`, `log2_compactCode_lt`, `exists_compact_search`, `BoolosBigIn_le_any_nlogn`, `BoolosBigIn_le_any_nlogn'`, `BoolosBig_PA_le_any_nlogn` | `RayoBoolos/CompactCode.lean` |
+| Theorem 6(b) (program form), the sandwich in one statement, Theorem 10(a) with explicit rescaling | `encode_binCode_le`, `binDecode_binTree`, `primrec_binDecode`, `exists_hardwire`, `BoolosBigIn_le_BB_nlogn`, `BoolosBigIn_le_BB_nlogn'`, `BoolosBig_PA_le_BB_nlogn`, `busy_beaver_sandwich`, `TruthBig_sigma1_le_BB_nlogn` | `RayoBoolos/HardWire.lean` |
 | Theorem 8 | `bigLe_true_iff`, `bigGe_true_iff`, `provable_bigGe`, `not_provable_bigLe`, `not_provable_bigEq` | `RayoBoolos/NoExactValue.lean` |
 | Theorem 9 | see §7 | `rayo-lean/Rayo/NoTop.lean` |
 | Theorem 10(a), (b) | `BB_le_TruthBig_sigma1`, `TruthBig_sigma1_le_BB`, `BB_lt_TruthBig_sigma2`, `sigma2_record_gt_sigma1` | `RayoBoolos/TruthNaming.lean` |
@@ -557,20 +582,19 @@ agree, with these qualifications, all noted where the theorem is stated:
   `PA⁻`);
 - `BB` and `BBtime` use Mathlib's program numbering and its bounded
   evaluator's notion of time (§5);
-- Theorem 6(b) is checked in the input form only;
 - Theorem 8(a) is checked in the form "some formula names a number
   `≥ k`", and Theorem 8 needs `n ≥ 1`;
 - Theorem 9(c) is checked in a slightly more general form (§7);
 - in Theorem 10(a) and Corollary 7(a) the rescaling functions `h` and
-  `M` are not bounded; the bounded forms are `TruthBig_sigma1_compact` and
-  Corollary 7(b);
+  `M` are not bounded; the bounded forms are `TruthBig_sigma1_compact`,
+  `TruthBig_sigma1_le_BB_nlogn` and Corollary 7(b);
 - Theorem 10(b) is checked for `Σ₂`, not for the smaller class `Π₁`;
 - Theorems 10(c) and 11 are not machine-checked beyond the entries above.
 
 All `RayoBoolos` files are under `large-numbers/rayo-lean-boolos/`.
 Toolchain: Lean 4 `v4.32.2`, with Mathlib and Foundation pinned by
 `lake-manifest.json`. To check: run `lake build` in
-`large-numbers/rayo-lean-boolos/` (1265 jobs) and in
+`large-numbers/rayo-lean-boolos/` (1266 jobs) and in
 `large-numbers/rayo-lean/`. Each file ends with `#print axioms` for its
 headline theorems.
 
@@ -643,8 +667,8 @@ Theorem 11 as a general statement we did not find in the literature, on
 paper. Neither has been checked by an outside reader. The contribution
 is:
 
-1. machine-checked proofs of Theorems 1, 2, 3, 5, 6 (with the input form
-   of 6(b)), Corollary 7, Theorem 8 and Theorem 9, with explicit
+1. machine-checked proofs of Theorems 1, 2, 3, 5, 6 (including 6(b) as a
+   bound on Mathlib program code numbers), Corollary 7, Theorem 8 and Theorem 9, with explicit
    constants and a base theory with no
    induction (we are not aware of a prior formalization of a Boolos-style
    naming function or of its growth);
@@ -724,10 +748,6 @@ Two questions these suggest, with what is now known:
 
 ## 12. Open items
 
-- Theorem 6(b) with the input hard-wired into a program whose Mathlib
-  code number has `O(n log n)` bits. Needs a numbering in which constants
-  cost their bit length, or a log-size constant builder for
-  `Nat.Partrec.Code`. Corollary 7(b) does not need it and is done.
 - Re-read `SECOND-ORDER-RUNGS.md` and `ASSUMPTION-COST-SCALE.md`, which
   have had one pass only.
 - Have Theorems 10(c) and 11 checked independently, and machine-check

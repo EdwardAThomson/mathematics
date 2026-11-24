@@ -339,7 +339,10 @@ In rough order of value for effort:
    bound and the theory-independent lower bound (`RayoBoolos/BusyBeaver.lean`,
    `RayoBoolos/AnyTheory.lean`). The upper bound is done too, in a non-quantitative
    form (`RayoBoolos/UpperBound.lean`), and with the explicit `n log n`
-   rescaling (`RayoBoolos/CompactCode.lean`, 2026-11-24). Also in Lean: a
+   rescaling (`RayoBoolos/CompactCode.lean`, 2026-11-24), including the
+   full sandwich against Busy Beaver of Mathlib program code numbers,
+   `Big_T(n) ≤ BB(2^(C·(n+1)·(log₂(n+1)+6)))` (`RayoBoolos/HardWire.lean`).
+   Also in Lean: a
    theory proves no exact value, and no upper bound, of its own naming
    function (`RayoBoolos/NoExactValue.lean`).
 2. ~~Machine-check Claims A and B of §3 in the abstract setting.~~ **Done,
