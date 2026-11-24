@@ -246,7 +246,11 @@ the rulebook defines anything: nothing beyond arithmetic at rung 1, a
 completed set of whole numbers at rung ω, and a completed universe of sets
 with its own truth at Rayo's rung. **A meaningful version of the `κ`
 question would price that**, for instance by the weakest standard theory
-that proves the scheme well defined. **[proposal, not carried out]**
+that proves the scheme well defined. **Tested 2026-11-24 in
+`ASSUMPTION-COST-SCALE.md`: as a single scale it fails, inverted at the
+rung 0 / rung 1 boundary (TREE costs more than arithmetic-truth naming).
+What works is two coordinates read in order: how much truth the scheme
+consults, then the termination ordinal.**
 
 ## 5. Summary table
 
@@ -327,8 +331,8 @@ In rough order of value for effort:
 4. Check the tagged **[classical]** and **[expected]** statements against
    sources, and look for prior statements of the "provable naming is Busy
    Beaver class for every theory" result. **First pass done, 2026-11-24:** `LITERATURE-SURVEY.md`.
-5. Try the §4 proposal: redo the table with "weakest theory proving the
-   scheme well defined" in place of bits.
+5. ~~Try the §4 proposal.~~ **Done, 2026-11-24:** `ASSUMPTION-COST-SCALE.md`
+   (negative for a single scale; a two-coordinate law survives).
 
 See also `COMPLEXITY-AND-ENTROPY.md` (2026-11-24), which reads the same
 ladder as a hierarchy of description-complexity measures and connects it to

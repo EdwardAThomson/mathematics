@@ -692,12 +692,21 @@ of the results above.
    [`BIG-NUMBERS-AS-COMPRESSION.md`](BIG-NUMBERS-AS-COMPRESSION.md)
    develops this reading.
 
-Two questions these suggest. The first is open:
+Two questions these suggest, with what is now known:
 
-- **One scale for the whole ladder.** The computable rung is measured by
-  ordinals, the middle rungs by halting oracles, the top by set-theoretic
-  assumptions. Is there a single measure of assumption cost covering all
-  three?
+- **One scale for the whole ladder.** Tested in
+  [`ASSUMPTION-COST-SCALE.md`](ASSUMPTION-COST-SCALE.md) **[paper and
+  expected; see the tags there]**. The obvious candidate, the weakest
+  theory proving a scheme's numbers exist, fails: a weak theory proves
+  every Busy Beaver value exists, while proving TREE total needs a far
+  stronger one, so that scale puts TREE above schemes that vastly outgrow
+  it. Two different assumptions are in play, and each is free where the
+  other does the work: believing a process stops (priced by an ordinal,
+  the only thing that moves on the computable rung), and treating a body
+  of truths as given (the only thing that moves above it). What survives
+  is a law with two coordinates read in order: first how much truth a
+  scheme consults, then its termination ordinal. Whether one natural
+  measure combines the two remains open.
 - **A general theorem behind points 1 and 2.** Answered by Theorem 11.
   The first guess, Busy Beaver relative to the theorems of `T`, was wrong
   by one jump; the right oracle is what `T` decides.
