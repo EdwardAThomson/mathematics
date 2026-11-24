@@ -141,10 +141,31 @@ that the whole numbers form a completed totality.
 
 ### Beyond: truth for richer and richer languages
 
-The same step continues: truth for arithmetic with a truth predicate, and
-iterations of that; truth for statements about sets of whole numbers; about
-sets of those; and so on up. **[classical in outline; details and the exact
-ordering of these rungs are not worked out here]**
+The same step continues: truth for statements about sets of whole numbers
+(second-order arithmetic), about sets of those, and so on up.
+
+The first of these steps is now worked out (`SECOND-ORDER-RUNGS.md`, all
+**[paper]**). Allow "for every set" or "there is a set" in the naming
+formula. With one block of set quantifiers (`Π¹₁` or `Σ¹₁`, which give the
+same rung, because number quantifiers become free) naming strictly outgrows
+all of arithmetic truth, by more than any computable rescaling. Its growth
+class is the Busy Beaver function for machines that may consult any
+hyperarithmetic set (the halting problem iterated along any computable
+well-ordering), paying for the oracle's description; so it beats every one of
+those Busy Beavers and is their limit. Busy Beaver with oracle Kleene's `O`
+is one jump too high: it beats this rung and is beaten by the next (`Σ¹₂`).
+For every `k` the `Σ¹_k`/`Π¹_k` rung is the Busy Beaver over `Δ¹_k` oracles,
+and each beats the one before. The Busy Beaver for infinite-time Turing
+machines sits strictly between the `Π¹₁` and `Σ¹₂` rungs.
+
+*What you must accept:* for `Π¹₁` only that well-foundedness of computable
+trees is definite; for `Σ¹₂` nothing that differs between universes of sets
+(Shoenfield). From `Σ¹₃` on, truth can differ between universes, so one must
+accept a single intended collection of all sets of whole numbers.
+**[classical]**
+
+Truth for arithmetic with a truth predicate, iterated, sits inside the `Π¹₁`
+rung (each finite iteration is hyperarithmetic). **[expected]**
 
 ### The Rayo rung: truth for set theory
 
@@ -260,7 +281,9 @@ consults, then the termination ordinal.**
 | 1 | program halts / theory proves | Busy Beaver, BLC, `BoolosBig_T` for any `T` | every computable function | whether each program halts |
 | k | halts, with a box for rung k−1 / true `Π_{k−1}` or `Σ_k` formula | oracle Busy Beavers, bounded-truth naming | rung k−1 | arithmetic statements with k−1 "for all" blocks |
 | ω | true statement of arithmetic | arithmetic-truth naming | every finite rung | all statements about whole numbers |
-| … | truth for richer languages | higher-order arithmetic | everything below | sets of numbers, sets of those, … |
+| Π¹₁ | true statement with one block of set quantifiers (`Π¹₁` or `Σ¹₁`) | Busy Beaver over hyperarithmetic oracles | rung ω, every hyperarithmetic Busy Beaver | that computable trees are well-founded or not |
+| Σ¹₂, Π¹₂, Σ¹₃, … | true statements of second-order arithmetic, by set-quantifier blocks | `BB` with oracle `O`, ITTM Busy Beaver (both between Π¹₁ and Σ¹₂) | the rung before | from Σ¹₃ on, a single intended collection of all sets of numbers |
+| … | truth for higher-order languages | third-order arithmetic and up | everything below | sets of sets of numbers, … |
 | Rayo | true statement of set theory | Rayo's function | everything below | all statements about the universe of sets |
 | Rayo+ | truth for set theory plus its truth predicate, iterated | Fish number 7 | Rayo | more again; no last step |
 
@@ -301,7 +324,7 @@ set of further rungs: Busy Beaver beats every level of it.
 | 1, Busy Beaver | `BB(n)`, Radó's `Σ(n)`, binary lambda calculus; the largest number provably nameable in `n` symbols, for any reasonable theory | [classical]; provable naming [Lean] |
 | k, higher Busy Beavers | `BB₂`, `BB₃`, … (halting oracles) | [classical]; the match with "for all" blocks is [paper] (`MIDDLE-RUNGS.md`) |
 | ω, arithmetic truth | Goucher's Ξ function sits near here | not audited by this project |
-| richer languages | Busy Beaver for infinite-time Turing machines | placement approximate |
+| second-order arithmetic | Busy Beaver with oracle Kleene's `O`, and Busy Beaver for infinite-time Turing machines: both strictly between the `Π¹₁` and `Σ¹₂` rungs | [paper] (`SECOND-ORDER-RUNGS.md` Thm 4, Prop 6) |
 | Rayo | Rayo's number | well defined only given a strong extra assumption (`RAYO-R0-WELLDEFINEDNESS.md`) |
 | above Rayo | Fish number 7. BIG FOOT aimed here, but its definition does not determine a number | community constructions |
 
@@ -333,6 +356,9 @@ In rough order of value for effort:
    Beaver class for every theory" result. **First pass done, 2026-11-24:** `LITERATURE-SURVEY.md`.
 5. ~~Try the §4 proposal.~~ **Done, 2026-11-24:** `ASSUMPTION-COST-SCALE.md`
    (negative for a single scale; a two-coordinate law survives).
+6. ~~Work out the first rungs above arithmetic truth.~~ **Done on paper,
+   2026-11-24:** `SECOND-ORDER-RUNGS.md` (second-order rungs, `BB^O` and ITTM
+   placement). Not yet re-read; no Lean.
 
 See also `COMPLEXITY-AND-ENTROPY.md` (2026-11-24), which reads the same
 ladder as a hierarchy of description-complexity measures and connects it to

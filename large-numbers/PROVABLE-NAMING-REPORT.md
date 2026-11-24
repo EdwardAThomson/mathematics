@@ -419,7 +419,8 @@ machine-checked here.
 | 1 | halting; provability in any reasonable theory; truth of Σ₁ formulas | Busy Beaver class (§§4, 5) |
 | k+1 | truth of formulas with k "for all" blocks (Π_k or Σ_{k+1}) | Busy Beaver with the k-th halting oracle (Theorem 10) |
 | ω | truth in arithmetic | beats every rung k; a limit, not an oracle rung (Theorem 11(c)) |
-| … | truth in richer languages | … |
+| above ω | truth of formulas that also quantify over sets of numbers, level by level | one rung per level; the first (`Σ¹₁` or `Π¹₁`) is Busy Beaver over hyperarithmetic oracles and beats rung ω **[paper]**, `SECOND-ORDER-RUNGS.md` |
+| … | truth in richer languages still | … |
 | Rayo | truth in first-order set theory | Rayo's function |
 
 **Theorem 10 (the middle rungs).** Let `Truth_Γ(n)` be the largest number
@@ -475,6 +476,16 @@ independently checked. Machine-checked there **[Lean]**: a formula naming
 `m` decides `{m}`, which is the first step of the upper bound in (a), and
 a consistent theory decides at most one set with a given formula
 (`namesIn_decides_singleton`, `DecidesIn.unique`, `RayoBoolos/Decided.lean`).
+
+**Above arithmetic truth. [paper, one pass, not re-read]**
+`SECOND-ORDER-RUNGS.md` works out the next rungs, where formulas may
+quantify over sets of numbers. Naming by truth of `Σ¹₁` or `Π¹₁` formulas
+is a single rung (number quantifiers are free there), equal to Busy Beaver
+over hyperarithmetic oracles with the oracle's description counted, and it
+beats arithmetic-truth naming under every computable rescaling. Each
+further level `Σ¹_k` is a distinct rung. Busy Beaver with oracle Kleene's
+`O`, and Busy Beaver for infinite-time Turing machines, both sit strictly
+between the `Π¹₁` and `Σ¹₂` rungs.
 
 Rung 1 is the content of this report: Turing machines, lambda calculus
 and provable naming in every consistent computably axiomatized theory
@@ -717,6 +728,8 @@ Two questions these suggest, with what is now known:
   code number has `O(n log n)` bits. Needs a numbering in which constants
   cost their bit length, or a log-size constant builder for
   `Nat.Partrec.Code`. Corollary 7(b) does not need it and is done.
+- Re-read `SECOND-ORDER-RUNGS.md` and `ASSUMPTION-COST-SCALE.md`, which
+  have had one pass only.
 - Have Theorems 10(c) and 11 checked independently, and machine-check
   them, which needs oracle machines tied to the arithmetical hierarchy.
 - Sharpen the constants: the `6` in Theorem 2 comes from the term
