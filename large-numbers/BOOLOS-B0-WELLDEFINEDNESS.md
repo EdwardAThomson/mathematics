@@ -239,6 +239,14 @@ actually approximate, which is a second, independent reason to prefer it.
 
 ## 6. Scope decision the plan asked to settle: B2 or B3?
 
+> **Correction, 2026-11-24.** This section, and the summary bullet that
+> cites it, describe the Boolos row's growth class as `≈ ε₀`. That is only a
+> lower bound. `BoolosBig_PA` eventually dominates every computable function
+> and is Busy-Beaver class (`BOOLOS-IS-BUSY-BEAVER-CLASS.md`, machine-checked
+> in `rayo-lean-boolos/RayoBoolos/Minimization.lean`), so it is not a second
+> mechanism landing in the `ε₀` neighbourhood. The decision to pursue B3 was
+> still the right one; the text below is kept as written.
+
 `BOOLOS-FUNCTION-PLAN.md`'s scope note (lines 12–24) demands this be decided
 *before* scoping any Lean, and B0 is where the decision becomes clear-cut.
 

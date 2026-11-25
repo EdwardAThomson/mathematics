@@ -1,0 +1,12 @@
+v  r  seed | tau_y matches iff y satisfies | cheater matches | #sat | legit size | cheater size
+ 5 12    0 | True | True | 3 | 230..230 | 234
+ 5 12    1 | True | True | 6 | 232..232 | 237
+ 5 12    2 | True | True | 10 | 232..232 | 236
+ 6 20    0 | True | True | 1 | 283..284 | 289
+ 6 20    1 | True | True | 0 | 284..284 | 289
+ 6 20    2 | True | True | 3 | 283..284 | 289
+ 8 34    0 | True | True | 6 | 395..395 | 402
+ 8 34    1 | True | True | 4 | 390..390 | 396
+ 8 34    2 | True | True | 4 | 388..388 | 394
+10 43    0 | True | True | 4 | 507..509 | 515
+10 43    1 | True | True | 6 | 504..504 | 510

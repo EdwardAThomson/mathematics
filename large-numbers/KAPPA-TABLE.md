@@ -159,8 +159,8 @@ Tarski's theorem forbids at first order. So this row's real cost is
 under-described by any BLC-bit interpreter figure: it is not the length of an
 evaluator but the *strength of a metatheory*, a different axis. See "The
 diagonalization family: a second axis" below, where this row is paired against
-the Boolos/PA row that reaches `ε₀`-class growth from a merely first-order,
-PA-strength commitment.
+the Boolos/PA row, which reaches Busy-Beaver-class growth from a merely
+first-order, PA-strength commitment.
 
 ## What the column does and does not support
 
@@ -211,21 +211,35 @@ needs to exist**:
 
 | R (diagonalization family) | naming predicate | metatheory it requires | growth of BN(R,·) | status |
 |---|---|---|---|---|
-| PA + provable-naming (Boolos) | `Prov_PA(⌜∀x(φ↔x=k̄)⌝)` — **first-order expressible** (Σ₁), Tarski-safe | just **PA-strength** (consistency of PA + an arithmetized proof predicate) | eventually dominates every PA-provably-total function, i.e. FGH `≈ ε₀` (PTO of PA) | B0 well-def. proved (paper) + Lean core; B1 `TNames` Lean-verified; **B3 domination paper-verified** (`BOOLOS-B3-PAPER-VERIFICATION.md`), mechanization open |
+| PA + provable-naming (Boolos) | `Prov_PA(⌜∀x(φ↔x=k̄)⌝)` — **first-order expressible** (Σ₁), Tarski-safe | just **PA-strength** (consistency of PA + an arithmetized proof predicate) | **uncomputable, Busy-Beaver class**: eventually dominates every computable function (Lean); sandwiched between Busy Beaver functions up to argument rescaling, for any consistent computably axiomatized theory (paper). *Not* `≈ ε₀`: that was only the first lower bound proved. | B0 well-def. proved (paper) + Lean core; B1 `TNames` Lean-verified; B3 domination Lean-verified (`BoolosBig_PA_dominates`); domination of every computable function and non-computability Lean-verified (`RayoBoolos/Minimization.lean`); sandwich and theory independence paper only (`BOOLOS-IS-BUSY-BEAVER-CLASS.md`) |
 | FO set theory (Rayo) | truth-naming via `Sat` — **not** first-order expressible (Tarski) | **MK-strength**: an impredicative second-order background / a truth predicate for V (`Con(ZFC)`-grade) | uncomputable; dominates every function whose totality the theory proves | R0 verdict (paper): well-defined **only** relative to that commitment; trivializes without it |
+
+**Correction, 2026-11-24.** This section originally placed the Boolos/PA row
+at `ε₀`-class growth and read the pair of rows as a second mechanism landing
+on the ordinal ladder. That is wrong: `ε₀` was the first lower bound proved,
+not the function's size. `BoolosBig_PA` dominates every computable function
+(`RayoBoolos/Minimization.lean`) and is Busy-Beaver class
+(`BOOLOS-IS-BUSY-BEAVER-CLASS.md`). The paragraphs below are rewritten
+accordingly.
 
 **What this adds to Phase 4.** The table above found a κ-buys-growth gradient
 only among the *ordinal-notation* rows (BMS < BMS < System F/CoC) and flagged it
-as possibly just selection bias. The diagonalization family gives an
-**independent** data point on the *same* underlying question, and it points the
-same way: to climb from `ε₀`-class growth (Boolos/PA) to Rayo-class growth
-(dominates everything a set theory can prove total) you must climb from a
-**first-order, PA-strength** commitment (an arithmetized provability predicate,
-which Tarski permits) to an **MK-strength** commitment (a truth predicate for the
-whole universe, which Tarski forbids at first order). That is a genuine,
-qualitative increase in specification strength tracking a genuine increase in
-growth — a κ-buys-growth step that is *not* one of the googology-ladder systems,
-so it is **not** the same selection-bias confound as the ordinal rows.
+as possibly just selection bias. The diagonalization family does **not** give
+a further point on that gradient. The Boolos/PA row belongs with the
+Turing-complete rows: it is a third instance of saturation, and a sharper one,
+because on paper the growth class is the same for every consistent computably
+axiomatized theory. Strengthening the theory from PA to ZFC or beyond buys
+only a rescaling of the argument. Within provable naming, commitment strength
+does **not** buy growth class.
+
+What does buy growth is the step from the Boolos row to the Rayo row: from
+naming by *a proof existing* (a Σ₁ condition, which Tarski permits and which
+can be checked) to naming by *truth in V* (which Tarski forbids at first order
+and which needs an **MK-strength** commitment). That is a genuine, qualitative
+increase in what must be assumed, tracking a genuine increase in growth, from
+Busy-Beaver class to beyond anything arithmetically definable. `THE-LADDER.md`
+fills in the rungs between (oracle Busy Beavers, arithmetic truth) and argues
+there is no last one.
 
 Two cautions keep this honest, both already standing project rules. **(i)** It is
 still only two points, and the axis (proof-theoretic strength of the required
@@ -237,6 +251,8 @@ qualitative jump**, not a smooth dial — which cuts against, not for, any smoot
 "compactness law": it is a second instance (after the Turing-complete rows'
 step-to-uncomputable) of growth increasing by a *discrete jump in kind* rather
 than a graded price. The overall Phase 4 read is unchanged and slightly
-reinforced: **no single smooth law; growth moves in qualitative steps (internal
-provability → truth-for-V; computable → uncomputable), with a genuine but
-step-shaped commitment-vs-growth gradient inside each family.**
+reinforced: **no single smooth law; growth moves in qualitative steps
+(computable → uncomputable; provability → truth for richer and richer
+languages).** Between steps, extra specification buys growth only on the
+computable rungs; at the Busy-Beaver rung it buys nothing, whether spent on
+a longer machine or a stronger theory.

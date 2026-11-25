@@ -38,8 +38,12 @@ the work back up later.
   by Tarski isn't even available inside first-order set theory (Part 3).
 - Making that self-reference rigorous splits into two forks running the
   *same* naming machine on different fuel: **Boolos's provability-in-PA**
-  route is fully mechanized in Lean, sorry-free, and tops out at growth
-  class ε₀; **Rayo's own truth-in-V** route transcends every fixed ordinal
+  route is fully mechanized in Lean, sorry-free. It was first described
+  here as topping out at growth class ε₀. That was wrong (corrected
+  2026-11-24): it eventually beats every computable function and sits in
+  the Busy Beaver class, for any reasonable choice of axioms. See
+  [`PROVABLE-NAMING-REPORT.md`](PROVABLE-NAMING-REPORT.md). **Rayo's own
+  truth-in-V** route transcends every fixed ordinal
   notation, but only holds up given an unstated **Morse-Kelley-strength**
   commitment. Its domination argument is now also mechanized, relative to
   that commitment as an explicit Lean hypothesis (Part 4).
@@ -201,9 +205,14 @@ machinery), so this sidesteps Tarski's undefinability barrier entirely.
   nameable in m symbols would only be ~log(m). The content of the theorem
   is that the room contains giants: for any function f that PA proves
   total, *short* formulas (linear in n) provably name values as huge as
-  f(n²), so past a threshold every budget m reaches at least f(m). The
-  restriction to PA-provably-total functions is also exactly why this
-  rung's growth caps at ε₀.
+  f(n²), so past a threshold every budget m reaches at least f(m). **Correction, 2026-11-24:** this paragraph originally ended by saying
+  the restriction to PA-provably-total functions is why this rung's growth
+  caps at ε₀. The restriction was an artefact of that proof, not of the
+  function. The function beats every computable function
+  (`BoolosBigIn_dominates_computable`, machine-checked), because naming
+  one value needs only a finished computation to point at, not a proof
+  that the function always halts. Full statement and proofs:
+  [`PROVABLE-NAMING-REPORT.md`](PROVABLE-NAMING-REPORT.md).
 
 ### The Rayo fork: truth, MK-strength
 
@@ -240,16 +249,55 @@ plan's own exit conditions.
 
 Both forks are the *identical* naming schema (`BN(R,n)`'s unique-denotation
 machine) running on different fuel. Boolos burns **provability-in-PA**
-(Tarski-safe, cheap, fully mechanizable) and tops out at growth class ε₀.
-Rayo burns **truth-in-V** (Tarski-forbidden without an extra realist
-commitment, only paper-verified so far) and transcends every fixed ordinal
-notation there is.
+(Tarski-safe, cheap, fully mechanizable) and lands in the Busy Beaver
+class: beyond every computable function, and the same class whichever
+consistent, computably axiomatized theory replaces PA. Rayo burns
+**truth-in-V** (Tarski-forbidden without an extra realist commitment, only
+paper-verified so far) and transcends every fixed ordinal notation there
+is. *(Corrected 2026-11-24. This section originally said the Boolos fork
+"tops out at growth class ε₀". ε₀ measures what PA can prove total, not
+what PA can name.)*
 
-The entire gap between "caps at ε₀" and "beyond everything nameable" traces
-to **one variable, the strength of what "names" is allowed to mean**: not a
-different mechanism, not a cleverer trick. That is real, sharpened evidence
+The entire gap between "Busy Beaver class" and "beyond everything
+nameable" traces to **one variable, the strength of what "names" is
+allowed to mean**: not a different mechanism, not a cleverer trick. Between
+the two lies a whole ladder of intermediate notions of truth
+([`THE-LADDER.md`](THE-LADDER.md)), and no rung is the last. That is real, sharpened evidence
 for Part 1's open question. The jump is a sharp, Tarski-drawn step between
 two commitment levels, not a smooth dial you can turn partway.
+
+*Added 2026-11-24.* The rungs in between are worked out in three further
+notes. [`MIDDLE-RUNGS.md`](MIDDLE-RUNGS.md): naming by truth of formulas
+with k blocks of "for all" matches the Busy Beaver function with the k-th
+halting oracle (paper proof for every k, machine-checked at the first
+level). [`GENERAL-NAMING-THEOREM.md`](GENERAL-NAMING-THEOREM.md): for any
+consistent theory, provable naming is Busy Beaver over the oracles the
+theory can decide (paper proof). [`PROOF-BUDGETS-AND-COMPLEXITY.md`](PROOF-BUDGETS-AND-COMPLEXITY.md):
+what changes when the proof is given a length budget as well. A
+plain-language essay, [`BIG-NUMBERS-AS-COMPRESSION.md`](BIG-NUMBERS-AS-COMPRESSION.md),
+reads the whole subject as compression with a fixed message length. The
+paper proofs in these notes have not had an outside check.
+
+*Added 2026-11-25.* Further notes from the same line of work, all paper
+arguments unless they say otherwise, none with an outside check:
+
+- above arithmetic truth: [`SECOND-ORDER-RUNGS.md`](SECOND-ORDER-RUNGS.md);
+- above Rayo: [`SECOND-ORDER-RAYO.md`](SECOND-ORDER-RAYO.md),
+  [`SECOND-ORDER-RAYO-II.md`](SECOND-ORDER-RAYO-II.md),
+  [`ABOVE-RAYO.md`](ABOVE-RAYO.md),
+  [`ORDINAL-RAYO.md`](ORDINAL-RAYO.md),
+  [`LARGE-CARDINALS-AND-THE-LADDER.md`](LARGE-CARDINALS-AND-THE-LADDER.md);
+- whether one cost scale orders the whole ladder (it does not):
+  [`ASSUMPTION-COST-SCALE.md`](ASSUMPTION-COST-SCALE.md);
+- bounded resources: [`P-VS-NP-LIMITS.md`](P-VS-NP-LIMITS.md),
+  [`POLYLOG-NAMING-LADDER.md`](POLYLOG-NAMING-LADDER.md),
+  [`CALCNAME2-HARDNESS.md`](CALCNAME2-HARDNESS.md),
+  [`NAMING-DEPTH.md`](NAMING-DEPTH.md),
+  [`NAMING-RECORDS-SMALL-SYSTEM.md`](NAMING-RECORDS-SMALL-SYSTEM.md),
+  [`OMEGA-FOR-NAMING.md`](OMEGA-FOR-NAMING.md),
+  [`VP-VNP-CLAIM.md`](VP-VNP-CLAIM.md);
+- what is not yet done, across all of them:
+  [`FUTURE-WORK.md`](FUTURE-WORK.md).
 
 ### Is Rayo's rung the top? (standard theory, not a project result)
 
