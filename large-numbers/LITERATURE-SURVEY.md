@@ -537,3 +537,81 @@ argument gains a citation (Simmons Theorem 2.4 / C.7 for the provability
 rung). Only the Kikuchi–Kurahashi–Sakai full text and the Googology talk
 page remain unread.
 
+
+## 9. Fourth pass: is the self-similar ladder known? (2026-11-25)
+
+**Question.** The project's results repeat one pattern at three places
+(Busy Beaver; the arithmetic levels; the first levels above arithmetic
+truth): the next rung beats the last past any rescaling, naming the last
+rung's record plus one costs about `log n` symbols, and the natural oracle
+guess overshoots by one jump. Is that repetition, or a general statement
+of it indexed by ordinals, already in the literature?
+
+**Method.** A short pass: six web searches (oracle and transfinite Busy
+Beaver, iterated truth and definable numbers, relative Kolmogorov
+complexity, Aaronson's higher Busy Beaver levels) and three sources read.
+Not a systematic search.
+
+**Sources read.**
+
+- **Aaronson, "The Busy Beaver Frontier" (2020), §3.** Sections 1 to 4
+  were read as page text; the later sections reached us only in summary.
+  He defines `BB₁` (machines with an oracle for `BB`), then
+  `BB₂, BB₃, …`, and continues through "all the computable ordinals",
+  `BB_ω`, `BB_{ω^ω}`, and beyond. He states the mechanism in one line:
+  "the arguments in Section 2 relativize", so each level dominates
+  everything computable from the levels below. He notes that for a
+  computable ordinal `α` the definition of `BB_α` depends on the notation
+  chosen for `α`, and that a contest at this height "would quickly
+  degenerate into an argument over which notations … are allowed". His
+  Proposition 4 (with Solovay 1978) characterizes the hyperarithmetic
+  sets as those computable from any sufficiently fast-growing function.
+  He does not discuss "the largest number definable in n symbols" and
+  mentions Rayo only in a footnote, as not clearly well defined.
+- **Cao, "More on Higher Order Busy Beaver Functions" (arXiv:2507.20321,
+  2025).** Finite levels only. Proposition 2 is, in the paper's words, a
+  reformulation of the classical correspondence between `i` quantifier
+  alternations and the `i`-th oracle level (Post 1944; Rogers 1967). No
+  transfinite levels, no truth predicates, no naming in `n` symbols. Some
+  proofs are sketches.
+- **Silver, "The Busy Beaver That Ate the TREE" (in *Beyond Popular
+  Science*, Open Book Publishers, 2026).** A popular chapter. Orders
+  fast-growing hierarchy < TREE < BB < Rayo. Nothing on oracle levels or
+  on a repeating pattern.
+
+**Not reachable.** The Googology Wiki pages on Rayo's number and on First
+Order Oodle Theory, where iterated truth predicates over set theory are
+discussed by that community, again refused automated fetch. What they say
+about ordinal-indexed iteration is unverified here.
+
+**Standard background, from memory and not re-read in this pass.** Post's
+theorem; Kleene's hyperarithmetic hierarchy `H_a` for notations `a ∈ O`;
+the match between computable infinitary `Σ_α` formulas and `0^(α)` (Ash
+and Knight, *Computable Structures and the Hyperarithmetical Hierarchy*,
+2000); ramified and iterated truth theories (Feferman 1964, 1991).
+
+**Verdict.**
+
+1. **The self-similarity is known, on the machine side.** The ladder of
+   Busy Beaver functions through the computable ordinals, the reason it
+   repeats (relativization), and the notation problem at limit stages are
+   all in Aaronson §3, and rest on classical computability theory. The
+   project should not present "the ladder has the same shape at every
+   level" as a finding.
+2. **The naming side still appears unrecorded.** We again found no
+   statement that naming in `n` symbols by `Π_k` or `Σ_{k+1}` truth is
+   Busy Beaver with oracle `0^(k)` (beyond Aaronson's 2010 guess), none of
+   the one-jump overshoot for provable naming, and none of the placement
+   of `Π¹₁` naming. These remain "classical ingredients, statement not
+   found".
+3. **A general ordinal-indexed theorem would mostly restate known
+   material.** With rungs indexed by ordinal notations it would be the
+   hyperarithmetic hierarchy in this project's vocabulary. The one place
+   with possible content is the one Aaronson already flags: at limit
+   stages the answer depends on the notation, so "n symbols" has no
+   canonical meaning there.
+
+**Suggested wording.** "That the hierarchy repeats under relativization,
+and continues through the computable ordinals with a dependence on
+notation at limits, is classical (see Aaronson 2020, §3). What we add is
+the translation to naming in `n` symbols at the levels treated here."

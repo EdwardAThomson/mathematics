@@ -538,8 +538,9 @@ up to a constant factor and a logarithm, for every admissible `T`.
 [`PROOF-BUDGETS-AND-COMPLEXITY.md`](PROOF-BUDGETS-AND-COMPLEXITY.md) asks
 what happens when the proof is also given a length budget. In short
 **[paper, with open checks listed in that note]**: if the proof must
-exhibit the number, the number is capped by the proof length and nothing
-interesting grows; if the proof need only show that a unique value
+exhibit the number, the number is capped by the proof length, short
+proofs reach that cap up to a constant, and nothing interesting grows;
+if the proof need only show that a unique value
 exists, the strength of the theory matters again and the function tracks
 the theory's provably total functions; and the natural budgeted measure
 sits between two standard time-bounded complexity measures. Nothing there
@@ -547,6 +548,54 @@ bears on P versus NP, and [`P-VS-NP-LIMITS.md`](P-VS-NP-LIMITS.md) explains
 why it could not: every argument in this report still works when all
 machines are given the same oracle, and such arguments are known not to
 settle that question.
+
+**Proof budgets, computed in a small system.**
+[`NAMING-RECORDS-SMALL-SYSTEM.md`](NAMING-RECORDS-SMALL-SYSTEM.md) computes
+the budgeted records exactly in a toy binary arithmetic (constructors
+`0`, `D0`, `D1`; operations `S`, `+`, `·`, `^`; a proof is a rewriting
+chain, and its length is the total number of symbols written). Every
+name up to size 10 was evaluated. Largest number named with name size
+`≤ n` and proof length `≤ t` **[computed]**:
+
+| n \ t | 100 | 1,000 | 3,000 | 10⁴ | 10⁵ | 10⁶ | numeral alone |
+|---|---|---|---|---|---|---|---|
+| 8 | 127 | 216 | 729 | 2,187 | 2,187 | 2,187 | 127 |
+| 9 | 255 | 512 | 16,384 | 279,936 | ≈2^23.8 | ≈2^23.8 | 255 |
+| 10 | 511 | 1,025 | 262,144 | ≈2^28.0 | ≈2^39.6 | ≈2^49.1 | 511 |
+
+Below 742 proof symbols the record is always a numeral. Compound names
+(`24^2` is the first) win only once the budget pays for their
+calculation. Cheapest names tell the same story. Only 109 of the numbers
+named at size `≤ 10` have a name cheaper than their own numeral on
+`|name| + log₂(proof length)`, all of them powers **[computed]**:
+
+| number | numeral's cost | best cost | best name | proof length |
+|---|---|---|---|---|
+| `6^6` = 46,656 (the smallest) | 21.1 | 21.05 | `6^6` | 4,243 |
+| `2^18` = 262,144 | 24.3 | 21.5 | `8^6` | 2,882 |
+| `7^15` ≈ 2^42.1 | 49.5 | 26.7 | `7^15` | 106,275 |
+| `3^31` ≈ 2^49.1 (the largest saving) | 56.7 | 27.7 | `3^31` | 216,059 |
+
+That is Levin's `Kt` in miniature: most numbers are incompressible, and
+the few that compress have a description that is both short and quick
+to check.
+
+How fast the record grows with the budget depends on whether proofs can
+state lemmas with variables. The toy cannot, and stays far below the
+ceiling. First-order proofs in `PA⁻` can, and reach it up to a constant
+(Proposition 2 of the proof-budgets note, proved by "doubling" lemmas
+such as `∀w ∀z (Dⁿ(w)·z = Dⁿ(w·z))`):
+
+| proofs | unary record at budget `t` | binary record at budget `t` | status |
+|---|---|---|---|
+| ceiling: the proof writes the numeral | `t/2` | `2^t` | [paper] |
+| toy, rewriting chains | about `0.7·√t` | about `2^{0.29·√t}` | [computed, observation] |
+| toy, closed lemmas proved once and reused | about `0.45·√t` | about `2^{0.58·√t}` | [computed, observation] |
+| `PA⁻`, Hilbert-style, lemmas with variables | at least `t/C` (about `t/660` at powers of two) | at least `2^{t/C}` (about `2^{t/10,900}`) | [paper; checked line by line for `k ≤ 2^20` and `k ≤ 2^{65536}`] |
+
+So the budget does all the work once the proof system is a real one. The
+toy's `√t` measures the cost of having no variables, not a property of
+proof budgets.
 
 **A picture of the whole ladder.** [`THE-LADDER.md`](THE-LADDER.md) lays
 out every rung with its status, places the fast-growing hierarchy and the
@@ -647,6 +696,13 @@ source, is `LITERATURE-SURVEY.md`. In brief:
   the step up: a metalanguage names "the largest number named by a term
   that the theory proves names a number in fewer than n symbols" with a
   term of size about log n.
+- **The repetition of the pattern from rung to rung is classical.** The
+  hierarchy of Busy Beaver functions through the computable ordinals,
+  the fact that each level's theory is the previous one relativized, and
+  the dependence on ordinal notation at limit stages are in Aaronson
+  (2020) §3 and rest on Post and Kleene. It is not claimed here. What is
+  added is the translation to naming in `n` symbols at the levels
+  treated (`LITERATURE-SURVEY.md` §9).
 - **Theorem 10** proves a guess of Aaronson from the same MathOverflow
   discussion (2010), that definability with truth fixed for `Π_k`
   sentences grows like a Busy Beaver function `k` levels up. The
