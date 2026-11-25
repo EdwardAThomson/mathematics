@@ -7,9 +7,10 @@ hierarchy?*
 
 Tags as elsewhere: **[Lean]** machine-checked here; **[paper]** argued
 here, not machine-checked (full proofs of Propositions 2 and 5 are in
-Appendix A); **[classical]**
-textbook, cited; **[analogy]** a resemblance, not a theorem. Nothing
-here is Lean-checked.
+Appendix A); **[checked]** written out as a Hilbert-style proof and
+checked line by line by a script, for the instances stated;
+**[classical]** textbook, cited; **[analogy]** a resemblance, not a
+theorem. Nothing here is Lean-checked.
 
 ---
 
@@ -28,7 +29,10 @@ expected one.
    `t` (unary numerals) or `2^t` (binary numerals). With a proof budget
    the formulas stop mattering; the budget does all the work. The
    capped function is roughly the budget itself, so it does not give a
-   ladder of growth rates matching P, EXP and so on. **[paper]**
+   ladder of growth rates matching P, EXP and so on. Short proofs do
+   reach the ceiling, up to a constant factor (unary) or a constant
+   factor in the exponent (binary), using lemmas with variables that
+   are proved by doubling. **[paper; checked for instances]**
 
 2. **If the proof only has to show that the number exists, the old ε₀
    guess comes back.** Ask instead for a short proof that a Σ₁ formula
@@ -105,26 +109,48 @@ For a budget function `t : ℕ → ℕ`, define
 *Proof.* The last line of `π` is the naming sentence, which contains the
 numeral, so `|π| ≥ |k̄| ≈ 2k`, respectively `|π| ≥ |bin(k)| ≥ log₂ k`. ∎
 
-**Proposition 2 (and the ceiling is nearly reached). [paper]** There
-are constants `C, c₁, c₂` such that for every `T ⊇ PA⁻` and every `n`:
+**Proposition 2 (and the ceiling is reached up to a constant). [paper;
+checked for instances]** There is a constant `C` such that for every
+`T ⊇ PA⁻` and every `n` with `t(n) ≥ C`:
 
-- unary target: if `n ≥ 3·log₂ t(n) + 3`, then `Big_T^t(n) ≥ √(t(n)/C)`;
-- binary target: if `n ≥ c₁·log₂ t(n) + c₂`, then
-  `Big_T^t(n) ≥ 2^{(t(n)/C)^{1/3}/2}`.
+- unary target: if `n ≥ 4·log₂ t(n) + 3`, then `Big_T^t(n) ≥ t(n)/C`;
+- binary target: if `n ≥ 10·log₂ t(n) + 5`, then
+  `Big_T^t(n) ≥ 2^{t(n)/C}`.
 
-*Proof.* Appendix A. Unary: `x = bin(m)` has size `≤ 6 log₂ m + 3`, and
-`PA⁻` proves `bin(m) = m̄` with a proof of length `O(m²)`, unfolding one
-binary digit at a time (Lemmas A1, A2). Binary: a formula of size
-`O(j)` that squares `2` `j` times, with a `PA⁻` proof of length
-`O(8^j)` by schoolbook binary arithmetic (Lemma A3). No induction is
-used, so the bounds hold for every `T ⊇ PA⁻`. ∎
+*Proof.* Appendix A.2a. The tool is a lemma with free variables, proved
+by *doubling*: from `∀z ∀u (z + Sⁿ(u) = Sⁿ(z + u))`, where `Sⁿ(u)` is
+`u + 1 + … + 1`, the same statement for `2n` follows by instantiating it
+twice and chaining, a fixed number of lines of size `O(n)`. So the
+lemmas for `n = 1, 2, 4, …, 2^a` cost `O(2^a)` together. Unary: with them
+`PA⁻` proves `bin(2^a) = (2^a)‾` in `O(2^a)` symbols, so the formula
+`x = bin(2^a)`, of size `4a + 3`, names `2^a` (Lemma A6). Binary: the
+same trick for `∀w ∀z (Dⁿ(w)·z = Dⁿ(w·z))`, where `D(s) = (1+1)·s`,
+gives each squaring `bin(2^{2^i})·bin(2^{2^i}) = bin(2^{2^{i+1}})` in
+`O(2^i)` symbols, and a formula `χ_j(x)` of size `10j + 5` saying "`x` is
+2 squared `j` times" names `2^{2^j}` with a proof of length `O(2^j)`
+(Lemma A7). No induction is used, so the bounds hold for every
+`T ⊇ PA⁻`. The script `proof-budgets/doubling_check.py` writes these
+proofs out in a fixed Hilbert system and checks every line, for
+`a ≤ 20` and `j ≤ 16`. The measured lengths are about `662·2^a` (unary)
+and `10,900·2^j` (binary). ∎
 
-So `Big_T^t(n)` is pinned between `√(t/C)` and `t/2` (unary), or
-between `2^{(t/C)^{1/3}/2}` and `2^t` (binary), once `n` is a constant
-multiple of `log t(n)`. The formulas stop mattering and the budget decides
+So `Big_T^t(n)` is pinned between `t/C` and `t/2` (unary), or between
+`2^{t/C}` and `2^t` (binary), once `n` is a constant multiple of
+`log t(n)`. The formulas stop mattering and the budget decides
 everything. In particular there is no family "P-naming, EXP-naming, ..."
 whose growth rates are separated the way the classes are; the growth is
 whatever budget you feed in.
+
+**Remark (what the first version had, and what the toy shows). [paper]**
+The first version of this proposition gave only `√(t/C)` and
+`2^{(t/C)^{1/3}/2}`. Its proofs were equations between closed numerals,
+proved one binary digit at a time (Lemmas A1 to A3, which are still
+used by Lemma A4). A proof that states no lemma with a free variable
+pays for every doubling separately. The toy computations in
+`NAMING-RECORDS-SMALL-SYSTEM.md`, whose proofs are rewriting chains with
+no variables, show exactly this: records near `0.7·√t` (unary) and
+`2^{0.29·√t}` (binary). The gap between `√t` and `t` there is the value
+of quantified lemmas, not a property of the budget.
 
 **Where the Busy Beaver behaviour went. [paper]** It is in the budget.
 Lacerda (arXiv:1406.1808) bounds the shortest proof of a provable
@@ -422,7 +448,7 @@ the capped functions are governed by the budget.
 | variant | proof must show | growth of the record | theory strength | status |
 |---|---|---|---|---|
 | Boolos, no budget | `∀x(φ ↔ x = k̄)` | Busy Beaver | rescaling only | [Lean] (Report) |
-| Boolos, budget `t` | same, numeral written | between `√(t/C)` and `t/2` (unary); `2^{(t/C)^{1/3}/2}` to `2^t` (binary) | marginal | [paper] |
+| Boolos, budget `t` | same, numeral written | between `t/C` and `t/2` (unary); `2^{t/C}` to `2^t` (binary) | marginal | [paper]; lower bound checked for instances |
 | existence only, Σ₁, budget `m` | `∃!x φ` | dominates T's provably total functions; exactly the ε₀ level for PA | matters (Prop. 3d) | [paper]; upper bound from Buchholz–Wainer |
 | existence only, any φ | `∃!x φ` | every arithmetic rung, with log-size proofs | — | [paper] |
 | truth, Δ₀ φ | nothing | Busy Beaver (rung 1) | — | [paper] |
@@ -439,8 +465,11 @@ Probably folklore, stated here because we found it written nowhere in
 this form:
 
 1. Proposition 1 and 2: a proof budget on Boolos naming makes the
-   budget the ceiling. Trivial once said; it explains why "bound the
-   proof, get P/EXP-indexed growth rates" does not work.
+   budget the ceiling, and the ceiling is reached up to a constant.
+   Trivial once said; it explains why "bound the proof, get
+   P/EXP-indexed growth rates" does not work. The doubling lemmas of
+   Proposition 2 are a standard speed-up device; we have not found this
+   use of them stated.
 2. Proposition 3 with Proposition 4: the ε₀ rung exists for
    existence-only Σ₁ naming with short proofs, and disappears without the
    Σ₁ restriction. Part (b) is the standard instantiation argument;
@@ -458,13 +487,16 @@ To check before any public use:
   proof size. Fairtlough–Wainer (Handbook ch. III) or Schwichtenberg–Wainer,
   *Proofs and Computations* ch. 4, would give a cleaner citation; neither
   was reachable.
-- Lemma A4 (polynomial-size proofs of correct runs) is cited from memory.
-  It is the one step of Proposition 5 not written out.
+- Lemma A4 (polynomial-size proofs of correct runs) is the one step of
+  Proposition 5 not written out. Citation found 2026-11-24: Pudlák,
+  Handbook ch. VIII, Theorem 6.1.4 (see §A.3).
 - Allender–Spakowski's exact statement was read from the abstract only.
 
 Done 2026-11-24 (second pass): Propositions 2 and 5 now have full proofs
 in Appendix A, with the explicit exponents `1/2` and `1/3` for
-Proposition 2. Proposition 5 now uses Levin's printing form of `Kt`
+Proposition 2. Third pass, same day: Proposition 2 sharpened to `t/C`
+and `2^{t/C}` with doubling lemmas (Appendix A.2a), and those proofs are
+checked line by line by `proof-budgets/doubling_check.py`. Proposition 5 now uses Levin's printing form of `Kt`
 (Lemma A5 explains why). The ε₀ upper bound is Proposition 3′.
 
 ## Appendix A. Proofs of Propositions 2 and 5
@@ -524,11 +556,9 @@ congruence adds `+ 1` on both sides, using `(2j)‾ + 1 ≡ (2j+1)‾`. So
 `|P_m| ≤ |P_{⌊m/2⌋}| + C·m²`, and summing the geometric series,
 `|P_m| ≤ 2C·m²`. ∎
 
-**Proof of Proposition 2, unary.** From `P_m`, equality logic gives
-`∀x (x = bin(m) ↔ x = m̄)` with `O(m)` extra symbols, so total length
-`≤ C·m²` for a constant `C`. Given a budget `t(n)`, take
-`m = ⌊√(t(n)/C)⌋`. The formula `x = bin(m)` has size
-`≤ 6·log₂ m + 3 ≤ 3·log₂ t(n) + 3 ≤ n`. ∎
+Lemma A2 gives the first version's unary bound `√(t/C)`, from the
+formula `x = bin(m)` for any `m`. Proposition 2 now uses Lemma A6
+instead.
 
 ### A.2 Binary arithmetic
 
@@ -562,29 +592,118 @@ apply the recursive proof for `b'` (congruence), `2·bin(ab') ≡ bin(2ab')`
 (or `2·0 = 0` if `ab' = 0`), and the addition lemma for numbers below
 `2^{2L}`. One level costs `O(L²)`, and there are `L`. ∎
 
-**Proof of Proposition 2, binary.** Let
+Lemma A3 gave the first version's binary bound `2^{(t/C)^{1/3}/2}`, by
+squaring `2` `j` times with general multiplication. It is still what
+Lemma A4 uses.
 
-    φ_j(x) :≡ ∃y₀ (y₀ = 1+1 ∧ ∃y₁ (y₁ = y₀·y₀ ∧ … ∃y_{j−1}
-               (y_{j−1} = y_{j−2}·y_{j−2} ∧ x = y_{j−1}·y_{j−1}) … )).
+### A.2a Proposition 2 by doubling
 
-It has size at most `c₀·j + c₀`, since a variable occurrence is one
-node. In ℕ it holds exactly for `x = 2^{2^j}`. A proof of
-`∀x (φ_j(x) ↔ x = bin(2^{2^j}))`:
+For a term `s` write `S(s) = s + 1` and `D(s) = (1+1)·s`, and `Sⁿ`, `Dⁿ`
+for `n`-fold application. Then `(m+1)‾ = Sᵐ(1)` for `m ≥ 0`, so
+`(2n)‾ ≡ Sⁿ(n̄)`, and `bin(2^a) ≡ Dᵃ(1)`. For this subsection the proof
+system is that of A.0 with the usual quantifier axiom
+`∀v (A → B) → (A → ∀v B)` (`v` not free in `A`) added. It is used only
+to eliminate an existential, written `∃v A` for `¬∀v¬A`.
 
-- (←) Exhibit `y_i = bin(2^{2^i})`. Each equation
-  `bin(2^{2^{i+1}}) = bin(2^{2^i})·bin(2^{2^i})` is Lemma A3 with
-  `L = 2^{i+1} + 1`, at cost `O(8^i)`. Introducing the `j` existentials
-  costs `O(j)` formulas of size `O(j + 2^j)`.
-- (→) Assume `φ_j(x)` and eliminate the existentials one at a time. By
-  the same equations, `y_i = bin(2^{2^i})` follows successively by
-  congruence, and finally `x = bin(2^{2^j})`.
+**Lemma A6 (unary doubling).** For `n` a power of two, `PA⁻` proves
 
-The total is `O(8^j + j²·2^j) ≤ C·8^j`. Given a budget `t(n)`, take
-`j = ⌊log₂(t(n)/C)/3⌋`, so `2^j ≥ (t(n)/C)^{1/3}/2`, and the formula has
-size `≤ c₀·j + c₀ ≤ c₁·log₂ t(n) + c₂ ≤ n`. ∎
+- `C_n`: `∀a ∀b (a = b → Sⁿ(a) = Sⁿ(b))`,
+- `T_n`: `∀z ∀u (z + Sⁿ(u) = Sⁿ(z + u))`,
+- `R_n`: `∀z (z + n̄ = Sⁿ(z))`,
 
-The exponents `1/2` and `1/3` come from schoolbook arithmetic and are
-not optimized.
+and all of `C_n, T_n, R_n` for `n = 1, 2, 4, …, N` together have a proof
+of length `O(N)`. Consequently `PA⁻ ⊢ bin(2^a) = (2^a)‾` with a proof of
+length `O(2^a)`.
+
+*Proof.* `n = 1`: `C_1` is an equality axiom, `T_1` is associativity of
+`+`, and `R_1` is `z + 1 = z + 1`. From `n` to `2n`, using
+`S²ⁿ(s) ≡ Sⁿ(Sⁿ(s))`:
+
+- `C_2n`: instantiate `C_n` at `a, b` and at `Sⁿ(a), Sⁿ(b)`, chain the
+  two implications, generalize.
+- `T_2n`: `z + Sⁿ(Sⁿ(u)) = Sⁿ(z + Sⁿ(u))` is `T_n` at `u := Sⁿ(u)`.
+  `C_n` applied to `T_n` at `u` gives `Sⁿ(z + Sⁿ(u)) = Sⁿ(Sⁿ(z + u))`.
+  Chain and generalize.
+- `R_2n`: `z + Sⁿ(n̄) = Sⁿ(z + n̄)` is `T_n` at `u := n̄`, and `C_n`
+  applied to `R_n` gives `Sⁿ(z + n̄) = Sⁿ(Sⁿ(z))`. Chain and generalize.
+
+Each step is a bounded number of lines (56 in the checked system), each
+of size `O(n)`, so the sum over `n = 1, 2, …, N` is `O(N)`. Then
+`bin(2^k) = (2^k)‾` by recursion on `k`: with `m = 2^{k−1}`,
+`(1+1)·bin(m) = (1+1)·m̄` by congruence, `(1+1)·m̄ = m̄ + m̄` as in
+Lemma A1, and `m̄ + m̄ = Sᵐ(m̄) ≡ (2m)‾` is `R_m` at `z := m̄`. Step `k`
+costs `O(2^k)`, so the total is `O(2^a)`. ∎
+
+**Lemma A7 (binary doubling).** For `n` a power of two, `PA⁻` proves
+
+- `B_n`: `∀a ∀b (a = b → Dⁿ(a) = Dⁿ(b))`,
+- `A_n`: `∀w ∀z (Dⁿ(w)·z = Dⁿ(w·z))`,
+
+all of them up to `n = N` with a proof of length `O(N)`. With
+`w_i := bin(2^{2^i}) ≡ D^{2^i}(1)`, `PA⁻ ⊢ w_i·w_i = w_{i+1}` with a
+proof of length `O(2^i)`, given `A_{2^i}` and `B_{2^i}`.
+
+*Proof.* `B_1` is an equality axiom and `A_1` is associativity of `·`.
+From `n` to `2n` exactly as for `C` and `T`: `A_2n` chains `A_n` at
+`w := Dⁿ(w)` with `B_n` applied to `A_n`. (38 lines per step in the
+checked system.) For the squaring, with `M = 2^i`: `A_M` at `w := 1`,
+`z := w_i` gives `D^M(1)·w_i = D^M(1·w_i)`, and `1·w_i = w_i` by
+commutativity and `x·1 = x`, so `B_M` gives `D^M(1·w_i) = D^M(w_i)
+≡ w_{i+1}`. ∎
+
+**Proof of Proposition 2.** *Unary.* By Lemma A6 and equality logic,
+`∀x (x = bin(2^a) ↔ x = (2^a)‾)` has a proof of length at most
+`C₀·2^a`. Given `t = t(n) ≥ 2C₀`, take `a = ⌊log₂(t/C₀)⌋`. Then
+`2^a > t/(2C₀)`, and the formula `x = bin(2^a)` has size
+`4a + 3 ≤ 4·log₂ t + 3 ≤ n`.
+
+*Binary.* Let `χ_0(u) :≡ u = 1+1` and
+`χ_i(u) :≡ ∃y (u = y·y ∧ χ_{i−1}(y))`, with a fresh bound variable at
+each level. In ℕ, `χ_j` holds exactly of `2^{2^j}`, and `|χ_j(x)| =
+10j + 5`. A proof of `∀x (χ_j(x) ↔ x = w_j)`:
+
+- *Existence*, `χ_i(w_i)` for `i < j`: `χ_0(w_0)` is `(1+1)·1 = 1+1`, an
+  axiom instance. From `χ_{i−1}(w_{i−1})` and `w_i = w_{i−1}·w_{i−1}`
+  (Lemma A7) form the conjunction and introduce `∃y`. Lines of size
+  `O(2^i + i)`, a bounded number of them.
+- *Uniqueness*, `∀u (χ_i(u) → u = w_i)` for `i ≤ j`: for `i = 0` by
+  `x·1 = x`. For the step, under the hypothesis `u = y·y ∧ χ_{i−1}(y)`
+  (kept as an antecedent, so no deduction theorem is needed), the
+  previous lemma gives `y = w_{i−1}`, congruence gives
+  `y·y = w_{i−1}·w_{i−1}`, and Lemma A7 gives `= w_i`. Generalize over
+  `y` and eliminate the existential (this is where the extra quantifier
+  axiom is used). Again a bounded number of lines of size `O(2^i + i)`.
+- *The naming sentence*: `→` is uniqueness at `i = j`. `←`: under
+  `x = w_j`, the witness `w_{j−1}` gives `x = w_{j−1}·w_{j−1} ∧
+  χ_{j−1}(w_{j−1})`, then `∃`-introduction. The hypothesis `x = w_j`, of
+  size `O(2^j)`, occurs in a bounded number of lines only, because `x`
+  is the outermost variable of `χ_j`.
+
+The total is at most `C₀·2^j` for a constant `C₀`. Given `t ≥ 2C₀`, take
+`j = ⌊log₂(t/C₀)⌋`, so `2^j > t/(2C₀)` and the number named is
+`2^{2^j} > 2^{t/(2C₀)}`. The formula has size `10j + 5 ≤ 10·log₂ t + 5
+≤ n`. Take `C = 2C₀`. ∎
+
+**The check. [checked for instances]** `proof-budgets/doubling_check.py`
+builds these proofs, as lists of formulas with no justifications, in the
+Hilbert system `H` of `naming-depth/collision_check.py`, plus the
+quantifier axiom above and associativity of `·`. It reuses that file's
+checker, which accepts a line only if it is an axiom instance or follows
+by modus ponens or generalization. Every proof for `a = 1, …, 20` and
+`j = 1, …, 16` passes. 80 random one-line corruptions are all rejected.
+Measured lengths (full table in `proof-budgets/doubling_check_out.md`):
+
+| | `a` or `j` | number named | size of `φ` | proof length | length ÷ (`2^a` or `2^j`) |
+|---|---|---|---|---|---|
+| unary | 10 | 1,024 | 43 | 691,427 | 675 |
+| unary | 20 | 1,048,576 | 83 | 694,189,901 | 662 |
+| binary | 10 | `2^{1024}` | 105 | 11,707,592 | 11,433 |
+| binary | 16 | `2^{65536}` | 165 | 714,245,924 | 10,899 |
+
+The ratio settles, as the fixed shape of the doubling steps predicts.
+Over these instances `C₀ ≤ 1,029` (unary) and `C₀ ≤ 19,450` (binary).
+The constants are large because the propositional steps are written out
+in a three-axiom Hilbert system; nothing was done to shrink them.
 
 ### A.3 Verifying a run
 
@@ -609,8 +728,15 @@ Handbook of Proof Theory ch. VIII). *Outline:* each of the `poly(t)`
 bounded universal quantifiers ranges over indices `≤ bin(t²)`, and
 `PA⁻ ⊢ ∀i ≤ bin(N) (i = bin(0) ∨ … ∨ i = bin(N))` in `O(N²·log N)`
 symbols by discreteness. Each resulting instance is an equation between
-binary numerals, settled by Lemma A3. **[memory: the exact citation is
-to be checked]**
+binary numerals, settled by Lemma A3. **[cited, checked 2026-11-24:**
+Pudlák, "The lengths of proofs", Handbook of Proof Theory ch. VIII,
+Theorem 6.1.4: a relation is in NP exactly when some formula numerates
+it in Robinson arithmetic `Q` with proofs of length polynomial in the
+binary lengths of the arguments. Lemma 6.1.5 and Corollary 6.1.6 there
+are the forms for bounded formulas and for "`φ` has a proof of length at
+most `n`". The proof of 6.1.4 is a sketch along the lines of the outline
+above, and the theorem is stated for *some* numerating formula, not for
+a given `Run`.**]**
 
 **Lemma (uniqueness of output). [classical]**
 `IΣ₁ ⊢ ∀e ∀c ∀c' ∀y ∀y' (Run(e,c,y) ∧ Run(e,c',y') → y = y')`, by

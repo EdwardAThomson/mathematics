@@ -208,6 +208,11 @@ Bennett called this **logical depth**. Large numbers of this kind are the
 deepest objects there are at their description length. **[classical, as a
 remark]**
 
+*Follow-up: `NAMING-DEPTH.md` defines the proof-length version of depth for
+naming. It also qualifies the remark above: it holds for absolute depth,
+while depth relative to the length of the number is a separate question,
+and some enormous numbers are shallow in that sense.*
+
 ## 5. Hierarchies
 
 There are three different hierarchies in play, and it helps to keep them

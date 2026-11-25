@@ -278,6 +278,27 @@ plain-language essay, [`BIG-NUMBERS-AS-COMPRESSION.md`](BIG-NUMBERS-AS-COMPRESSI
 reads the whole subject as compression with a fixed message length. The
 paper proofs in these notes have not had an outside check.
 
+*Added 2026-11-25.* Further notes from the same line of work, all paper
+arguments unless they say otherwise, none with an outside check:
+
+- above arithmetic truth: [`SECOND-ORDER-RUNGS.md`](SECOND-ORDER-RUNGS.md);
+- above Rayo: [`SECOND-ORDER-RAYO.md`](SECOND-ORDER-RAYO.md),
+  [`SECOND-ORDER-RAYO-II.md`](SECOND-ORDER-RAYO-II.md),
+  [`ABOVE-RAYO.md`](ABOVE-RAYO.md),
+  [`ORDINAL-RAYO.md`](ORDINAL-RAYO.md),
+  [`LARGE-CARDINALS-AND-THE-LADDER.md`](LARGE-CARDINALS-AND-THE-LADDER.md);
+- whether one cost scale orders the whole ladder (it does not):
+  [`ASSUMPTION-COST-SCALE.md`](ASSUMPTION-COST-SCALE.md);
+- bounded resources: [`P-VS-NP-LIMITS.md`](P-VS-NP-LIMITS.md),
+  [`POLYLOG-NAMING-LADDER.md`](POLYLOG-NAMING-LADDER.md),
+  [`CALCNAME2-HARDNESS.md`](CALCNAME2-HARDNESS.md),
+  [`NAMING-DEPTH.md`](NAMING-DEPTH.md),
+  [`NAMING-RECORDS-SMALL-SYSTEM.md`](NAMING-RECORDS-SMALL-SYSTEM.md),
+  [`OMEGA-FOR-NAMING.md`](OMEGA-FOR-NAMING.md),
+  [`VP-VNP-CLAIM.md`](VP-VNP-CLAIM.md);
+- what is not yet done, across all of them:
+  [`FUTURE-WORK.md`](FUTURE-WORK.md).
+
 ### Is Rayo's rung the top? (standard theory, not a project result)
 
 No, and it's worth being explicit that this paragraph is inherited from

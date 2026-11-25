@@ -29,6 +29,12 @@ no answer, and the question "how does the largest number grow, for a given
 rulebook?" has an answer that is almost entirely determined by one thing:
 how much truth the rulebook takes as given.
 
+One refinement, from the work above Rayo (`ABOVE-RAYO.md` §5): once you
+accept *all* truth about a domain, iterating the truth predicate adds no new
+belief, only proof strength. The next real cost comes from enlarging the
+domain: from the numbers to sets of numbers, or from the universe of sets to
+all collections of sets (one more powerset level).
+
 ## 1. What a rulebook is
 
 A **naming scheme** `R` consists of:
@@ -164,6 +170,11 @@ trees is definite; for `Σ¹₂` nothing that differs between universes of sets
 accept a single intended collection of all sets of whole numbers.
 **[classical]**
 
+Large cardinals do not move any of these rungs, but from `Σ¹₃` on they
+make the named numbers the same in every forcing extension (Woodin
+cardinals), which lowers the price in the last sentence; see
+`LARGE-CARDINALS-AND-THE-LADDER.md`. **[classical ingredients]**
+
 Truth for arithmetic with a truth predicate, iterated, sits inside the `Π¹₁`
 rung (each finite iteration is hyperarithmetic). **[expected]**
 
@@ -178,15 +189,56 @@ function eventually dominates all of them. **[paper,
 [expected] for the oracle rungs, by the same argument]**
 
 *What you must accept:* that every statement about the entire universe of
-sets is definitely true or false. Making this precise needs roughly
-Morse-Kelley strength. **[paper, `RAYO-R0-WELLDEFINEDNESS.md`]**
+sets is definitely true or false. Proving the function well defined for
+every `n` at once needs a truth class for the universe. Morse–Kelley class
+theory gives one, but a much weaker recursion principle (`ETR_ω` over GBC)
+is enough. It does not matter which classes exist, provided the definition
+only asks for truth up to the size in hand. **[paper,
+`RAYO-R0-WELLDEFINEDNESS.md`, refined in `SECOND-ORDER-RAYO-II.md` §2–§3]**
 
 ### Above Rayo
 
-Add a symbol for "true formula of set theory" and take formulas of the
-enlarged language; repeat. Fish number 7 is a version of this. BIG FOOT was
-a more ambitious attempt and is ill-defined (`phase0/e-foot.md`), a reminder
-that at this height a definition can fail to define anything.
+Worked out on paper in `SECOND-ORDER-RAYO.md`, `SECOND-ORDER-RAYO-II.md` and
+`ABOVE-RAYO.md` (all **[paper]**, not machine-checked). Every step above Rayo
+is one of three kinds.
+
+- **Parameter steps.** Give Rayo's language a symbol for one particular set
+  or function, even Rayo's own function, and feed the result back in, as
+  often as you like along a countable ordinal. This is how Fish number 7 is
+  built. In arithmetic this kind of oracle climbs a rung, but in set theory
+  every function on the numbers is already a set. So all of it sits strictly
+  between Rayo and the next truth step (`ABOVE-RAYO.md` §1–§2).
+- **Truth steps: the fine ladder.** Add a predicate for truth of the current
+  language, and repeat, transfinitely ("Rayo+"). The same rungs appear if
+  you allow "for every class" but restrict the classes to those definable
+  after `β` rounds of truth: that gives exactly Rayo+ stage `β + 1`. With
+  only the first-order definable classes it gives the first Rayo+ step. In
+  set-theory terms these are the levels of the constructible hierarchy
+  built over the universe. *What you must accept:* nothing new. Each stage
+  is fixed once first-order truth about sets is fixed. Only the strength of
+  the theory needed to *prove* the functions well defined goes up
+  (`SECOND-ORDER-RAYO-II.md` §2–§3, `ABOVE-RAYO.md` §3).
+- **Height steps.** Full second-order Rayo, where "for every class" means
+  every sub-collection of the universe, beats every Rayo+ stage, even one
+  iterated along all the ordinals. It is the same function as ordinary Rayo
+  in a universe one powerset level taller. Third-order Rayo is two levels
+  taller, and so on. So the higher-order ladder is the ladder of universe
+  heights continued past the top of the universe (`SECOND-ORDER-RAYO-II.md`
+  Theorem C). Rayo in a still taller universe beats all of these, but only
+  if the smaller universe can be described from inside it. A small universe
+  whose height cannot be described can even name faster than the real one
+  (`ABOVE-RAYO.md` §4). *What you must accept:* now something new: a
+  definite answer to which collections of sets exist, or a definite taller
+  universe.
+
+Above each height step a new fine ladder of truth steps starts, then the next
+height step. If the height of the universe is very tall in the reflecting
+("indescribable") sense, short formulas cannot tell it from a shorter
+universe, and the extra height gives no naming advantage at any fixed size
+(`SECOND-ORDER-RAYO-II.md` §5). BIG FOOT tried to take a height step by
+positing a taller universe without describing it. It is ill-defined
+(`phase0/e-foot.md`): at this height a definition can fail to define
+anything.
 
 ## 3. Why there is no top
 
@@ -273,19 +325,56 @@ rung 0 / rung 1 boundary (TREE costs more than arithmetic-truth naming).
 What works is two coordinates read in order: how much truth the scheme
 consults, then the termination ordinal.**
 
+## 4a. Each rung's Omega: how far it reaches, and how well it compresses
+
+`OMEGA-FOR-NAMING.md` (2026-11-24) adds a second measurement to the ladder.
+For a rulebook, pick a formula at random by flipping coins for its symbols.
+Let `Ω_R` be the probability that the formula names a number. That one real
+number holds all of the rulebook's naming facts.
+
+- **The height of `Ω_R` is the height of the rung.** For a consistent
+  listable theory (rung 1), `Ω_T` is exactly as hard as the halting problem.
+  For the `Π_k` truth rungs it is exactly as hard as the `(k+1)`-th jump. For
+  arithmetic truth it is exactly as hard as arithmetic truth. So the ladder
+  can be read off the Omegas. **[paper; the halting reduction at rung 1 is in
+  Lean, `RayoBoolos/OmegaHalting.lean`]**
+- **How well `Ω_R` compresses is set by the notation, not the theory.** The
+  first `n` digits of `Ω_R` can be squeezed into `γ*·n` bits, where `γ*` is
+  the information rate of the coin process. For fair coins over the project's
+  16-symbol formula alphabet, `γ* ≈ 0.70`. If the coins only ever choose
+  among grammatical symbols, `γ* ≈ 0.99`. The same bound holds for PA, ZFC,
+  or any consistent theory. **[paper + numeric]**
+- **No formula notation reaches Chaitin's `Ω`.** Under any context-free
+  notation with fixed symbol probabilities, `Ω_R` is never Martin-Löf
+  random. Even the weighting that wastes no coin flips leaves a saving of
+  about half of `log₂ n` bits, and the Miller–Yu theorem says that is
+  already too much for a random sequence. **[paper]**
+
+The reason is the difference between programs and formulas. A program is
+read from an endless tape and the machine decides when to stop, so a random
+halting program's length has no well-behaved average. A formula's end is
+fixed by its grammar, so its length does have one, and that leaks
+information. This is why formulas match programs on *reach* (rung 1 for
+both) but always carry a little overhead as *compressors*. The `6·log₂ n` and
+`n log n` factors in the Busy Beaver sandwich are overheads of the same
+kind: costs of writing program information into formulas.
+
 ## 5. Summary table
 
-| rung | "names" means | examples | outgrows | must accept as definite |
-|---|---|---|---|---|
-| 0 | evaluates by a terminating rule | digits, towers, BMS, System F | (sub-rungs by ordinal) | nothing beyond calculation |
-| 1 | program halts / theory proves | Busy Beaver, BLC, `BoolosBig_T` for any `T` | every computable function | whether each program halts |
-| k | halts, with a box for rung k−1 / true `Π_{k−1}` or `Σ_k` formula | oracle Busy Beavers, bounded-truth naming | rung k−1 | arithmetic statements with k−1 "for all" blocks |
-| ω | true statement of arithmetic | arithmetic-truth naming | every finite rung | all statements about whole numbers |
-| Π¹₁ | true statement with one block of set quantifiers (`Π¹₁` or `Σ¹₁`) | Busy Beaver over hyperarithmetic oracles | rung ω, every hyperarithmetic Busy Beaver | that computable trees are well-founded or not |
-| Σ¹₂, Π¹₂, Σ¹₃, … | true statements of second-order arithmetic, by set-quantifier blocks | `BB` with oracle `O`, ITTM Busy Beaver (both between Π¹₁ and Σ¹₂) | the rung before | from Σ¹₃ on, a single intended collection of all sets of numbers |
-| … | truth for higher-order languages | third-order arithmetic and up | everything below | sets of sets of numbers, … |
-| Rayo | true statement of set theory | Rayo's function | everything below | all statements about the universe of sets |
-| Rayo+ | truth for set theory plus its truth predicate, iterated | Fish number 7 | Rayo | more again; no last step |
+| rung | "names" means | examples | outgrows | must accept as definite | its Omega (§4a) is as hard as |
+|---|---|---|---|---|---|
+| 0 | evaluates by a terminating rule | digits, towers, BMS, System F | (sub-rungs by ordinal) | nothing beyond calculation | computable, when naming is decidable [expected] |
+| 1 | program halts / theory proves | Busy Beaver, BLC, `BoolosBig_T` for any `T` | every computable function | whether each program halts | the halting problem, `0′` [paper; reduction in Lean] |
+| k | halts, with a box for rung k−1 / true `Π_{k−1}` or `Σ_k` formula | oracle Busy Beavers, bounded-truth naming | rung k−1 | arithmetic statements with k−1 "for all" blocks | the matching jump [paper, sketch] |
+| ω | true statement of arithmetic | arithmetic-truth naming | every finite rung | all statements about whole numbers | arithmetic truth, `0^(ω)` [paper] |
+| Π¹₁ | true statement with one block of set quantifiers (`Π¹₁` or `Σ¹₁`) | Busy Beaver over hyperarithmetic oracles | rung ω, every hyperarithmetic Busy Beaver | that computable trees are well-founded or not | not worked out |
+| Σ¹₂, Π¹₂, Σ¹₃, … | true statements of second-order arithmetic, by set-quantifier blocks | `BB` with oracle `O`, ITTM Busy Beaver (both between Π¹₁ and Σ¹₂) | the rung before | from Σ¹₃ on, a single intended collection of all sets of numbers | not worked out |
+| … | truth for higher-order languages | third-order arithmetic and up | everything below | sets of sets of numbers, … | not worked out |
+| Rayo | true statement of set theory | Rayo's function | everything below | all statements about the universe of sets | not worked out |
+| Rayo + parameters | set theory with a symbol for one set or function, fed back in | Fish number 7 | Rayo | nothing beyond Rayo | not worked out |
+| Rayo+ stage β (fine ladder) | truth for set theory plus its truth predicate, iterated `β` times; equivalently second-order with only classes definable after `β` rounds | second-order Rayo with definable classes (= stage 1) | every parameter extension below it | nothing beyond Rayo [paper] | not worked out |
+| second-order Rayo (height `Ord + 1`) | true statement about sets and all collections of sets | | every Rayo+ stage, even along all the ordinals | which collections of sets exist | not worked out |
+| `k`-th order, taller universes | higher orders = more powerset levels; Rayo in a taller universe that describes ours | third-order Rayo | the level below | more height; no last step | not worked out |
 
 ## 5a. Where the famous numbers sit
 
@@ -326,7 +415,7 @@ set of further rungs: Busy Beaver beats every level of it.
 | ω, arithmetic truth | Goucher's Ξ function sits near here | not audited by this project |
 | second-order arithmetic | Busy Beaver with oracle Kleene's `O`, and Busy Beaver for infinite-time Turing machines: both strictly between the `Π¹₁` and `Σ¹₂` rungs | [paper] (`SECOND-ORDER-RUNGS.md` Thm 4, Prop 6) |
 | Rayo | Rayo's number | well defined only given a strong extra assumption (`RAYO-R0-WELLDEFINEDNESS.md`) |
-| above Rayo | Fish number 7. BIG FOOT aimed here, but its definition does not determine a number | community constructions |
+| above Rayo | Fish number 7: strictly between Rayo and the first Rayo+ step, since its oracles are only parameters. The Arias function (2026 preprint, abstract only) iterates second-order Rayo, so it should sit just above that. BIG FOOT aimed higher, but its definition does not determine a number | community constructions; placements [paper] (`ABOVE-RAYO.md` §2), Arias [expected] |
 
 ## 6. What would make this solid
 
@@ -362,6 +451,17 @@ In rough order of value for effort:
 6. ~~Work out the first rungs above arithmetic truth.~~ **Done on paper,
    2026-11-24:** `SECOND-ORDER-RUNGS.md` (second-order rungs, `BB^O` and ITTM
    placement). Not yet re-read; no Lean.
+
+7. ~~Ask whether a rung's naming probability behaves like Chaitin's `Ω`.~~
+   **Done, 2026-11-24:** `OMEGA-FOR-NAMING.md` (§4a above). It is as hard as
+   the rung but never Martin-Löf random under a context-free notation. The
+   halting reduction is in Lean (`RayoBoolos/OmegaHalting.lean`). Open: the
+   exact compression rate, between `0.149` and `0.70` for fair coins.
+
+8. ~~Work out what lies above Rayo.~~ **Done on paper, 2026-11-25:**
+   `SECOND-ORDER-RAYO.md`, `SECOND-ORDER-RAYO-II.md`, `ABOVE-RAYO.md`
+   (parameter, truth and height steps; Fish number 7 placed below the first
+   Rayo+ step). Open: exact indexing of the fine ladder; the Arias function.
 
 See also `COMPLEXITY-AND-ENTROPY.md` (2026-11-24), which reads the same
 ladder as a hierarchy of description-complexity measures and connects it to

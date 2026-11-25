@@ -89,6 +89,10 @@ They complete the picture of what a proof of `P ≠ NP` must avoid.
   algebraic extensions of the machines' oracles. Aaronson and Wigderson
   showed those techniques still cannot settle P versus NP.
 
+*Update 2026-11-24:* `VP-VNP-CLAIM.md` discusses a claimed proof of the
+algebraic analogue, VP ≠ VNP, and how these barriers bear on it. It
+does not change anything in this note.
+
 So a proof of `P ≠ NP` must avoid all three: not relativize, not be
 "natural", and not algebrize. This is the main reason the problem is
 believed to need genuinely new ideas.

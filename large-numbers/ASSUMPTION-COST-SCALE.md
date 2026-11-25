@@ -90,7 +90,7 @@ its proof-theoretic ordinal. **[classical: Schwichtenberg and Wainer,
 | Knuth arrows, Graham | `f_ω`, `f_{ω+1}` | not `IΣ₁`; `IΣ₂` (Ackermann-type recursion) | [classical] |
 | Goodstein, hydra, single-row BMS | `f_{ε₀}` | not PA; `PA + TI(ε₀)`; under (F), not `ACA₀`, since `ACA₀` is conservative over PA | [classical: Kirby–Paris 1982] |
 | TREE | at least the small Veblen ordinal | not `ATR₀`; provable in `Π¹₁-CA₀` | [classical: Friedman; Simpson, "Nonprovability of certain combinatorial properties of finite trees" (1985)] |
-| multi-row BMS | open | termination rests on an unrefereed proof (`BMS-WELLDEFINEDNESS-AUDIT.md`) | open |
+| multi-row BMS | open | termination rests on an unrefereed proof (`BMS-BM4-AUDIT.md`) | open |
 | Loader's number (CoC) | beyond all of the above | strong normalization of the Calculus of Constructions; needs roughly higher-order arithmetic, beyond `Z₂` | [expected] |
 
 Here the proposal works: higher ordinal, higher price, faster growth.
@@ -148,14 +148,30 @@ functions for computability theorists" (2011)]**
 
 ### The rungs about sets of numbers
 
-The rung just above arithmetic truth is being proved in a separate thread
-("Prove the rung above arithmetic truth"); its result is not yet in. On the
-sketch sent there, naming by `Σ¹₁` or `Π¹₁` truth grows like Busy Beaver
-over all hyperarithmetic oracles, is computable from Kleene's `O`, and
-`Σ¹₂` naming reaches Busy Beaver with oracle `O`. If that holds, under
-(F) the price of the `Σ¹₁` rung lies between "every hyperarithmetic set
-exists" and `Π¹₁-CA₀` ("`O` exists"), and the `Σ¹_k` rungs need `Π¹_k-CA₀`.
-**[depends on the other thread; to be filled in when it lands]**
+These rungs are worked out in `SECOND-ORDER-RUNGS.md` (PR #14): naming by
+`Σ¹_k` or `Π¹_k` truth (`k ≥ 1`) is Busy Beaver over oracles with a `Δ¹_k`
+definition, so `Σ¹₁` and `Π¹₁` naming sit together above every
+hyperarithmetic oracle Busy Beaver, are computable from Kleene's `O`, and are
+beaten by `Σ¹₂` naming, which reaches Busy Beaver with oracle `O`.
+**[paper, that note]**
+
+Price under (F): the `Σ¹_k` rung is provably total in `Π¹_k-CA₀`, which makes
+the `Σ¹_k` truth set an object **[classical ingredients]**. A lower bound
+for the `Σ¹₁` rung is "every hyperarithmetic set exists"; whether its price
+is exactly `Π¹₁-CA₀` turns on whether the naming function computes `O`,
+which that note lists as open.
+
+**A further kind of cost appears here.** `SECOND-ORDER-RUNGS.md` §7 notes
+that `Σ¹₁`, `Π¹₁` (Mostowski) and `Σ¹₂`, `Π¹₂` (Shoenfield) truth is the same in
+every universe of sets, while from `Σ¹₃` on it can differ between universes
+**[classical]**. So from `Σ¹₃` on the named numbers are definite only if one
+accepts a single intended collection of all sets of numbers. That is a
+different commitment from both comprehension strength and termination
+strength, and it is the one that becomes decisive at Rayo's rung
+(`RAYO-R0-WELLDEFINEDNESS.md`: the value is universe-relative). It refines
+the first coordinate of §4 rather than breaking it: it is still "how much
+truth is taken as given", now including whether that truth is the same in
+every model.
 
 Full truth for second-order arithmetic needs a satisfaction class for `Z₂`,
 beyond `Z₂` itself. **[expected]**
@@ -255,8 +271,8 @@ What is proved or classical about this order:
   argument (`GENERAL-NAMING-THEOREM.md` Proposition 7(c), since `A′`
   computes `BB^A`). **[paper, routine]**
 - **Every natural rung the project has fits.** Rung 1 (`0′`), rung `k + 1`
-  (`0^{(k+1)}`), rung ω (`0^{(ω)}`, a limit), Rayo (truth for V). The rungs
-  about sets of numbers are expected to fit (§2), pending the other thread.
+  (`0^{(k+1)}`), rung ω (`0^{(ω)}`, a limit), the `Σ¹_k` rungs (`Σ¹_k` truth,
+  `SECOND-ORDER-RUNGS.md`), Rayo (truth for V).
 
 What is not claimed: that `deg(A) <_T deg(B)` always gives strictly faster
 growth when `B` does not compute `A′`; that is open. And not every function
@@ -308,9 +324,9 @@ expensive totality of slower computable functions.
 
 1. Turn the two **[expected]** `IΣ_{k+1}` sketches into a proof with a
    reference, or a Lean statement over Foundation's `IΣ` fragments.
-2. Fill in the second-order rows when the "rung above arithmetic truth"
-   thread reports, in particular whether the `Σ¹₁` naming function computes
-   `O`, which decides whether its price is `Π¹₁-CA₀` or something weaker.
+2. Whether the `Σ¹₁` naming function computes `O` (open in
+   `SECOND-ORDER-RUNGS.md` §5), which decides whether its price is
+   `Π¹₁-CA₀` or something weaker.
 3. Pin down the strength needed for Loader's number (strong normalization of
    CoC) with a source.
 4. Rungs of incomparable Turing degree: can their naming functions have

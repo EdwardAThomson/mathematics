@@ -643,7 +643,7 @@ agree, with these qualifications, all noted where the theorem is stated:
 All `RayoBoolos` files are under `large-numbers/rayo-lean-boolos/`.
 Toolchain: Lean 4 `v4.32.2`, with Mathlib and Foundation pinned by
 `lake-manifest.json`. To check: run `lake build` in
-`large-numbers/rayo-lean-boolos/` (1266 jobs) and in
+`large-numbers/rayo-lean-boolos/` (1267 jobs) and in
 `large-numbers/rayo-lean/`. Each file ends with `#print axioms` for its
 headline theorems.
 
