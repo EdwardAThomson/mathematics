@@ -11,8 +11,9 @@ Each rung records four things:
 2. **The well-definedness theorem**: the mathematical fact that guarantees
    the definition picks out one specific natural number.
 3. **Metatheoretic strength**: how strong a theory you need to *prove* that
-   fact. This is the interesting column: the project's throughline predicts
-   it should climb with the ladder.
+   fact. The August audit expected this column to climb with growth rate.
+   It does so only among the computable numbers (rungs 1 to 6); see point 1
+   of "What the ladder shows" for the correction.
 4. **Status**: one of
    - `project-audited`: verified by this project (mechanized or
      paper-verified here),
@@ -29,13 +30,23 @@ entry rests on something we could not verify, the entry says so.
 exists. How fast each scheme grows, and how the schemes are ordered, is
 the subject of [`THE-LADDER.md`](THE-LADDER.md), whose §5a places the same
 numbers by growth rate. The two use "rung" differently: here a rung is one
-famous number; there a rung is one meaning of "names".
+famous number; there a rung is one meaning of "names". The numbering below
+is a list, not a growth order. By `THE-LADDER.md`, rungs 1 to 6 and Fish
+numbers 1 to 3, 5 and 6 are all on its rung 0 (computable); Busy Beaver
+and `BoolosBig_PA` are on its rung 1; Fish number 4, built with Busy Beaver
+oracles, is somewhere above rung 1 (not placed precisely here); Rayo, Fish
+number 7 and everything after sit at or above its Rayo rung.
+
+*Revised 2026-11-25.* Rung 8 (`BoolosBig_PA`), the Goodstein note, BIG FOOT,
+Fish number 7 and point 1 of "What the ladder shows" were updated to match
+`PROVABLE-NAMING-REPORT.md` and `ABOVE-RAYO.md`. The old wording is
+described in each place rather than silently replaced.
 
 ---
 
 ## The rungs
 
-Audit date: August 2026.
+Audit date: August 2026; revised 2026-11-25 (see above).
 
 | # | number | defining system | well-definedness rests on | strength needed | status |
 |---|---|---|---|---|---|
@@ -46,11 +57,11 @@ Audit date: August 2026.
 | 5 | Bashicu matrix numbers | BMS expansion rules (BM4, the 4th ruleset; BM1-BM3 all refuted) | termination of BM4: one unrefereed 2023 preprint | the only proof uses Σₙ-stable ordinals in L, far beyond arithmetic | **unrefereed; core lemma line-verified by this project** ([`BMS-BM4-AUDIT.md`](BMS-BM4-AUDIT.md) addendum) |
 | 6 | Loader's number | Calculus of Constructions (`loader.c`) | strong normalization of CoC | higher-order-arithmetic strength (unprovable there; ZFC proves it easily) | **literature-solid** |
 | 7 | BB(n) (Busy Beaver) | k-state Turing machines | Radó: finitely many machines | trivial to define; specific values independent of ZFC | **literature-solid** |
-| 8 | BoolosBig_PA | provability-naming over PA | B0 well-definedness proof | PA-strength | **project-audited** (mechanized, sorry-free) |
+| 8 | BoolosBig_PA | provability-naming over PA | B0 well-definedness proof: needs only that PA is consistent | Con(PA), so just beyond PA itself (PA cannot prove its own consistency) | **project-audited** (mechanized, sorry-free) |
 | 9 | Rayo's number | truth-naming over FOST | R0 analysis | **MK-strength**, and only granted that commitment | **project-audited** (paper; conditional) |
-| 10 | BIG FOOT | "FOOT" (first-order oodle theory) | claimed, not delivered | n/a | **ill-defined** (project-audited: its own cited source disproves it) |
+| 10 | BIG FOOT | "FOOT" (first-order oodle theory) | claimed, not delivered | n/a | **ill-defined** (by a published community refutation, read here only through search extracts; not re-derived) |
 | 11 | Fish numbers 1-6 | Ackermann extensions, s/m maps; F4 adds a Busy-Beaver oracle | ordinary recursion theory; F4 via oracle machines in ZFC | low: ordinal induction below ζ₀; F4's oracle is ZFC-definable | **literature-solid** (print-published, undisputed) |
-| 12 | Fish number 7 | Rayo's micro-language + function oracles, iterated transfinitely | Rayo's machinery, unchanged | the same MK-strength commitment as Rayo, inherited | **conditional**, exactly as Rayo (community-accepted as a genuine extension) |
+| 12 | Fish number 7 | Rayo's micro-language + function oracles, iterated transfinitely | Rayo's machinery, unchanged | the same MK-strength commitment as Rayo, inherited | **conditional**, exactly as Rayo; beats Rayo's number but stays below the first truth step above it (paper, `ABOVE-RAYO.md` §2) |
 | 13 | Little Bigeddon | FOST + rank variables + transfinitely iterated truth predicate | claimed; the posted text contains fatal errors | would exceed MK (iterated truth over V) if repaired | **ill-defined** (consensus; plausibly repairable, never repaired) |
 | 14 | Sasquatch / Big Bigeddon | HOD/class-forcing language construction | the author's own unproven conjecture | unclear | **ill-defined** (consensus; circular definitions) |
 | 15 | Oblivion / Utter Oblivion | "the largest number definable in any well-defined system of mathematics" | nothing: no fixed language for "system" | n/a | **ill-defined** (Berry-type regress; unformalizable as conceived) |
@@ -82,9 +93,12 @@ for the provenance story].
 Well-defined by Goodstein's theorem (1944): each sequence maps to a strictly
 descending ordinal sequence below ε₀ [PP]. Kirby-Paris (1982): unprovable
 in PA [PP]. The Goodstein function is essentially the Hardy hierarchy at
-ε₀ (Cichon 1983), so it dominates every PA-provably-total function, which
-puts it in the same growth class our Boolos fork tops out at. Note ACA₀
-does not help (conservative over PA); you need TI(ε₀) itself.
+ε₀ (Cichon 1983), so it dominates every PA-provably-total function. Note
+ACA₀ does not help (conservative over PA); you need TI(ε₀) itself.
+*(Corrected 2026-11-25. This note used to say ε₀ is "the same growth class
+our Boolos fork tops out at". That was the project's earlier ε₀ error: the
+Boolos function is Busy Beaver class and far above every Goodstein number;
+see rung 8.)*
 
 ### TREE(3) (rung 3): literature-solid, with a garble warning
 
@@ -200,9 +214,9 @@ phenomenon is the opposite of the other rungs: definition is cheap, but
 *values* are independent of strong theories. BB(7910) independent of ZFC
 modulo a mild consistency hypothesis (Aaronson-Yedidia 2016) [PP]; BB(748)
 via O'Rear's ZF-contradiction-searching machine [SF, code public,
-unrefereed]; improved to BB(745) (Riebel, 2023 thesis) [SF]. A 2025
-community claim pushes toward 432 states for ZF-minus-regularity but is
-explicitly unverified [CNV]. Largest known value: BB(5) = 47,176,870,
+unrefereed]; improved to BB(745) (Riebel, 2023 thesis) [SF]. Further claims
+of 636 and 432 states were reported in 2025 as pending verification
+(`LITERATURE-SURVEY.md`; arXiv:2509.12337) [CNV]. Largest known value: BB(5) = 47,176,870,
 machine-checked in Coq (bbchallenge, 2024) [PP]. This rung shows
 well-defined and knowable come sharply apart.
 
@@ -211,11 +225,28 @@ well-defined and knowable come sharply apart.
 Well-definedness is the B0 result: finitely many formulas up to renaming at
 each size, each provably naming at most one number, so the max exists
 ([`BOOLOS-B0-WELLDEFINEDNESS.md`](BOOLOS-B0-WELLDEFINEDNESS.md), mechanized
-core in [`BoolosB0Core.lean`](rayo-lean/Rayo/BoolosB0Core.lean)). The
-counting-up-to-renaming subtlety was a real catch: without it the
-construction is infinite (`METHODOLOGY.md` C8). Growth: eventually dominates
-every PA-provably-total monotone function, fully mechanized
-([`BoolosBig.lean`](rayo-lean-boolos/RayoBoolos/BoolosBig.lean)).
+core in [`BoolosB0Core.lean`](rayo-lean/Rayo/BoolosB0Core.lean); the
+general version for any consistent theory is Theorem 1 of
+[`PROVABLE-NAMING-REPORT.md`](PROVABLE-NAMING-REPORT.md), also in Lean).
+The counting-up-to-renaming subtlety was a real catch: without it the
+construction is infinite (`METHODOLOGY.md` C8).
+
+What the proof spends is the consistency of PA: if PA were inconsistent,
+every formula would name every number. So the strength needed is Con(PA),
+which PA itself cannot prove. *(Corrected 2026-11-25; the table used to say
+"PA-strength".)*
+
+Growth. The August entry said the function eventually dominates every
+PA-provably-total monotone function (mechanized in
+[`BoolosBig.lean`](rayo-lean-boolos/RayoBoolos/BoolosBig.lean)), and the
+project then read that as an ε₀ ceiling. That was only a lower bound, and
+the ceiling reading was wrong. The function eventually beats every
+computable function and is sandwiched between two Busy Beaver functions,
+with the same growth class for every consistent, computably axiomatized
+theory containing a weak base theory. All of this is machine-checked
+(`PROVABLE-NAMING-REPORT.md` Theorems 2 to 7). So this rung sits beside
+Busy Beaver (rung 7) in growth, far above rungs 1 to 6, while needing only
+Con(PA) to exist.
 
 ### Rayo's number (rung 9): project-audited, conditional
 
@@ -244,11 +275,19 @@ the project's other claims of novelty are corrected accordingly.
 
 ### BIG FOOT (rung 10): ill-defined
 
-Checked during Part 1 against the proof its own wiki article cites; the
-cited source disproves the claim. Recorded in `KAPPA-TABLE.md` and
-`FINDINGS.md`. Kept on the ladder as the cautionary rung: climbing past
-Rayo requires a rigorously specified stronger language, and this attempt's
-language wasn't.
+Checked during Part 1 ([`phase0/e-foot.md`](phase0/e-foot.md)). The claim
+that BIG FOOT beats Rayo's number is the definer's own assertion, with no
+proof. Against it stands a community refutation (p進大好きbot's blog post
+"Ill-definedness of BIG FOOT, Little Bigeddon, and Sasquatch"): for any set
+theory T extending ZFC, if FOOT is well-defined in T then T is
+inconsistent. The wiki now lists BIG FOOT as ill-defined. Caveat: the wiki
+pages could not be fetched directly, so this rests on search extracts of
+them, and the refutation itself was not re-derived here [CNV for the exact
+wording]. *(Clarified 2026-11-25; the table used to call this
+"project-audited".)* In `THE-LADDER.md`'s terms, BIG FOOT tried a height
+step, positing a taller universe without describing it, which is exactly
+where a definition can fail to define anything. Kept on the ladder as the
+cautionary rung.
 
 ### Fish numbers (rungs 11-12): solid below Rayo, conditional at Rayo
 
@@ -257,12 +296,23 @@ workhorses of the ladder's middle: computable recursions (F1-F3, F5, F6,
 growth from ~f_{ω²} up to ζ₀ level) plus one Busy-Beaver-oracle variant
 (F4), all rigorously defined, several print-published, none disputed. Fish
 number 7 extends Rayo's micro-language with function oracles and iterates
-transfinitely; the community examined and *accepted* it as a genuine
-(non-naive) extension that really beats Rayo. Its status is therefore
-precisely Rayo's: well-defined modulo the same inherited MK-strength
-commitment, no worse and no better. One honest caveat from the community's
-own talk pages: since nobody can attach an ordinal to Rayo's function, all
-"F7 ≈ R_{ζ₀}" strength claims are heuristic.
+transfinitely. Its well-definedness status is precisely Rayo's:
+well-defined modulo the same inherited MK-strength commitment, no worse and
+no better ([`ABOVE-RAYO.md`](ABOVE-RAYO.md) §2 uses replacement for
+formulas mentioning truth, which MK proves).
+
+How big it is. The August audit reported that the community accepted it as
+a genuine extension that really beats Rayo; the Phase 0 search extracts
+(`FINDINGS.md`) instead report it was never officially recognized and that
+whether it is *significantly* larger was disputed. Neither could be read
+from the wiki directly [CNV]. The project's own placement, on paper
+(`ABOVE-RAYO.md` Theorem 2): it does beat Rayo's number by a wide margin
+(already the second step `R_2` beats every fixed iterate of Rayo's
+function), but it stays strictly below the first truth step above Rayo
+(Rayo+ stage 1). The reason is that its oracles are only parameters: in set
+theory every function on the numbers is already a set, so feeding one back
+in never adds a new notion of truth. *(Updated 2026-11-25; earlier notes in
+this project placed it under Rayo+.)*
 
 ### Little Bigeddon and Sasquatch (rungs 13-14): ill-defined
 
@@ -277,8 +327,11 @@ were found (p進大好きbot):
   never defined. The errors look repairable, and an independent strength
   analysis (Deedlit11) suggests the *intended* construction is coherent,
   but the author left the community and no repaired canonical version
-  exists. If repaired, it would need strictly more than Rayo's commitment:
-  iterated truth predicates over V through the ordinals.
+  exists. If repaired, it would need strictly more than Rayo's proof
+  strength: iterated truth predicates over V through the ordinals. On
+  `THE-LADDER.md`'s map that is a run of truth steps (Rayo+), which by
+  `SECOND-ORDER-RAYO-II.md` asks for no new belief beyond Rayo's, only a
+  stronger theory to prove the functions well-defined [paper].
 - **Sasquatch** (a HOD/class-forcing construction): deeper defects. Its
   functions R and F are defined circularly (each conditioned on
   satisfaction in a structure that contains them), its formulas provably
@@ -315,15 +368,23 @@ well-defined as the theory it names out loud.
 
 ## What the ladder shows
 
-1. **Strength buys existence, all the way up.** The metatheory needed just
-   to *know each number exists* climbs monotonically: IΣ₂ (Graham), PA +
-   TI(ε₀) (Goodstein), small Veblen (TREE(3)), beyond Π¹₁-CA₀ (SCG),
-   higher-order arithmetic (Loader), stable ordinals in L (BMS, per its
-   only proof), PA-as-metatheory (Boolos), MK (Rayo, Fish 7), a declared
-   extension of MK (LNGN). This extends the project's throughline (the
-   commitment axis from `KAPPA-TABLE.md`'s diagonalization family) across
-   the whole canon: how sure you can be a number exists and how fast it
-   grows are governed by the same variable.
+1. **Among computable numbers, strength buys existence; above them it
+   does not.** For rungs 1 to 6 the metatheory needed just to *know each
+   number exists* climbs with growth: IΣ₂ (Graham), PA + TI(ε₀)
+   (Goodstein), small Veblen (TREE(3)), beyond Π¹₁-CA₀ (SCG), higher-order
+   arithmetic (Loader), and stable ordinals in L for BMS (an upper bound:
+   that is what its only proof uses). For a computable number, proving it
+   exists *is* proving a computation halts, so this is expected.
+   Past the computable rung the link breaks. Busy Beaver (rung 7) and
+   `BoolosBig_PA` (rung 8) outgrow every number on rungs 1 to 6 while
+   needing almost nothing (finiteness; Con(PA)) to exist. Rayo and Fish
+   number 7 need MK-strength, and LNGN a declared extension of MK.
+   *(Corrected 2026-11-25. The August version listed these as one
+   monotone climb, with "PA-as-metatheory (Boolos)" placed above BMS, and
+   concluded that existence-strength and growth "are governed by the same
+   variable". Above the computable rung, `THE-LADDER.md` finds growth is
+   governed by how much truth the scheme takes as given, which is a
+   different thing from the strength needed to prove it well-defined.)*
 
 2. **The theorems are refereed; the numbers are folklore.** On nearly
    every rung the underlying well-definedness theorem is published, solid
@@ -338,7 +399,8 @@ well-defined as the theory it names out loud.
    declared their axioms.** BIG FOOT, Little Bigeddon, Sasquatch, and
    Oblivion all fell, each for a specifiable technical reason, and the
    sole surviving record holder (LNGN) is the one built on an explicitly
-   stated theory. The failures and the fix agree with this project's
+   stated theory. (Fish number 7 also survives, but it is a parameter
+   extension that stays below the first truth step above Rayo.) The failures and the fix agree with this project's
    R0/throughline analysis: past first-order set theory, "which
    metatheory?" *is* the definition.
 
